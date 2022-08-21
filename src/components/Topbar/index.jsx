@@ -25,13 +25,8 @@ export default function Topbar(props) {
             </a>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <Link to="/app" className="nav-link">
+            <Link to="/dashboard" className="nav-link">
               Dashboard
-            </Link>
-          </li>
-          <li className="nav-item d-none d-sm-inline-block">
-            <Link to="/app/post" className="nav-link">
-              Post
             </Link>
           </li>
         </ul>

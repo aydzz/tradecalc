@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  	match /databases/{database}/documents {
+		match /apaul_message/{messageID}{
+			allow read: if false;
+			allow write: if 
+			request.resource.data.name is string &&
+			request.resource.data.email is string &&
+			request.resource.data.phone is string &&
+			request.resource.data.message is string
+		}
+		match /main_blog/{blogID}{
+			allow read: if true;
+		}
+		match /main_user/{userID}{
+			allow read: if true;
+		}
+		match /main_info/{infoID}{
+			allow read: if true;
+		}
+		match /{document=**} {
+		allow read, write: if request.auth != null; 
+		}
+	}
+}
