@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -3,
-    "scrollLeft": 0,
-    "zoomLevel": 1,
+    "scrollTop": -315,
+    "scrollLeft": -140,
+    "zoomLevel": 0.8,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -212,7 +212,7 @@
           "active": false,
           "left": 191.75,
           "top": 0,
-          "zIndex": 8,
+          "zIndex": 10,
           "widthName": 60,
           "widthComment": 60,
           "color": "#03A9F4"
@@ -275,7 +275,7 @@
           "active": false,
           "left": 685.222,
           "top": 924.1109,
-          "zIndex": 53,
+          "zIndex": 2,
           "widthName": 61.97265625,
           "widthComment": 60,
           "color": "#03A9F4"
@@ -773,9 +773,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 222.3335,
-          "top": 378.4444,
-          "zIndex": 134,
+          "left": 156.0835,
+          "top": 319.6944,
+          "zIndex": 12,
           "widthName": 85.10986328125,
           "widthComment": 60,
           "color": "#03A9F4"
@@ -815,7 +815,7 @@
           "active": false,
           "left": 749.778,
           "top": 665.667,
-          "zIndex": 136,
+          "zIndex": 9,
           "widthName": 93.76806640625,
           "widthComment": 60,
           "color": "#8BC34A"
@@ -855,7 +855,7 @@
           "active": false,
           "left": 759,
           "top": 407,
-          "zIndex": 125,
+          "zIndex": 5,
           "widthName": 60,
           "widthComment": 60,
           "color": "#03A9F4"
@@ -895,7 +895,7 @@
           "active": false,
           "left": 756,
           "top": 164,
-          "zIndex": 87,
+          "zIndex": 3,
           "widthName": 90.88623046875,
           "widthComment": 60,
           "color": "#8BC34A"
@@ -935,7 +935,7 @@
           "active": false,
           "left": 753,
           "top": 60,
-          "zIndex": 88,
+          "zIndex": 4,
           "widthName": 127.0234375,
           "widthComment": 60,
           "color": "#8BC34A"
@@ -975,7 +975,7 @@
           "active": false,
           "left": 749.8891,
           "top": 540.4447,
-          "zIndex": 135,
+          "zIndex": 8,
           "widthName": 103.89892578125,
           "widthComment": 60,
           "color": "#8BC34A"
@@ -1061,7 +1061,7 @@
           "active": false,
           "left": 154.1111,
           "top": 914.3331,
-          "zIndex": 52,
+          "zIndex": 1,
           "widthName": 69.208984375,
           "widthComment": 60,
           "color": "#9E9E9E"
@@ -1101,7 +1101,7 @@
           "active": false,
           "left": 753,
           "top": 275,
-          "zIndex": 131,
+          "zIndex": 6,
           "widthName": 121.24072265625,
           "widthComment": 60,
           "color": "#8BC34A"
@@ -1161,8 +1161,8 @@
           "columnIds": [
             "d6838a5a-4206-478d-8447-57b6d0750934"
           ],
-          "x": 618.6538125,
-          "y": 815.5069,
+          "x": 552.4038125,
+          "y": 669.3444,
           "direction": "right"
         },
         "constraintName": "fk_tra_lu_stoploss_type_to_tra_trade_logs",
@@ -1187,8 +1187,8 @@
           "columnIds": [
             "1ec85b13-e61a-4589-877c-5f3b623080da"
           ],
-          "x": 552.6004270833334,
-          "y": 378.4444,
+          "x": 453.32373437499996,
+          "y": 319.6944,
           "direction": "top"
         },
         "constraintName": "fk_tra_lu_takeprofit_type_to_tra_trade_logs",
@@ -1213,9 +1213,9 @@
           "columnIds": [
             "3a714204-a7cb-410d-ab82-4817aecd1e40"
           ],
-          "x": 420.4936562500001,
-          "y": 378.4444,
-          "direction": "top"
+          "x": 552.4038125,
+          "y": 769.2443999999999,
+          "direction": "right"
         },
         "constraintName": "fk_tra_lu_direction_to_tra_trade_logs",
         "visible": true,
@@ -1239,8 +1239,8 @@
           "columnIds": [
             "7331690d-85dc-4ed0-ab1c-b6126c5d2034"
           ],
-          "x": 618.6538125,
-          "y": 690.6319,
+          "x": 552.4038125,
+          "y": 469.5444,
           "direction": "right"
         },
         "constraintName": "fk_tra_asset_to_tra_trade_logs",
@@ -1265,8 +1265,8 @@
           "columnIds": [
             "97b4a8de-e66e-410b-bfba-c60cf8bcd21b"
           ],
-          "x": 288.3868854166667,
-          "y": 378.4444,
+          "x": 255.163578125,
+          "y": 319.6944,
           "direction": "top"
         },
         "constraintName": "fk_tra_user_to_tra_trade_logs",
@@ -1291,8 +1291,8 @@
           "columnIds": [
             "46a91fc1-1e2d-4531-962c-4768188f8b4c"
           ],
-          "x": 618.6538125,
-          "y": 440.8819,
+          "x": 552.4038125,
+          "y": 369.6444,
           "direction": "right"
         },
         "constraintName": "fk_tra_lu_order_type_to_tra_trade_logs",
@@ -1317,8 +1317,8 @@
           "columnIds": [
             "453d2380-97cf-4248-ba3e-006b4591cde6"
           ],
-          "x": 618.6538125,
-          "y": 565.7569,
+          "x": 552.4038125,
+          "y": 569.4444,
           "direction": "right"
         },
         "constraintName": "fk_tra_lu_risk_type_to_tra_trade_logs",

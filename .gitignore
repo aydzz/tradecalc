@@ -31,3 +31,5 @@ ui-debug.log
 emulator-data
 #my ignores
 .env
+__*
+__*__

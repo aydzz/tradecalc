@@ -4,12 +4,14 @@ import { NavLink } from 'react-router-dom';
 
 import {PillGroup} from './components/PillGroup';
 import {useAuth} from "../../contexts/AuthContext"
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function Sidebar(props){
+    const theme = useTheme();
     const authenticatedUser = useAuth()["currentUser"];
     const currentUser = authenticatedUser ?? props.user;
     return(
-        <aside className="main-sidebar elevation-4 sidebar-light-primary transition-normal">
+        <aside className={`main-sidebar elevation-4 ${theme.darkMode ? "sidebar-dark-primary" : "sidebar-light-primary"} transition-normal`}>
             <a href="/home" className="brand-link bg-light align-align-items-center justify-content-center">
                 <img src={logo} alt="site-logo" className="brand-image img-circle bg-light elevation-1 p-1"/>
                 <span className="brand-text font-weight-light">trading<strong>assistant</strong></span>
@@ -61,7 +63,7 @@ export default function Sidebar(props){
                         <p>Logs</p>
                     </NavLink>
                 </li>
-                <li class="nav-header">MISCELLANEOUS</li>
+                <li className="nav-header">MISCELLANEOUS</li>
                 <li className="nav-item">
                     <NavLink to="/app/integrations" className="nav-link">
                         <i className="nav-icon bi bi-person"></i>

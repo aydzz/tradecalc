@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link} from "react-router-dom";
+import profile from "../../assets/img/user1-128x128.jpg"
 
 import MessageMenu from "./components/MessageMenu";
-import profile from "../../assets/img/user1-128x128.jpg"
 import NotificationMenu from "./components/NotificationMenu";
 import ProfileMenu from "./components/ProfileMenu";
+import {useTheme} from "../../contexts/ThemeContext";
 
 export default function Topbar(props) {
+    const theme = useTheme();
     const sampleMessageData = {
       senderProfile: profile,
       senderName: "Edward Elric",
@@ -14,7 +16,7 @@ export default function Topbar(props) {
       dateSent: new Date().toLocaleDateString(),
     };
     return (
-      <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+      <nav className={`main-header navbar navbar-expand ${theme.darkMode ? "navbar-dark navbar-dark": "navbar-white navbar-light"}`}>
         {/* <!-- Left navbar links --> */}
         <ul className="navbar-nav">
           <li className="nav-item" onClick={()=>{
@@ -61,6 +63,11 @@ export default function Topbar(props) {
           <NotificationMenu data={{}}></NotificationMenu>
           {/* <!-- Profile Dropdown --> */}
           <ProfileMenu></ProfileMenu>
+          <li className="nav-item" onClick={()=>{props.cSidebarToggleHandler()}}>
+            <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+              <i className="bi bi-grid-1x2"></i>
+            </a>
+          </li>
         </ul>
       </nav>
     );

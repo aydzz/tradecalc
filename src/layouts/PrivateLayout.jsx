@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import OutsideClickObs from "../components/Special/OutsideClickObs";
 import BREAKPOINTS from "../assets/theme/base/breakpoints";
 import useBreakpoints from "../hooks/useBreakpoints";
+import ControlSidebar from "../components/ControlSidebar";
 
 export default function PrivateLayout(props) {
   const screenSize = useBreakpoints();
@@ -22,11 +23,12 @@ export default function PrivateLayout(props) {
 
   return (
     <div className="wrapper">
-        <Topbar sidebarToggleHandler={props.sidebarToggleHandler}></Topbar>
+        <Topbar sidebarToggleHandler={props.sidebarToggleHandler} cSidebarToggleHandler={props.cSidebarToggleHandler}></Topbar>
         <OutsideClickObs outsideClickHandler={handler}>
           <Sidebar></Sidebar>
         </OutsideClickObs>
         <Outlet />
+        <ControlSidebar></ControlSidebar>
         <Footer></Footer>
     </div>
   )

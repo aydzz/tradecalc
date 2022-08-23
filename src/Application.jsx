@@ -13,11 +13,13 @@ import LandingIndex from './pages/Landing';
 import RegisterIndex from "./pages/Register";
 import { AuthProvider } from './contexts/AuthContext';
 import ForgotPassword from './pages/ForgotPassword';
+import ThemeContextProvider, { useTheme } from './contexts/ThemeContext';
 
 function Application() {
-  
+  const theme = useTheme();
   const screenSize = useBreakpoints();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(screenSize == "sm" ? true :  screenSize == "xs" ? true : false);
+  const [controlSidebarOpen, setControlSidebarOpen] = useState(false)
   
   function handleSidebarToggle(flag) {
     if(flag === undefined){
@@ -27,10 +29,15 @@ function Application() {
       setSidebarCollapsed(flag);
     }
   }
+  function cSidebarToggleHandler(){
+    setControlSidebarOpen(!controlSidebarOpen);
+  }
   return (
     <div className={"App sidebar-mini ".concat(
-                                                sidebarCollapsed && (screenSize !="sm" && screenSize !="xs") ? "sidebar-collapse" :
-                                                sidebarCollapsed && (screenSize =="sm" || screenSize =="xs") ? "sidebar-open" : "")}>
+                                                sidebarCollapsed && (screenSize !="sm" && screenSize !="xs") ? "sidebar-collapse " :
+                                                sidebarCollapsed && (screenSize =="sm" || screenSize =="xs") ? "sidebar-open " : "")
+                                       .concat(controlSidebarOpen ? "control-sidebar-slide-open " : "")
+                                       .concat(theme.darkMode ? "dark-mode " : "")}>
         <div className="wrapper">
           <AuthProvider>
             <BrowserRouter>
@@ -39,7 +46,7 @@ function Application() {
                 <Route exact path="/landing" element={<LandingIndex/>} />
                 <Route exact path="/register" element={<RegisterIndex/>} />
                 <Route exact path="/forgot-password" element={<ForgotPassword/>} />
-                <Route exact path = "/app" element={<PrivateRoute screenSize={screenSize} sidebarCollapsed={sidebarCollapsed} sidebarToggleHandler={handleSidebarToggle}></PrivateRoute>}>
+                <Route exact path = "/app" element={<PrivateRoute screenSize={screenSize} sidebarCollapsed={sidebarCollapsed} sidebarToggleHandler={handleSidebarToggle} cSidebarToggleHandler={cSidebarToggleHandler}></PrivateRoute>}>
                     <Route exact path="./" element={<Navigate to="dashboard" />}></Route>
                     <Route path="home" element={<HomeIndex></HomeIndex>} />
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />

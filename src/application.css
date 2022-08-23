@@ -42715,4 +42715,21 @@ a.text-muted:hover {
   border-color: #4b545c !important;
 }
 
+/**Application Styling*/
+.tradingview-widget-copyright {
+  display: none;
+}
+
+.transition-slow {
+  transition: 0.5s ease-in-out !important;
+}
+
+.transition-normal {
+  transition: 0.2s ease-in-out !important;
+}
+
+.transition-fast {
+  transition: 0.1s ease-in-out !important;
+}
+
 /*# sourceMappingURL=application.css.map */
