@@ -14,7 +14,7 @@ export default function MessageMenu(props) {
       
       <a className="nav-link" data-toggle="dropdown" href="#">
         <i className="bi bi-chat"></i>
-        <span className="badge badge-danger navbar-badge">3</span>
+        <span className="badge badge-danger navbar-badge">0</span>
       </a>
       <MessageDropdown isShown={shown} data={props.data}></MessageDropdown>
     </li>
@@ -25,14 +25,15 @@ export default function MessageMenu(props) {
 function MessageDropdown(props) {
   return (
     <div className={"dropdown-menu dropdown-menu-lg dropdown-menu-right transition-fast " + (props.isShown ? "show" : "")}>
-        <MessageItem data={props.data}></MessageItem>
+        <span class="dropdown-header">0 new messages</span>
+        {/* <MessageItem data={props.data}></MessageItem>
         <div className="dropdown-divider"></div>
         <MessageItem data={props.data}></MessageItem>
         <div className="dropdown-divider"></div>
         <MessageItem data={props.data}></MessageItem>
         <div className="dropdown-divider"></div>
         <MessageItem data={props.data}></MessageItem>
-        <div className="dropdown-divider"></div>
+        <div className="dropdown-divider"></div> */}
       <div className="dropdown-divider"></div>
       <a href="#" className="dropdown-item dropdown-footer">
         See All Messages

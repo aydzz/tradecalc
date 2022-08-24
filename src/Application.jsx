@@ -14,6 +14,7 @@ import RegisterIndex from "./pages/Register";
 import { AuthProvider } from './contexts/AuthContext';
 import ForgotPassword from './pages/ForgotPassword';
 import ThemeContextProvider, { useTheme } from './contexts/ThemeContext';
+import LoginIndex from './pages/Login';
 
 function Application() {
   const theme = useTheme();
@@ -45,6 +46,7 @@ function Application() {
                 <Route exact path="/" element={<Navigate to={"landing"} />} />
                 <Route exact path="/landing" element={<LandingIndex/>} />
                 <Route exact path="/register" element={<RegisterIndex/>} />
+                <Route exact path="/login" element={<LoginIndex/>} />
                 <Route exact path="/forgot-password" element={<ForgotPassword/>} />
                 <Route exact path = "/app" element={<PrivateRoute screenSize={screenSize} sidebarCollapsed={sidebarCollapsed} sidebarToggleHandler={handleSidebarToggle} cSidebarToggleHandler={cSidebarToggleHandler}></PrivateRoute>}>
                     <Route exact path="./" element={<Navigate to="dashboard" />}></Route>

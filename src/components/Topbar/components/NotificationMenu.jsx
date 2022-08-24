@@ -11,7 +11,7 @@ export default function NotificationMenu(props){
             }}>
                 <a className="nav-link" data-toggle="dropdown" href="#">
                     <i className="bi bi-bell"></i>
-                    <span className="badge badge-warning navbar-badge">15</span>
+                    <span className="badge badge-warning navbar-badge">0</span>
                 </a>
                 <NotificationDropdown isShown={shown} data={props.data}></NotificationDropdown>
             </li>
@@ -22,8 +22,8 @@ export default function NotificationMenu(props){
 function NotificationDropdown(props){
     return(
         <div className={"dropdown-menu dropdown-menu-lg dropdown-menu-right " + (props.isShown ? "show" : "")}>
-            <span className="dropdown-header">15 Notifications</span>
-            <div className="dropdown-divider"></div>
+            <span className="dropdown-header">0 new notifications</span>
+            {/* <div className="dropdown-divider"></div>
             <a href="#" className="dropdown-item">
                 <i className="bi bi-envelope mr-2"></i> 4 new messages
                 <span className="float-right text-muted text-sm">3 mins</span>
@@ -37,7 +37,7 @@ function NotificationDropdown(props){
             <a href="#" className="dropdown-item">
                 <i className="bi bi-file-earmark mr-2"></i> 3 new reports
                 <span className="float-right text-muted text-sm">2 days</span>
-            </a>
+            </a> */}
             <div className="dropdown-divider"></div>
             <a href="#" className="dropdown-item dropdown-footer">See All Notifications</a>
         </div>

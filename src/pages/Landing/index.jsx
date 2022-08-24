@@ -1,7 +1,7 @@
 import React from 'react'
-
+import Error404 from '../Error/404'
 export default function LandingIndex() {
   return (
-    <div>Landing</div>
+    <Error404></Error404>
   )
 }

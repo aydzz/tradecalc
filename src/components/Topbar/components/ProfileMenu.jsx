@@ -1,5 +1,8 @@
 import { useState } from "react";
 import OutsideClickObs from "../../Special/OutsideClickObs";
+import { signOut } from "firebase/auth";
+import firebase from "../../../server/firebase";
+import { Toast } from "../../../assets/theme/utils/swal";
 
 export default function ProfileMenu() {
   const [shown, setShown] = useState(false);
@@ -38,7 +41,19 @@ function ProfileDropdown(props) {
           href="#"
           className="dropdown-item"
           onClick={(e) => {
-            //logout logic here...
+            signOut(firebase.auth).then(function (result) {
+              Toast.fire({
+                icon: "success",
+                title: "Logged out successfully",
+              });
+              console.log(e);
+            }).catch(function(error){
+              Toast.fire({
+                icon: "error",
+                title: "Error occurred while logging out."
+              })
+              console.log(error);
+            })
           }}
         >
           <i className="bi bi-box-arrow-right mr-2"></i> Logout
