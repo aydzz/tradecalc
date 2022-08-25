@@ -14,7 +14,7 @@ import { getStorage } from "firebase/storage"
 import { getAnalytics } from "firebase/analytics";
 
 // Firebase Emulator Constants
-const EMU_FIRESTORE_PORT = 8085;
+const EMU_FIRESTORE_PORT = 8087;
 const EMU_AUTH_PORT = 9099;
 const EMU_STORAGE_PORT = 9199;
 

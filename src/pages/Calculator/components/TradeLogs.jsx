@@ -6,51 +6,29 @@ export default function TradeLogs() {
         <thead>
         <tr>
             <th style={{"width": "10px"}}>#</th>
-            <th>Task</th>
-            <th>Progress</th>
-            <th style={{"width": "40px"}}>Label</th>
+            <th>Asset</th>
+            <th>Direction</th>
+            <th>Entry</th>
+            <th>Leverage</th>
+            <th>Notional Value</th>
+            <th>Date</th>
+            <th>Status</th>
+            
+            <th style={{"width": "40px"}}>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>1.</td>
-            <td>Update software</td>
+            <td>BTC/USDT</td>
             <td>
-            <div class="progress progress-xs">
-                <div class="progress-bar progress-bar-danger" style={{"width": "55%"}}></div>
-            </div>
+                <span className="badge bg-success">LONG</span>
             </td>
-            <td><span class="badge bg-danger">55%</span></td>
-        </tr>
-        <tr>
-            <td>2.</td>
-            <td>Clean database</td>
-            <td>
-            <div class="progress progress-xs">
-                <div class="progress-bar bg-warning" style={{"width": "70%"}}></div>
-            </div>
-            </td>
-            <td><span class="badge bg-warning">70%</span></td>
-        </tr>
-        <tr>
-            <td>3.</td>
-            <td>Cron job running</td>
-            <td>
-            <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar bg-primary" style={{"width": "30%"}}></div>
-            </div>
-            </td>
-            <td><span class="badge bg-primary">30%</span></td>
-        </tr>
-        <tr>
-            <td>4.</td>
-            <td>Fix and squish bugs</td>
-            <td>
-            <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar bg-success" style={{"width": "90%"}}></div>
-            </div>
-            </td>
-            <td><span class="badge bg-success">90%</span></td>
+            <td>$100.00</td>
+            <td>10</td>
+            <td>$1000.00</td>
+            <td>{new Date().toLocaleDateString()}</td>
+            <td ><span className="badge bg-warning">OPEN</span></td>
         </tr>
         </tbody>
     </table>

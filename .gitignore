@@ -29,6 +29,7 @@ firestore-debug.log
 .firebase
 ui-debug.log
 emulator-data
+firebase-export*
 #my ignores
 .env
 __*

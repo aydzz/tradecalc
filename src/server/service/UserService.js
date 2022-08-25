@@ -2,11 +2,6 @@ import UserRepository from "../dao/UserRepository";
 import firebase from "../firebase";
 import User from "../models/User";
 
-
-
-const USERS = [];
-const ROLES = [];
-
 class UserService{
     constructor(){
         this.repository = new UserRepository(firebase.firestore,"tra_user");
@@ -57,6 +52,5 @@ class UserService{
 
 
 const userService = new UserService();
-
 export default userService;
 
