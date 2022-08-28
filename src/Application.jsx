@@ -6,7 +6,6 @@ import PrivateRoute from "./components/Route/PrivateRoute";
 import HomeIndex from './pages/Home';
 import useBreakpoints from './hooks/useBreakpoints';
 import CalculatorIndex from './pages/Calculator';
-import SettingsIndex from './pages/Settings';
 import DashboardIndex from './pages/Dashboard'
 import TradeLogsIndex from './pages/TradeLogs'
 import LandingIndex from './pages/Landing';
@@ -15,6 +14,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ForgotPassword from './pages/ForgotPassword';
 import ThemeContextProvider, { useTheme } from './contexts/ThemeContext';
 import LoginIndex from './pages/Login';
+import AccountIndex from './pages/Account';
 
 function Application() {
   const theme = useTheme();
@@ -53,7 +53,7 @@ function Application() {
                     <Route path="home" element={<HomeIndex></HomeIndex>} />
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />
                     <Route path="calculator" element={<CalculatorIndex></CalculatorIndex>} />
-                    <Route path="settings" element={<SettingsIndex></SettingsIndex>} />
+                    <Route path="account" element={<AccountIndex></AccountIndex>} />
                     <Route path="tradelogs" element={<TradeLogsIndex></TradeLogsIndex>} />
                   </Route>
               </Routes>

@@ -4,6 +4,7 @@ import TradeForm from './components/TradeForm'
 import TradingOverview from './components/TradingOverview'
 import MarketOverviewWidget from '../../components/Widget/TradingView/MarketOverviewWidget'
 import TradeLogs from './components/TradeLogs'
+import Paginator from '../../components/Paginator'
 
 export default function CalculatorIndex() {
   return (
@@ -44,7 +45,7 @@ export default function CalculatorIndex() {
                     <div className='row'>
                         <div className="col-6">
                             <div className="info-box bg-light">
-                            <span className="info-box-icon bg-success"><i class="bi bi-wallet2"></i></span>
+                            <span className="info-box-icon bg-success"><i className="bi bi-wallet2"></i></span>
                             <div className="info-box-content">
                                 <span className="info-box-text">Active Funds</span>
                                 <span className="info-box-number">$5.00</span>
@@ -61,7 +62,7 @@ export default function CalculatorIndex() {
                         </div>
                         <div className="col-6">
                             <div className="info-box bg-light">
-                            <span className="info-box-icon bg-primary"><i class="bi bi-graph-up-arrow"></i></span>
+                            <span className="info-box-icon bg-primary"><i className="bi bi-graph-up-arrow"></i></span>
                             <div className="info-box-content">
                                 <span className="info-box-text">Profit/Loss</span>
                                 <span className="info-box-number">$1.00</span>
@@ -97,6 +98,9 @@ export default function CalculatorIndex() {
                 </div>
                 <div className='card-body p-0 m-0 mb-2'>
                     <TradeLogs></TradeLogs>
+                </div>
+                <div className='card-footer'>
+                     <Paginator></Paginator>
                 </div>
             </div>
         </div>

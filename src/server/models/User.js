@@ -21,3 +21,16 @@ export default class User{
         this.updatedDate = updatedDate;
     }
 }
+
+export class NullUser {
+    constructor() {
+        this.id = "";
+        this.uid = "";
+        this.firstName = "John";
+        this.lastName = "Doe";
+        this.email = "johndoe@mailinator.com";
+        this.username = "jdoe";
+        this.createdDate = new Date();
+        this.updatedDate = new Date();
+    }
+}

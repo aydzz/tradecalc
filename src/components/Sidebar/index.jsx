@@ -19,7 +19,10 @@ export default function Sidebar(props){
             <div className="sidebar">
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div className="image">
-                <img id="sidebar-user-profile" src={"https://avatars.dicebear.com/api/identicon/" + (currentUser ? (currentUser["uid"] + ".svg") : "nouserfound.svg")} className="img-circle elevation-2 p-1" alt="User Image"/>
+                <img id="sidebar-user-profile" 
+                    src={currentUser.photoURL ?? "https://avatars.dicebear.com/api/identicon/" + (currentUser ? (currentUser["uid"] + ".svg") : "nouserfound.svg")} 
+                    className="img-circle elevation-2 p-1" 
+                    alt="User Image"/>
                 </div>
                 <div className="info">
                 <a id="sidebar-user-name" href="#" className="d-inline-block text-sm" style={{whiteSpace:"pre-line"}}>{(currentUser["displayName"] ? currentUser["displayName"]  : currentUser["email"] )}</a>
@@ -52,9 +55,9 @@ export default function Sidebar(props){
                     </NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to="/app/settings" className="nav-link">
-                        <i className="nav-icon bi bi-sliders2"></i>
-                        <p>Settings</p>
+                    <NavLink to="/app/account" className="nav-link">
+                        <i className="nav-icon bi bi-person-lines-fill"></i>
+                        <p>Account</p>
                     </NavLink>
                 </li>
                 <li className="nav-item">

@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export default class Trade{
     /**
      * 
@@ -10,21 +12,17 @@ export default class Trade{
      * @param {Number} accountOpen 
      * @param {Number} quantity 
      * @param {Number} multiplier 
-     * @param {Number} notionalValue 
      * @param {String} stoplossType 
      * @param {Number} stoplossPrice 
      * @param {String} takeProfitType 
      * @param {Number} takeProfitPrice 
-     * @param {Number} riskValue 
-     * @param {Number} orderSLSpread 
-     * @param {Number} orderTPSpread 
      * @param {Number} exitPrice 
      * @param {Number} tradeValue 
      * @param {String} createdBy 
-     * @param {Date} createdDate 
+     * @param {Date | Timestamp} createdDate 
      */
-    constructor(id, direction, orderType, riskType, asset, entryPrice, accountOpen, quantity, multiplier, notionalValue, 
-                stoplossType, stoplossPrice, takeProfitType, takeProfitPrice, riskValue, orderSLSpread, orderTPSpread, exitPrice, tradeValue, createdBy, 
+    constructor(id, direction, orderType, riskType, asset, entryPrice, accountOpen, quantity, multiplier, 
+                stoplossType, stoplossPrice, takeProfitType, takeProfitPrice, exitPrice, tradeValue, createdBy, 
                 createdDate
     ){
         this.id = id;
@@ -36,17 +34,29 @@ export default class Trade{
         this.accountOpen = accountOpen;
         this.quantity = quantity;
         this.multiplier = multiplier;
-        this.notionalValue = notionalValue;
+        this._notionalValue = 0;
         this.stoplossType = stoplossType;
         this.stoplossPrice = stoplossPrice;
         this.takeProfitType = takeProfitType;
         this.takeProfitPrice = takeProfitPrice;
-        this.riskValue = riskValue;
-        this.orderSLSpread = orderSLSpread;
-        this.orderTPSpread = orderTPSpread;
+        this._riskValue = 0;
+        this._orderSLSpread = 0;
+        this._orderTPSpread = 0;
         this.exitPrice = exitPrice;
         this.tradeValue = tradeValue;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
+    }
+    get notionalValue(){
+        return this.entryPrice * this.multiplier;
+    }
+    get riskValue(){
+        return 0;
+    }
+    get orderSLSpread(){
+        return 0;
+    }
+    get orderTPSpread(){
+        return 0;
     }
 }

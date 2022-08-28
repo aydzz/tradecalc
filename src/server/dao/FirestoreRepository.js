@@ -80,7 +80,9 @@ export default class FirestoreRepository{
      * @returns *
      */
     async save(docData){
-        const ref = doc(collection(this._firestore, this.collection)).withConverter(this._converter);
+        const ref = (docData.id ? 
+            doc(collection(this._firestore, this.collection),docData.id).withConverter(this._converter): 
+            doc(collection(this._firestore, this.collection)).withConverter(this._converter));
         const result = await setDoc(ref, docData);
         return result;
     }

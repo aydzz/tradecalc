@@ -14,7 +14,7 @@ import { getStorage } from "firebase/storage"
 import { getAnalytics } from "firebase/analytics";
 
 // Firebase Emulator Constants
-const EMU_FIRESTORE_PORT = 8087;
+const EMU_FIRESTORE_PORT = 9300;
 const EMU_AUTH_PORT = 9099;
 const EMU_STORAGE_PORT = 9199;
 
@@ -29,8 +29,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
-
-console.log(firebaseConfig);
 
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);

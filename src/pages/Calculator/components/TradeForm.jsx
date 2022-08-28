@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Trade from "../../../server/models/Trade";
 import tradeService from "../../../server/service/TradeLogService";
+import {Toast} from "../../../assets/theme/utils/swal"
 
 export default function TradeForm() {
   const [leverage, setLeverage] = useState();
@@ -33,21 +34,20 @@ export default function TradeForm() {
       0,
       quantity,
       leverage,
-      100,
       stoplossType,
       stoplossPrice,
       takeProfitType,
       takeProfitPrice,
       100,
       100,
-      100,
-      0,
-      0,
-      "",
+      "Adzz",
       new Date()
     );
     tradeService.save(newTrade).then(function(res){
-      console.log(res);
+      Toast.fire({
+        title: "Trade has been logged!",
+        icon: "success"
+      })
     })
   }
   return (

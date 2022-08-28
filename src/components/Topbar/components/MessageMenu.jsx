@@ -25,7 +25,7 @@ export default function MessageMenu(props) {
 function MessageDropdown(props) {
   return (
     <div className={"dropdown-menu dropdown-menu-lg dropdown-menu-right transition-fast " + (props.isShown ? "show" : "")}>
-        <span class="dropdown-header">0 new messages</span>
+        <span className="dropdown-header">0 new messages</span>
         {/* <MessageItem data={props.data}></MessageItem>
         <div className="dropdown-divider"></div>
         <MessageItem data={props.data}></MessageItem>

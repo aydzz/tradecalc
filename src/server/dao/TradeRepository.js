@@ -30,7 +30,7 @@ const tradeConverter = {
             orderTPSpread: trade.orderTPSpread,
             exitPrice: trade.exitPrice,
             tradeValue: trade.tradeValue,
-            createdB: trade.createdBy,
+            createdBy: trade.createdBy,
             createdDate: trade.createdDate
         };
     },
@@ -47,14 +47,10 @@ const tradeConverter = {
             data.accountOpen,
             data.quantity,
             data.multiplier,
-            data.notionalValue,
             data.stoplossType,
             data.stoplossPrice,
             data.takeProfitType,
             data.takeProfitPrice,
-            data.riskValue,
-            data.orderSLSpread,
-            data.orderTPSpread,
             data.exitPrice,
             data.tradeValue,
             data.createdBy,
