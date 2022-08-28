@@ -75,7 +75,9 @@ export default function AccountIndex() {
                             <AccountForm></AccountForm>
                           </div>
                           <div className={"tab-pane fade " + (settingsTab=== 1 ? "active show" : "")} id="vert-tabs-right-trading" role="tabpanel" aria-labelledby="vert-tabs-right-trading-tab">
+                    
                             <TradingForm></TradingForm>
+                       
                           </div>
                         </div>
                       </div>
@@ -92,7 +94,7 @@ export default function AccountIndex() {
                               role="tab" 
                               aria-controls="vert-tabs-right-trading"
                               onClick={()=> setSettingsTab(1)}
-                            >Trading</a>
+                            >Trading Session</a>
                         </div>
                       </div>
                     </div>

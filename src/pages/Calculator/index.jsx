@@ -5,6 +5,7 @@ import TradingOverview from './components/TradingOverview'
 import MarketOverviewWidget from '../../components/Widget/TradingView/MarketOverviewWidget'
 import TradeLogs from './components/TradeLogs'
 import Paginator from '../../components/Paginator'
+import AdvancedRealTimeChart from '../../components/Widget/TradingView/AdvancedRealTimeChart'
 
 export default function CalculatorIndex() {
   return (
@@ -26,7 +27,25 @@ export default function CalculatorIndex() {
         </div>
       </section>
       <div className='row'>
-      <div className="col-lg-5 col-12">
+        <div className='col-lg-8 col-md-6 col-12'>
+            <div className='card'>
+                <div className='card-header border-0'><i className='bi bi-bar-chart-steps'></i> Main Chart</div>
+                <div className='card-body m-0 p-0'>
+                    <AdvancedRealTimeChart></AdvancedRealTimeChart>
+                </div>
+            </div>
+            
+        </div>
+        <div className="col-lg-4 col-md-6 col-12">
+            <div className='card'>
+                <div className='card-header'>
+                    <i className='bi bi-calculator'></i> Market Condition
+                </div>
+                <div className='card-body'>
+                </div>
+            </div>
+        </div>
+        <div className="col-lg-5 col-12">
             <div className='card'>
                 <div className='card-header'>
                     <i className='bi bi-calculator'></i> Trade
@@ -83,7 +102,7 @@ export default function CalculatorIndex() {
                 </div>
             </div>
         </div>
-        <div className='col-lg-3'>
+        <div className='col-lg-3 col-12'>
           <div className='card'>
             <div className='card-header border-0'>Market Overview</div>
             <div className='card-body p-0 m-0'>

@@ -61,6 +61,12 @@ export default function Sidebar(props){
                     </NavLink>
                 </li>
                 <li className="nav-item">
+                    <NavLink to="/app/journal" className="nav-link">
+                        <i className="nav-icon bi bi-journal"></i>
+                        <p>Journal</p>
+                    </NavLink>
+                </li>
+                <li className="nav-item">
                     <NavLink to="/app/tradelogs" className="nav-link">
                         <i className="nav-icon bi bi-clock-history"></i>
                         <p>Logs</p>

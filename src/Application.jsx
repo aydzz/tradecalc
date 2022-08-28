@@ -15,6 +15,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ThemeContextProvider, { useTheme } from './contexts/ThemeContext';
 import LoginIndex from './pages/Login';
 import AccountIndex from './pages/Account';
+import JournalIndex from './pages/Journal';
 
 function Application() {
   const theme = useTheme();
@@ -54,6 +55,7 @@ function Application() {
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />
                     <Route path="calculator" element={<CalculatorIndex></CalculatorIndex>} />
                     <Route path="account" element={<AccountIndex></AccountIndex>} />
+                    <Route path="journal" element={<JournalIndex></JournalIndex>} />
                     <Route path="tradelogs" element={<TradeLogsIndex></TradeLogsIndex>} />
                   </Route>
               </Routes>

@@ -13,8 +13,10 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage"
 import { getAnalytics } from "firebase/analytics";
 
+import appLogger from "../assets/js/AppLogger";
+
 // Firebase Emulator Constants
-const EMU_FIRESTORE_PORT = 9300;
+const EMU_FIRESTORE_PORT = 9200;
 const EMU_AUTH_PORT = 9099;
 const EMU_STORAGE_PORT = 9199;
 
@@ -47,19 +49,19 @@ const storage = getStorage(app);
  */
 if(process.env.REACT_APP_USE_EMULATOR && process.env.REACT_APP_USE_EMULATOR === "Y"){
   if (window.location.hostname === "localhost") {
-    console.warn("FIREBASE: Using Firestore Emulator");
+    appLogger.warn("FIREBASE: Using Firestore Emulator");
     connectFirestoreEmulator(firestore,"localhost",EMU_FIRESTORE_PORT);   
 
-    console.warn("FIREBASE: Using Authentication Emulator");
+    appLogger.warn("FIREBASE: Using Authentication Emulator");
     connectAuthEmulator(auth, `http://localhost:${EMU_AUTH_PORT}`);
 
-    console.warn("FIREBASE: Using Storage Emulator");
+    appLogger.warn("FIREBASE: Using Storage Emulator");
     connectStorageEmulator(storage, `http://localhost:${EMU_STORAGE_PORT}`);
 
     //do some emulator effects here eg: upload lookup tables. 
   }
 }else{
-  console.warn("FIREBASE: Currently using live resources.")
+  appLogger.warn("FIREBASE: Currently using live resources.")
 }
 
 const firebase = {
