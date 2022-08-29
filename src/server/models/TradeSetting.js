@@ -1,7 +1,12 @@
 export default class TradeSetting{
 
     /**
+     * TradeSetting  is a an entity DataModel that where we store data inputs from the user. 
+     *  - records are unique per User Entity ( 1 User = 0 | 1 TradeSetting)
+     *  - take note to only use members for calculation. any calculation that uses Trade should be handled in the TradeCalculator.
      * 
+     * CREATED: 202208xx - adzz
+     * UPDATED: 20220829 - adzz
      * @param {String} id 
      * @param {Number} portfolioValue 
      * @param {Number} tradeCapital 
@@ -103,20 +108,20 @@ export class NullTradeSetting{
      */
      constructor(){
         this.id =  ""
-        this.portfolioValue = ""
-        this.tradeCapital = ""
-        this.tradePortCapital = ""
-        this.leverage = ""
-        this.range = ""
-        this.rangeMultiplier = ""
+        this.portfolioValue = 0
+        this.tradeCapital = 0
+        this.tradePortCapital = 0
+        this.leverage = 0
+        this.range = 0
+        this.rangeMultiplier = 0
         this.riskScope = "capital"
-        this.riskDeviationPercent = ""
-        this.acceptableSpread = ""
-        this.minSpread = ""
-        this.portRiskTradingThreshold = ""
-        this.capRiskTradingThreshold = ""
-        this.capPortRiskPercent = ""
-        this.riskRewardMultiplier = ""
+        this.riskDeviationPercent = 0
+        this.acceptableSpread = 0
+        this.minSpread = 0
+        this.portRiskTradingThreshold = 0
+        this.capRiskTradingThreshold = 0
+        this.capPortRiskPercent = 0
+        this.riskRewardMultiplier = 0
         this.userID = ""
     }
 }

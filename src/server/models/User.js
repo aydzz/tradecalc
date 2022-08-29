@@ -1,6 +1,9 @@
 export default class User{
     /**
+     * User  is a an entity DataModel that where we store data details per authenticated user. 
      * 
+     * CREATED: 202208xx - adzz
+     * UPDATED: 20220829 - adzz
      * @param {String} id 
      * @param {String} uid 
      * @param {String} firstName 

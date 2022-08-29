@@ -1,48 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Trade from "../../../server/models/Trade";
 import tradeService from "../../../server/service/TradeLogService";
 import {Toast} from "../../../assets/theme/utils/swal"
+import TradeCalculator from "../../../assets/js/TradeCalculator";
 
-export default function TradeForm() {
-  const [leverage, setLeverage] = useState();
-  const [direction, setDirection] = useState();
-  const [orderType, setOrderType] = useState();
-  const [asset, setAsset] = useState();
-  const [entryPrice, setEntryPrice] = useState();
-  const [quantity, setQuantity] = useState();
-  const [cash, setCash] = useState();
-  const [allowableCapitalLoss, setAllowableCapitalLoss] = useState();
-  const [quantityCash, setQuantityCash] = useState();
-  const [stoplossType, setStoplossType] = useState();
-  const [stoplossPrice, setStoplossPrice] = useState();
-  const [takeProfitType, setTakeProfitType] = useState();
-  const [takeProfitPrice, setTakeProfitPrice] = useState();
+export default function TradeForm(props) {
+  console.log(props);
+  /**@type {Trade} */
+  const trade = props.trade;
+  const setTrade = props.setTrade;
+  const setTradeCalculator = props.setTradeCalculator;
+  const tradeSettings = props.tradeSettings;
 
+  useEffect(function(e){
+    setTradeCalculator(new TradeCalculator(tradeSettings, trade));
+  },[trade])
+  
   const clearForm = function(){
     //do something here...
   }
   const formSubmitHandler = function(e){
     e.preventDefault();
-    const newTrade = new Trade(
-      "",
-      direction,
-      orderType,
-      "riskType",
-      asset,
-      entryPrice,
-      0,
-      quantity,
-      leverage,
-      stoplossType,
-      stoplossPrice,
-      takeProfitType,
-      takeProfitPrice,
-      100,
-      100,
-      "Adzz",
-      new Date()
-    );
+    
+    //do submission effect to our object here..
+    const newTrade = trade;
     tradeService.save(newTrade).then(function(res){
       Toast.fire({
         title: "Trade has been logged!",
@@ -61,7 +43,14 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={leverage} onChange={(e)=>{setLeverage(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+              value={trade.leverage} 
+              onChange={(e)=>{
+                    const newTrade = Object.assign(new Trade(), trade);
+                    newTrade.leverage = Number(e.target.value);
+                    setTrade(newTrade);
+              }}
+            />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -72,9 +61,16 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <select type="text" className="form-control" value={direction} onChange={(e)=>{setDirection(e.target.value)}}>
-              <option value="LONG">LONG</option>
-              <option value="SHORT">SHORT</option>
+            <select type="text" className="form-control" 
+              value={trade.direction} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.direction = e.target.value;
+                setTrade(newTrade);
+              }}
+            >
+              <option value="long">LONG</option>
+              <option value="short">SHORT</option>
             </select>
           </div>
         </div>
@@ -86,9 +82,16 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <select type="text" className="form-control" value={orderType} onChange={(e)=>{setOrderType(e.target.value)}}>
-              <option value="CASH">CASH</option>
-              <option value="QUANTITY">QUANTITY</option>
+            <select type="text" className="form-control" 
+              value={trade.orderType} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.orderType = e.target.value;
+                setTrade(newTrade);
+              }}
+            >
+              <option value="cash">CASH</option>
+              <option value="quantity">QUANTITY</option>
             </select>
           </div>
         </div>
@@ -100,7 +103,14 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <select type="text" className="form-control" value={asset} onChange={(e)=>{setAsset(e.target.value)}}>
+            <select type="text" className="form-control" 
+              value={trade.asset} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.asset = Number(e.target.value);
+                setTrade(newTrade);
+              }}
+            >
               <option value="BTC/USDT">BTC/USDT</option>
               <option value="ETH/USDT">ETH/USDT</option>
             </select>
@@ -114,7 +124,14 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={entryPrice} onChange={(e)=>{setEntryPrice(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+                value={trade.entryPrice} 
+                onChange={(e)=>{
+                  const newTrade = Object.assign(new Trade(), trade);
+                  newTrade.entryPrice = Number(e.target.value);
+                  setTrade(newTrade);
+                }}
+              />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -125,7 +142,14 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={quantity} onChange={(e)=>{setQuantity(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+                value={trade.quantity} 
+                onChange={(e)=>{
+                  const newTrade = Object.assign(new Trade(), trade);
+                  newTrade.quantity = Number(e.target.value);
+                  setTrade(newTrade);
+                }}
+              />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -136,7 +160,14 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={cash} onChange={(e)=>{setCash(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+              value={trade.cash} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.cash = Number(e.target.value);
+                setTrade(newTrade);
+              }}
+            />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -147,7 +178,13 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={allowableCapitalLoss} onChange={(e)=>{setAllowableCapitalLoss(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+              value={trade.allowableCapitalLoss} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.allowableCapitalLoss = Number(e.target.value);
+                setTrade(newTrade);
+              }}/>
           </div>
         </div>
         <hr></hr>
@@ -159,7 +196,8 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={quantityCash} onChange={(e)=>{setQuantityCash(e.target.value)}} />
+            <input type="number" className="form-control" placeholder="Sample here..." 
+              value={trade.cashQty} disabled />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -170,11 +208,18 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <select type="text" className="form-control" value={stoplossType} onChange={(e)=>{setStoplossType(e.target.value)}}>
-              <option value="RISK">RISK</option>
-              <option value="SPREAD">SPREAD</option>
-              <option value="LOSS">LOSS</option>
-              <option value="TARGET">TARGET</option>
+            <select type="text" className="form-control" 
+                value={trade.stoplossType} 
+                onChange={(e)=>{
+                  const newTrade = Object.assign(new Trade(), trade);
+                  newTrade.stoplossType = e.target.value;
+                  setTrade(newTrade);
+                }}
+              >
+              <option value="risk">RISK</option>
+              <option value="spread">SPREAD</option>
+              <option value="loss">LOSS</option>
+              <option value="target">TARGET</option>
             </select>
           </div>
         </div>
@@ -186,7 +231,7 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={stoplossPrice} onChange={(e)=>{setStoplossPrice(e.target.value)}} />
+            <input type="number" className="form-control" placeholder="Sample here..." value={trade.stoplossPrice} disabled />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -197,9 +242,15 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <select type="text" className="form-control" value={takeProfitType} onChange={(e)=>{setTakeProfitType(e.target.value)}}>
-              <option value="RISK/REWARD">RISK/REWARD</option>
-              <option value="TARGET">TARGET</option>
+            <select type="text" className="form-control" 
+                value={trade.takeProfitType} 
+                onChange={(e)=>{
+                  const newTrade = Object.assign(new Trade(), trade);
+                  newTrade.takeProfitType = e.target.value;
+                  setTrade(newTrade);
+                }}>
+              <option value="riskreward">RISK/REWARD</option>
+              <option value="target">TARGET</option>
             </select>
           </div>
         </div>
@@ -211,7 +262,7 @@ export default function TradeForm() {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={takeProfitPrice} onChange={(e)=>{setTakeProfitPrice(e.target.value)}}/>
+            <input type="number" className="form-control" placeholder="Sample here..." value={trade.takeProfitPrice} disabled/>
           </div>
         </div>
         <div className="col-12">
@@ -223,3 +274,14 @@ export default function TradeForm() {
     </form>
   );
 }
+
+
+/**
+ * NOTES:
+ *  20220829: replaced controlled fields's datasource as a new Trade Object Instance instead ( former individual field ). 
+ *  - Take note of our issue regarding the Object.bind() since we are using getters and setters here.
+ * TODO:
+ *  - clearFormFunction
+ *  - impelement null instead of "" to fields that are not used in a fiel ( react throws a warning so i opted to "")
+ *  - add api call for dropdowns
+ */

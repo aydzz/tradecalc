@@ -46,7 +46,6 @@ export default function TradeLogs() {
       );
     }
   )
-  console.log(logsEl)
   return (
     <table class="table table-sm">
         <thead>

@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TradeForm from './components/TradeForm'
-import TradingOverview from './components/TradingOverview'
+import TradingOverview, { TradingOverviewTable } from './components/TradingOverview'
 import MarketOverviewWidget from '../../components/Widget/TradingView/MarketOverviewWidget'
 import TradeLogs from './components/TradeLogs'
 import Paginator from '../../components/Paginator'
 import AdvancedRealTimeChart from '../../components/Widget/TradingView/AdvancedRealTimeChart'
+import tradeSettingService from "../../server/service/TradeSettingService";
+import userService from "../../server/service/UserService"
+import {useAuth} from "../../contexts/AuthContext";
+import appLogger from '../../assets/js/AppLogger'
+import TradeSetting, { NullTradeSetting } from '../../server/models/TradeSetting'
+import Trade, { NullTrade } from '../../server/models/Trade'
+import TradeCalculator, { NullTradeCalculator } from '../../assets/js/TradeCalculator'
 
 export default function CalculatorIndex() {
+    /**@type {[Trade, Function]} */
+    const [trade, setTrade] = useState(new NullTrade());
+    /**@type {[TradeSetting, Function]} */
+    const [tradeSettings, setTradeSettings] = useState(new NullTradeSetting());
+    /**@type {[TradeCalculator, Function]} */
+    
+    const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
+    const {currentUser} = useAuth();
+
+    //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
+    useEffect(function(){
+        userService.getBy("uid", currentUser.uid).then(function(results){
+            const user = results !== null ? results[0] : null;
+            tradeSettingService.getBy("userID", user.id).then(function(results){
+                if(results && results.length > 0){
+                    setTradeSettings(results[0]);
+                    setTradeCalculator(new TradeCalculator(results[0],trade));
+                    
+                }
+            })
+        })
+    },[])
   return (
     <div className='content-wrapper'>
       <div className='container-fluid'>
@@ -37,12 +66,69 @@ export default function CalculatorIndex() {
             
         </div>
         <div className="col-lg-4 col-md-6 col-12">
-            <div className='card'>
-                <div className='card-header'>
-                    <i className='bi bi-calculator'></i> Market Condition
+            <div className='row'>
+                <div className="col-12">
+                    <div className='card'>
+                        <div className='card-header'>
+                            <i className='bi bi-calculator'></i> Market Condition
+                        </div>
+                        <div className='card-body'>
+                            <div className='row'>
+                                <div className="form-group col-xl-6 col-12 mb-3">
+                                    <label className='text-sm m-0'>Range</label>
+                                    <div className="input-group input-group-sm">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text"><i className="bi bi-graph-up-arrow"></i></span>
+                                        </div>
+                                        <input type="text" className="form-control" placeholder="Sample here..." value={Number(tradeSettings.range).toFixed(2)}/>
+                                    </div>
+                                </div>
+                                <div className="form-group col-xl-6 col-12 mb-3">
+                                    <label className='text-sm m-0'>Range Multiplier</label>
+                                    <div className="input-group input-group-sm">
+                                        <div className="input-group-prepend">
+                                            <span className="input-group-text"><i className="bi bi-graph-up-arrow"></i></span>
+                                        </div>
+                                        <input type="text" className="form-control" placeholder="Sample here..." value={Number(tradeSettings.rangeMultiplier).toFixed(2)}/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
                 </div>
-                <div className='card-body'>
+                <div className="col-xl-6 col-12">
+                    <div className="info-box bg-light">
+                        <span className="info-box-icon bg-success"><i className="bi bi-wallet2"></i></span>
+                        <div className="info-box-content">
+                            <span className="info-box-text">Active Funds</span>
+                            <span className="info-box-number">$5.00</span>
+
+                            {/* <div className="progress">
+                                <div className="progress-bar" style={{"width": "70%"}}></div>
+                            </div>
+                            <span className="progress-description">
+                                70% Increase in 30 Days
+                            </span> */}
+                        </div>
+                        
+                    </div>
                 </div>
+                <div className="col-xl-6 col-12">
+                <div className="info-box bg-light">
+                <span className="info-box-icon bg-primary"><i className="bi bi-graph-up-arrow"></i></span>
+                <div className="info-box-content">
+                    <span className="info-box-text">Profit/Loss</span>
+                    <span className="info-box-number">$1.00</span>
+                    {/* <div className="progress">
+                        <div className="progress-bar" style={{"width": "70%"}}></div>
+                    </div>
+                    <span className="progress-description">
+                        70% Increase in 30 Days
+                    </span> */}
+                </div>
+                </div>
+            </div>
             </div>
         </div>
         <div className="col-lg-5 col-12">
@@ -51,7 +137,11 @@ export default function CalculatorIndex() {
                     <i className='bi bi-calculator'></i> Trade
                 </div>
                 <div className='card-body'>
-                    <TradeForm></TradeForm>
+                    <TradeForm 
+                        trade={trade} setTrade={setTrade} 
+                        tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
+                        tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
+                        ></TradeForm>
                 </div>
             </div>
         </div>
@@ -60,46 +150,10 @@ export default function CalculatorIndex() {
                 <div className='card-header'>
                     <i className='bi bi-person-lines-fill'></i> Overview
                 </div>
-                <div className='card-body'>
-                    <div className='row'>
-                        <div className="col-6">
-                            <div className="info-box bg-light">
-                            <span className="info-box-icon bg-success"><i className="bi bi-wallet2"></i></span>
-                            <div className="info-box-content">
-                                <span className="info-box-text">Active Funds</span>
-                                <span className="info-box-number">$5.00</span>
-
-                                {/* <div className="progress">
-                                    <div className="progress-bar" style={{"width": "70%"}}></div>
-                                </div>
-                                <span className="progress-description">
-                                    70% Increase in 30 Days
-                                </span> */}
-                            </div>
-                            
-                            </div>
-                        </div>
-                        <div className="col-6">
-                            <div className="info-box bg-light">
-                            <span className="info-box-icon bg-primary"><i className="bi bi-graph-up-arrow"></i></span>
-                            <div className="info-box-content">
-                                <span className="info-box-text">Profit/Loss</span>
-                                <span className="info-box-number">$1.00</span>
-                                {/* <div className="progress">
-                                    <div className="progress-bar" style={{"width": "70%"}}></div>
-                                </div>
-                                <span className="progress-description">
-                                    70% Increase in 30 Days
-                                </span> */}
-                            </div>
-                            </div>
-                        </div>
-                        
-                        <div className='col-12'>
-                            <TradingOverview></TradingOverview>
-                        </div>
-                    </div>
+                <div className='card-body table-responsive p-0'>
+                    <TradingOverviewTable tradeCalculator={tradeCalculator}></TradingOverviewTable>   
                 </div>
+                <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
             </div>
         </div>
         <div className='col-lg-3 col-12'>

@@ -1,3 +1,9 @@
+/** 
+ * AppLogger is a logger class that depends on the env variables to log messages.
+ *
+ * CREATED: 20220828 - adzz
+ * UPDATED: 20220829 - adzz
+ */
 class AppLogger{
     constructor(){
         if(process.env.REACT_APP_ENABLE_LOGGING === "Y"){

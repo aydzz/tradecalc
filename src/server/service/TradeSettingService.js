@@ -1,4 +1,6 @@
+import appLogger from "../../assets/js/AppLogger";
 import TradeSettingRepository from "../dao/TradeSettingRepository";
+import { OneToOneRelationshipError } from "../errors/RelationshipError";
 import firebase from "../firebase";
 
 class TradeSettingService{
@@ -9,7 +11,20 @@ class TradeSettingService{
         return this.repository.get(docID);
     }
      async getBy(field, value){
-        return this.repository.getBy(field,value)   
+        if(field === "userID"){
+            return this.repository.getBy(field, value).then(function(results){
+                if(!results){
+                    appLogger.warn("APP: (TradeSettingService): Trading Settings is unset")
+                }else{
+                    if(results.length !== 1){
+                        throw new OneToOneRelationshipError("Multiple Trade Setting was found for the current user.")
+                    }else{
+                        return results;
+                    }
+                }
+            })
+        }
+        return this.repository.getBy(field,value);
     }
     async getAll(){
        return this.repository.getAll();

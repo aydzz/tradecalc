@@ -7,6 +7,7 @@ import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where } fr
 export default class FirestoreRepository{
     /**
      * Data Access Object for document collection 
+     * 
      * @param {Firestore} firestore 
      * @param {String} collection 
      * @param {*} converter 
@@ -40,7 +41,7 @@ export default class FirestoreRepository{
      * Queries document based on a specific field
      * @param {String} field 
      * @param {String} value 
-     * @returns {Promise<Array<T> | undefined>}
+     * @returns {Promise<Array<T> | null>}
      */
      async getBy(field, value){
         const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where(field, "==", value));
@@ -54,7 +55,7 @@ export default class FirestoreRepository{
                 list.push(doc);
             });
         }else{
-            return undefined;
+            return null;
         }
         return list;
     }
