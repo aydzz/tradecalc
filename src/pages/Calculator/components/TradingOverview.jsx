@@ -138,7 +138,6 @@ export default function TradingOverview(props) {
 export function TradingOverviewTable(props){
     /**@type {TradeCalculator} */
     const tradeCalculator = props.tradeCalculator;
-    throw new Error();
     return(
         <table class="table table-hover table-sm">
             <thead>

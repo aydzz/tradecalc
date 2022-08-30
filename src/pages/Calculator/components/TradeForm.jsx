@@ -14,7 +14,6 @@ export default function TradeForm(props) {
   const tradeSettings = props.tradeSettings;
 
   useEffect(function(e){
-    throw new Error("Hello there.")
     setTradeCalculator(new TradeCalculator(tradeSettings, trade));
   },[trade])
   
