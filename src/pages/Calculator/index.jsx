@@ -13,6 +13,7 @@ import appLogger from '../../assets/js/AppLogger'
 import TradeSetting, { NullTradeSetting } from '../../server/models/TradeSetting'
 import Trade, { NullTrade } from '../../server/models/Trade'
 import TradeCalculator, { NullTradeCalculator } from '../../assets/js/TradeCalculator'
+import OverlayLoader from '../../components/Loaders/OverlayLoader'
 
 export default function CalculatorIndex() {
     /**@type {[Trade, Function]} */
@@ -20,8 +21,9 @@ export default function CalculatorIndex() {
     /**@type {[TradeSetting, Function]} */
     const [tradeSettings, setTradeSettings] = useState(new NullTradeSetting());
     /**@type {[TradeCalculator, Function]} */
-    
     const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
+
+    const [loading, setLoading] = useState(true);
     const {currentUser} = useAuth();
 
     //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
@@ -32,6 +34,7 @@ export default function CalculatorIndex() {
                 if(results && results.length > 0){
                     setTradeSettings(results[0]);
                     setTradeCalculator(new TradeCalculator(results[0],trade));
+                    setLoading(false);
                     
                 }
             })
@@ -137,11 +140,19 @@ export default function CalculatorIndex() {
                     <i className='bi bi-calculator'></i> Trade
                 </div>
                 <div className='card-body'>
-                    <TradeForm 
-                        trade={trade} setTrade={setTrade} 
-                        tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
-                        tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
-                        ></TradeForm>
+                    {loading ? 
+                        (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
+                            <OverlayLoader type="loading-6"></OverlayLoader>
+                        </div>):
+                        (
+                            <TradeForm 
+                            trade={trade} setTrade={setTrade} 
+                            tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
+                            tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
+                            ></TradeForm>
+                        )
+                    }
+                    
                 </div>
             </div>
         </div>
@@ -151,7 +162,13 @@ export default function CalculatorIndex() {
                     <i className='bi bi-person-lines-fill'></i> Overview
                 </div>
                 <div className='card-body table-responsive p-0'>
-                    <TradingOverviewTable tradeCalculator={tradeCalculator}></TradingOverviewTable>   
+                    {loading ?
+                        (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
+                        <OverlayLoader type="loading-6"></OverlayLoader>
+                        </div>): 
+                        (<TradingOverviewTable tradeCalculator={tradeCalculator}></TradingOverviewTable>   )
+                    }
+                    
                 </div>
                 <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
             </div>

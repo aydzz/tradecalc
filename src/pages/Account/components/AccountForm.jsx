@@ -3,6 +3,7 @@ import { useAuth } from '../../../contexts/AuthContext'
 import { UserInfo } from "firebase/auth";
 import userService from "../../../server/service/UserService";
 import User, {NullUser} from '../../../server/models/User';
+import OverlayLoader from '../../../components/Loaders/OverlayLoader';
 
 export default function AccountForm() {
     /**@type {{UserInfo}} */
@@ -10,6 +11,8 @@ export default function AccountForm() {
 
     /**@type {[User, Function]} */
     const [user, setUser] = useState(new NullUser());
+
+    const [loading, setLoading] = useState(true)
 
     useEffect(function(){
         userService.getBy("uid",currentUser.uid).then(function(res){
@@ -20,11 +23,19 @@ export default function AccountForm() {
                     console.error("APP: Multiple instance of uid detected");
                 }else{
                     setUser(res[0]);
+                    setLoading(false);
                 }
             }
         })
     },[])
 
+    if(loading){
+        return(
+            <div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
+                <OverlayLoader type="loading-6"/> 
+            </div>
+        )
+    }
   return (
     <form className="form-horizontal">
         <div className="form-group row">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Callout from '../../components/Callouts';
+import OverlayLoader from '../../components/Loaders/OverlayLoader';
 import {useAuth} from "../../contexts/AuthContext"
 import AccountForm from './components/AccountForm';
 import TradingForm from './components/TradingForm';
@@ -9,6 +10,7 @@ export default function AccountIndex() {
   const {currentUser} = useAuth();
   const [tab, setTab] = useState(2);
   const [settingsTab, setSettingsTab] = useState(0);
+  const [loading, setLoading] = useState(true);
   return (
     <div className='content-wrapper'>
       <div className='container-fluid'>
@@ -71,13 +73,11 @@ export default function AccountIndex() {
                         {/* SETTINGS VERTICAL TAB CONTENTS */}
                         <div className="tab-content" id="vert-tabs-right-tabContent">
                           <div className={"tab-pane fade " + (settingsTab=== 0 ? "active show" : "")} id="vert-tabs-right-account" role="tabpanel" aria-labelledby="vert-tabs-right-account-tab">
-                            <Callout variant="info" title="Notice" text="This feature is currently  under development."></Callout>
-                            <AccountForm></AccountForm>
+                              <Callout variant="info" title="Notice" text="This feature is currently  under development."></Callout>
+                              <AccountForm></AccountForm>
                           </div>
                           <div className={"tab-pane fade " + (settingsTab=== 1 ? "active show" : "")} id="vert-tabs-right-trading" role="tabpanel" aria-labelledby="vert-tabs-right-trading-tab">
-                    
-                            <TradingForm></TradingForm>
-                       
+                              <TradingForm></TradingForm>
                           </div>
                         </div>
                       </div>

@@ -5,6 +5,7 @@ import userService from '../../../server/service/UserService';
 import {Toast} from "../../../assets/theme/utils/swal"
 import { useAuth } from '../../../contexts/AuthContext';
 import User from '../../../server/models/User';
+import OverlayLoader from '../../../components/Loaders/OverlayLoader';
 
 export default function TradingForm(props) {
     /**@type {[TradeSetting, Function]} */
@@ -13,6 +14,7 @@ export default function TradingForm(props) {
     /**@type {[User, Function]} */
     const [user, setUser] = useState();
 
+    const [loading, setLoading] = useState(true);
     const {currentUser} = useAuth();
     /**EFFECT: Fetch User Setting and User Detail */
     useEffect(function(){
@@ -37,6 +39,7 @@ export default function TradingForm(props) {
                                 setting.userID = user.id;
                                 tradeSetting.id = setting.id;
                                 setTradeSetting(setting);
+                                setLoading(false);
                             }
                         }
                     })
@@ -60,6 +63,14 @@ export default function TradingForm(props) {
                 icon: "error"
             })
         })
+    }
+
+    if(loading){
+        return(
+            <div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
+                <OverlayLoader type="loading-6"/> 
+            </div>
+        )
     }
   return (
     <form className="form-horizontal"

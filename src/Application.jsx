@@ -16,6 +16,7 @@ import ThemeContextProvider, { useTheme } from './contexts/ThemeContext';
 import LoginIndex from './pages/Login';
 import AccountIndex from './pages/Account';
 import JournalIndex from './pages/Journal';
+import StagingIndex from './pages/Staging';
 
 function Application() {
   const theme = useTheme();
@@ -51,6 +52,7 @@ function Application() {
                 <Route exact path="/forgot-password" element={<ForgotPassword/>} />
                 <Route exact path = "/app" element={<PrivateRoute screenSize={screenSize} sidebarCollapsed={sidebarCollapsed} sidebarToggleHandler={handleSidebarToggle} cSidebarToggleHandler={cSidebarToggleHandler}></PrivateRoute>}>
                     <Route exact path="./" element={<Navigate to="dashboard" />}></Route>
+                    <Route path="staging" element={<StagingIndex></StagingIndex>} />
                     <Route path="home" element={<HomeIndex></HomeIndex>} />
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />
                     <Route path="calculator" element={<CalculatorIndex></CalculatorIndex>} />
