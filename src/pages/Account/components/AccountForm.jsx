@@ -13,6 +13,7 @@ export default function AccountForm() {
     const [user, setUser] = useState(new NullUser());
 
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState();
 
     useEffect(function(){
         userService.getBy("uid",currentUser.uid).then(function(res){
@@ -23,12 +24,19 @@ export default function AccountForm() {
                     console.error("APP: Multiple instance of uid detected");
                 }else{
                     setUser(res[0]);
-                    setLoading(false);
                 }
+                setLoading(false);
             }
-        })
+        }).catch(function(error){
+            setError(error);
+        });
     },[])
 
+    useEffect(function(){
+        if(error){
+            throw new Error(error);
+        }
+    },[error])
     if(loading){
         return(
             <div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>

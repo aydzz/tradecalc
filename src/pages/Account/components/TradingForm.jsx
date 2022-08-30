@@ -39,9 +39,10 @@ export default function TradingForm(props) {
                                 setting.userID = user.id;
                                 tradeSetting.id = setting.id;
                                 setTradeSetting(setting);
-                                setLoading(false);
                             }
                         }
+                        
+                        setLoading(false);
                     })
                 }
             }

@@ -9,11 +9,12 @@ import AdvancedRealTimeChart from '../../components/Widget/TradingView/AdvancedR
 import tradeSettingService from "../../server/service/TradeSettingService";
 import userService from "../../server/service/UserService"
 import {useAuth} from "../../contexts/AuthContext";
-import appLogger from '../../assets/js/AppLogger'
 import TradeSetting, { NullTradeSetting } from '../../server/models/TradeSetting'
 import Trade, { NullTrade } from '../../server/models/Trade'
 import TradeCalculator, { NullTradeCalculator } from '../../assets/js/TradeCalculator'
 import OverlayLoader from '../../components/Loaders/OverlayLoader'
+import CardErrorBoundary from '../../components/ErrorBoundaries/CardErrorBoundary'
+import SettingsUnset from './components/SettingsUnset'
 
 export default function CalculatorIndex() {
     /**@type {[Trade, Function]} */
@@ -24,22 +25,36 @@ export default function CalculatorIndex() {
     const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
 
     const [loading, setLoading] = useState(true);
+    const [settingsUnset, setSettingsUnset] = useState(true);
+    const [error, setError] = useState();
     const {currentUser} = useAuth();
 
     //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
-        userService.getBy("uid", currentUser.uid).then(function(results){
-            const user = results !== null ? results[0] : null;
-            tradeSettingService.getBy("userID", user.id).then(function(results){
-                if(results && results.length > 0){
-                    setTradeSettings(results[0]);
-                    setTradeCalculator(new TradeCalculator(results[0],trade));
-                    setLoading(false);
-                    
-                }
-            })
+    userService.getBy("uid", currentUser.uid).then(function(results){
+        const user = results !== null ? results[0] : null;
+        tradeSettingService.getBy("userID", user.id).then(function(results){
+            if(results && results.length > 0){
+                setTradeSettings(results[0]);
+                setTradeCalculator(new TradeCalculator(results[0],trade));
+                setSettingsUnset(false);
+            }else{
+                setSettingsUnset(true);
+            }
+            setLoading(false);//last request done
         })
+    }).catch(function(error){
+        setError(error);
+    });
     },[])
+
+    //EFFECT: throws component level ( this ) error to trigger ErrorBoundary fallback UI.
+    useEffect(function(){
+        if(error){
+            throw error;
+        }
+    },[error])
+    console.log(settingsUnset)
   return (
     <div className='content-wrapper'>
       <div className='container-fluid'>
@@ -63,7 +78,9 @@ export default function CalculatorIndex() {
             <div className='card'>
                 <div className='card-header border-0'><i className='bi bi-bar-chart-steps'></i> Main Chart</div>
                 <div className='card-body m-0 p-0'>
-                    <AdvancedRealTimeChart></AdvancedRealTimeChart>
+                    <CardErrorBoundary>
+                        <AdvancedRealTimeChart></AdvancedRealTimeChart>
+                    </CardErrorBoundary>
                 </div>
             </div>
             
@@ -140,16 +157,18 @@ export default function CalculatorIndex() {
                     <i className='bi bi-calculator'></i> Trade
                 </div>
                 <div className='card-body'>
-                    {loading ? 
+                    {loading ?
                         (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
                             <OverlayLoader type="loading-6"></OverlayLoader>
                         </div>):
                         (
-                            <TradeForm 
-                            trade={trade} setTrade={setTrade} 
-                            tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
-                            tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
-                            ></TradeForm>
+                            <CardErrorBoundary>
+                                <TradeForm 
+                                trade={trade} setTrade={setTrade} 
+                                tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
+                                tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
+                                ></TradeForm>
+                            </CardErrorBoundary>
                         )
                     }
                     
@@ -166,7 +185,15 @@ export default function CalculatorIndex() {
                         (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
                         <OverlayLoader type="loading-6"></OverlayLoader>
                         </div>): 
-                        (<TradingOverviewTable tradeCalculator={tradeCalculator}></TradingOverviewTable>   )
+                        ( 
+                            settingsUnset ?
+                            <SettingsUnset/> :
+                            (
+                            <CardErrorBoundary>
+                                <TradingOverviewTable tradeCalculator={tradeCalculator}></TradingOverviewTable>   
+                            </CardErrorBoundary>    
+                            )
+                        )
                     }
                     
                 </div>

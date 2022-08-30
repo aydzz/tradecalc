@@ -1,5 +1,3 @@
-import {Toast} from "../../assets/theme/utils/swal";
-
 export default function Error500() {
     return (
         <div className="content-wrapper m-0" style={{ height: "100vh" }}>
@@ -13,7 +11,7 @@ export default function Error500() {
                   <div className="col-sm-6">
                     <ol className="breadcrumb float-sm-right">
                       <li className="breadcrumb-item">
-                        <a href="#">Home</a>
+                        <a href="/app">Home</a>
                       </li>
                       <li className="breadcrumb-item active">500 Error Page</li>
                     </ol>
@@ -32,16 +30,16 @@ export default function Error500() {
                   </h3>
   
                   <p>
-                    We will work on fixing that right away. Meanwhile, you may <a href="../../index.html">return to dashboard</a> or try using the search form.
+                    We will work on fixing that right away. Meanwhile, you may <a href="/app">return to dashboard</a> or try using the search form.
                   </p>
   
                   <form className="search-form">
                     <div className="input-group">
-                      <input type="text" name="search" className="form-control" placeholder="Search" />
+                      <input type="text" name="search" className="form-control " placeholder="Search" disabled/>
   
                       <div className="input-group-append">
-                        <button type="submit" name="submit" className="btn btn-danger">
-                          <i className="fas fa-search"></i>
+                        <button type="submit" name="submit" className="btn btn-danger" disabled>
+                          <i className="bi bi-search"></i>
                         </button>
                       </div>
                     </div>

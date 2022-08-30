@@ -17,6 +17,7 @@ import LoginIndex from './pages/Login';
 import AccountIndex from './pages/Account';
 import JournalIndex from './pages/Journal';
 import StagingIndex from './pages/Staging';
+import PageErrorBoundary from "./components/ErrorBoundaries/PageErrorBoundary";
 
 function Application() {
   const theme = useTheme();
@@ -55,7 +56,12 @@ function Application() {
                     <Route path="staging" element={<StagingIndex></StagingIndex>} />
                     <Route path="home" element={<HomeIndex></HomeIndex>} />
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />
-                    <Route path="calculator" element={<CalculatorIndex></CalculatorIndex>} />
+                    <Route path="calculator" 
+                      element={
+                      <PageErrorBoundary>
+                        <CalculatorIndex></CalculatorIndex>
+                      </PageErrorBoundary>
+                    } />
                     <Route path="account" element={<AccountIndex></AccountIndex>} />
                     <Route path="journal" element={<JournalIndex></JournalIndex>} />
                     <Route path="tradelogs" element={<TradeLogsIndex></TradeLogsIndex>} />
