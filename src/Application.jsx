@@ -62,7 +62,11 @@ function Application() {
                         <CalculatorIndex></CalculatorIndex>
                       </PageErrorBoundary>
                     } />
-                    <Route path="account" element={<AccountIndex></AccountIndex>} />
+                    <Route path="account" element={
+                      <PageErrorBoundary>
+                        <AccountIndex></AccountIndex>
+                      </PageErrorBoundary>
+                    } />
                     <Route path="journal" element={<JournalIndex></JournalIndex>} />
                     <Route path="tradelogs" element={<TradeLogsIndex></TradeLogsIndex>} />
                   </Route>

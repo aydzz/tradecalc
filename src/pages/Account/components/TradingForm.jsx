@@ -182,13 +182,13 @@ export default function TradingForm(props) {
             <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Risk Deviation %</label>
             <div className="col-sm-10">
             <input type="number" className="form-control" placeholder="Enter Risk Deviation %" 
-                value={tradeSetting.riskDeviationPercent}
+                value={tradeSetting.riskDeviationPercent*100}
                 onChange={(e)=>{
                     const newTradeSetting = Object.assign(new TradeSetting(), tradeSetting);
-                    newTradeSetting.riskDeviationPercent = Number(e.target.value);
+                    newTradeSetting.riskDeviationPercent = Number(e.target.value)/100;
                     setTradeSetting(newTradeSetting);
                 }} 
-            />
+                min={0} max={100}/>
             </div>
         </div>
         <div className="form-group row">
@@ -225,26 +225,26 @@ export default function TradingForm(props) {
             <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Portfolio Risk Trading Threshold</label>
             <div className="col-sm-10">
             <input type="number" className="form-control" placeholder="Enter Portfolio Risk Trading Threshold" 
-                value={tradeSetting.portRiskTradingThreshold} 
+                value={tradeSetting.portRiskTradingThreshold*100} 
                 onChange={(e)=>{
                     const newTradeSetting = Object.assign(new TradeSetting(), tradeSetting);
-                    newTradeSetting.portRiskTradingThreshold = Number(e.target.value);
+                    newTradeSetting.portRiskTradingThreshold = Number(e.target.value)/100;
                     setTradeSetting(newTradeSetting);
                 }} 
-            />
+                min={0} max={100}/>
             </div>
         </div>
         <div className="form-group row">
             <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Capital Risk Trading Threshold</label>
             <div className="col-sm-10">
             <input type="number" className="form-control" placeholder="Enter Capital Risk Trading Threshold" 
-                value={tradeSetting.capRiskTradingThreshold} 
+                value={tradeSetting.capRiskTradingThreshold*100} 
                 onChange={(e)=>{
                     const newTradeSetting = Object.assign(new TradeSetting(), tradeSetting);
-                    newTradeSetting.capRiskTradingThreshold = Number(e.target.value);
+                    newTradeSetting.capRiskTradingThreshold = Number(e.target.value)/100;
                     setTradeSetting(newTradeSetting);
                 }} 
-            />
+                min={0} max={100}/>
             </div>
         </div>
         <div className="form-group row">
@@ -256,7 +256,7 @@ export default function TradingForm(props) {
                     <i className="bi bi-calculator"></i>
                 </span>
                 </div>
-                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.capPortRiskPercent).toFixed(2)} disabled/>
+                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.capPortRiskPercent).toFixed(2)*100} disabled/>
             </div>
           </div>
         </div>
