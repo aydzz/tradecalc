@@ -4,18 +4,24 @@ import Trade from "../../../server/models/Trade";
 import tradeService from "../../../server/service/TradeLogService";
 import {Toast} from "../../../assets/theme/utils/swal"
 import TradeCalculator from "../../../assets/js/TradeCalculator";
+import {swal} from "../../../assets/theme/utils/swal";
 
 export default function TradeForm(props) {
-  console.log(props);
   /**@type {Trade} */
   const trade = props.trade;
   const setTrade = props.setTrade;
   const setTradeCalculator = props.setTradeCalculator;
+  const tradeCalculator = props.tradeCalculator;
   const tradeSettings = props.tradeSettings;
 
   useEffect(function(e){
     setTradeCalculator(new TradeCalculator(tradeSettings, trade));
   },[trade])
+
+  // useEffect(function(e){
+  //   console.log(trade);
+  //   setTradeCalculator(new TradeCalculator(tradeSettings, trade));
+  // },[tradeCalculator]);
   
   const clearForm = function(){
     //do something here...
@@ -25,7 +31,24 @@ export default function TradeForm(props) {
     
     //do submission effect to our object here..
     const newTrade = trade;
+
+    /**
+     * START
+     * Workaround on issue discovered when using fake filler 
+     *  - ( previous state is being used instaed of the actual inputs eg: submitted will be values of previous fill.)
+     */
+    newTrade.stoplossPrice = tradeCalculator.stoplossPrice;
+    newTrade.takeProfitPrice = tradeCalculator.takeProfitPrice;
+    /**
+     * END
+     */
+
+    
+    // console.log(trade);
+    console.log(tradeCalculator)
+    console.log(newTrade);
     tradeService.save(newTrade).then(function(res){
+      
       Toast.fire({
         title: "Trade has been logged!",
         icon: "success"
@@ -107,7 +130,7 @@ export default function TradeForm(props) {
               value={trade.asset} 
               onChange={(e)=>{
                 const newTrade = Object.assign(new Trade(), trade);
-                newTrade.asset = Number(e.target.value);
+                newTrade.asset = e.target.value;
                 setTrade(newTrade);
               }}
             >
@@ -197,7 +220,16 @@ export default function TradeForm(props) {
               </span>
             </div>
             <input type="number" className="form-control" placeholder="Sample here..." 
-              value={trade.cashQty} disabled />
+              value={trade.cashQty} 
+              onFocus={()=>{
+                Toast.fire({
+                  title: "Warning",
+                  icon: "warning",
+                  text: "Formula Fields cant be changed."
+                })
+              }}
+              />
+              
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -231,7 +263,21 @@ export default function TradeForm(props) {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={trade.stoplossPrice} disabled />
+            <input type="number" className="form-control" placeholder="Sample here..." 
+            value={Number(tradeCalculator.stoplossPrice).toFixed(5)} 
+            onChange={(e)=>{
+              const newTrade = Object.assign(new Trade(), trade);
+              newTrade.stoplossPrice = Number(tradeCalculator.stoplossPrice).toFixed(5);
+              setTrade(newTrade);
+            }}
+            onFocus={()=>{
+              Toast.fire({
+                title: "Warning",
+                icon: "warning",
+                text: "Formula Fields cant be changed."
+              })
+            }}
+             />
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -262,7 +308,21 @@ export default function TradeForm(props) {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." value={trade.takeProfitPrice} disabled/>
+            <input type="number" className="form-control" placeholder="Sample here..." 
+              value={Number(tradeCalculator.takeProfitPrice).toFixed(5)} 
+              onChange={(e)=>{
+                const newTrade = Object.assign(new Trade(), trade);
+                newTrade.takeProfitPrice = Number(tradeCalculator.takeProfitPrice).toFixed(5);
+                setTrade(newTrade);
+              }}
+              onFocus={()=>{
+                Toast.fire({
+                  title: "Warning",
+                  icon: "warning",
+                  text: "Formula Fields cant be changed."
+                })
+              }}
+              />
           </div>
         </div>
         <div className="col-12">
@@ -282,6 +342,8 @@ export default function TradeForm(props) {
  *  - Take note of our issue regarding the Object.bind() since we are using getters and setters here.
  * TODO:
  *  - clearFormFunction
- *  - impelement null instead of "" to fields that are not used in a fiel ( react throws a warning so i opted to "")
+ *  - impelement null instead of "" to fields that are not used in a fiel ( react throws a warning so i opted to "") - DONE 20220931 - adzz
  *  - add api call for dropdowns
+ *  - Trade Object values are from the Previous Inputs ( when using FakeFiller, also applicalbe in manual inputting )
+ *    - Possible workaround can be changing the Trade State in the submission event
  */

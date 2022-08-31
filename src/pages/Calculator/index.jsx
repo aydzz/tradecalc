@@ -54,7 +54,6 @@ export default function CalculatorIndex() {
             throw error;
         }
     },[error])
-    console.log(settingsUnset)
   return (
     <div className='content-wrapper'>
       <div className='container-fluid'>

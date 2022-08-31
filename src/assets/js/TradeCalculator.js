@@ -52,16 +52,17 @@ export default class TradeCalculator{
         }else{
             value = this.trade.allowableCapitalLoss;
         }
+        return value;
     }
     get takeProfitPrice(){
         let price = 0
-        if(this.trade.stoplossType==="riskreward"){
+        if(this.trade.takeProfitType==="riskreward"){
             if(this.trade.direction === "long"){
                 price = this.trade.entryPrice + ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
             }else if(this.trade.direction === "short"){
                 price = this.trade.entryPrice - ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
             }
-        }else if(this.trade.stoplossType==="target"){
+        }else if(this.trade.takeProfitType==="target"){
             //not implemented yet for this can be done manually.
         }else{
             //handle something here...
@@ -70,7 +71,9 @@ export default class TradeCalculator{
     }
     //projected cash loss when Stoploss is hit ( not including the fees )
     get projectedLoss(){
-        return Math.abs(this.trade.entryPrice * Math.floor(this.trade.calculatedQuantity) - this.trade.stoplossPrice * Math.floor(this.trade.calculatedQuantity));
+        let value = Math.abs(this.trade.entryPrice * Math.floor(this.trade.calculatedQuantity) - this.trade.stoplossPrice * Math.floor(this.trade.calculatedQuantity));
+        return value;
+        
     }
     //current summation of trade values. (PnL)
     get profitLoss(){
@@ -86,8 +89,10 @@ export default class TradeCalculator{
     }
     get capitalCommited(){
         let value = 0;
+
+        
         if(this.trade.orderType === "quantity"){
-            value = this.trade.entryPrice * this.trade.quantity / this.trade.multiplier 
+            value = this.trade.entryPrice * this.trade.quantity / this.trade.leverage 
         }else if(this.trade.orderType === "cash"){
 
         }else{
@@ -102,7 +107,8 @@ export default class TradeCalculator{
 
     //percentage at which the maximum risk is being complied to at the current trade values.
     get orderRiskCompliance(){
-        return this.projectedLoss / (this.tradeSetting.capPortRiskPercent * this.tradeSetting.tradePortCapital);
+
+        return this.projectedLoss / (this.tradeSetting.capPortRiskPercent * this.tradeSetting.tradePortCapital)
     }
     //This it the value($) you want to risk based on the RiskTradingThreshold ( % ) for your capital.
     get portfolioRiskTolerance(){

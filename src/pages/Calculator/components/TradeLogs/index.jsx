@@ -18,7 +18,7 @@ export default function TradeLogs() {
     /**@param {Trade} log */
     function(log,i){
       return (
-      <tr key={i}>
+      <tr key={i} className="text-sm">
           <td>{i}</td>
           <td>{log.asset}</td>
           <td>
@@ -31,13 +31,13 @@ export default function TradeLogs() {
           <td ><span className="badge bg-warning">Open</span></td>
           <td>
           <div class="btn-group">
-            <button type="button" class="btn btn-default btn-flat">
+            <button type="button" class="btn btn-xs btn-default btn-flat">
             <i class="bi bi-building"></i>
             </button>
-            <button type="button" class="btn btn-default btn-flat">
+            <button type="button" class="btn btn-xs btn-default btn-flat">
               <i class="bi bi-person"></i>
             </button>
-            <button type="button" class="btn btn-default btn-flat">
+            <button type="button" class="btn btn-xs btn-default btn-flat">
             <i class="bi bi-person"></i>
             </button>
           </div>

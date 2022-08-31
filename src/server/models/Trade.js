@@ -79,7 +79,7 @@ export default class Trade {
         this._notionalValue = val;
     }
     get notionalValue() {
-        return this.entryPrice * this.multiplier;
+        return this.entryPrice * this.leverage;
     }
 
     set stoplossPrice(val) {
@@ -116,11 +116,13 @@ export default class Trade {
      * ONLY GETTERS
      */
     get calculatedQuantity() {
-        let quantity = 0;
+        let quantity = 0
         if (this.orderType === "quantity") {
             quantity = this.quantity;
         } else {
-            quantity = (this.cash * this.leverage) / this.entryPrice
+            if(this.entryPrice > 0){
+                quantity = (this.cash * this.leverage) / this.entryPrice
+            }
         }
         return quantity;
     }
