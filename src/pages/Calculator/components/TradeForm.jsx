@@ -15,7 +15,15 @@ export default function TradeForm(props) {
   const tradeSettings = props.tradeSettings;
 
   useEffect(function(e){
-    setTradeCalculator(new TradeCalculator(tradeSettings, trade));
+    const newTradeCalculator = new TradeCalculator(tradeSettings, trade);
+    
+    //tradeCalculator ( calculated ) value assignments on state change.
+    trade.stoplossPrice = newTradeCalculator.stoplossPrice;
+    trade.takeProfitPrice = newTradeCalculator.takeProfitPrice;
+    trade.riskValue = newTradeCalculator.riskValue;
+
+    setTradeCalculator(newTradeCalculator);
+    console.log(trade);
   },[trade])
 
   // useEffect(function(e){
@@ -28,27 +36,10 @@ export default function TradeForm(props) {
   }
   const formSubmitHandler = function(e){
     e.preventDefault();
-    
     //do submission effect to our object here..
-    const newTrade = trade;
+    const newTrade = trade
 
-    /**
-     * START
-     * Workaround on issue discovered when using fake filler 
-     *  - ( previous state is being used instaed of the actual inputs eg: submitted will be values of previous fill.)
-     */
-    newTrade.stoplossPrice = tradeCalculator.stoplossPrice;
-    newTrade.takeProfitPrice = tradeCalculator.takeProfitPrice;
-    /**
-     * END
-     */
-
-    
-    // console.log(trade);
-    console.log(tradeCalculator)
-    console.log(newTrade);
     tradeService.save(newTrade).then(function(res){
-      
       Toast.fire({
         title: "Trade has been logged!",
         icon: "success"
@@ -264,20 +255,8 @@ export default function TradeForm(props) {
               </span>
             </div>
             <input type="number" className="form-control" placeholder="Sample here..." 
-            value={Number(tradeCalculator.stoplossPrice).toFixed(5)} 
-            onChange={(e)=>{
-              const newTrade = Object.assign(new Trade(), trade);
-              newTrade.stoplossPrice = Number(tradeCalculator.stoplossPrice).toFixed(5);
-              setTrade(newTrade);
-            }}
-            onFocus={()=>{
-              Toast.fire({
-                title: "Warning",
-                icon: "warning",
-                text: "Formula Fields cant be changed."
-              })
-            }}
-             />
+            value={Number(trade.stoplossPrice).toFixed(5)} 
+             readOnly={true}/>
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
@@ -310,19 +289,7 @@ export default function TradeForm(props) {
             </div>
             <input type="number" className="form-control" placeholder="Sample here..." 
               value={Number(tradeCalculator.takeProfitPrice).toFixed(5)} 
-              onChange={(e)=>{
-                const newTrade = Object.assign(new Trade(), trade);
-                newTrade.takeProfitPrice = Number(tradeCalculator.takeProfitPrice).toFixed(5);
-                setTrade(newTrade);
-              }}
-              onFocus={()=>{
-                Toast.fire({
-                  title: "Warning",
-                  icon: "warning",
-                  text: "Formula Fields cant be changed."
-                })
-              }}
-              />
+              readOnly={true}/>
           </div>
         </div>
         <div className="col-12">
@@ -340,10 +307,13 @@ export default function TradeForm(props) {
  * NOTES:
  *  20220829: replaced controlled fields's datasource as a new Trade Object Instance instead ( former individual field ). 
  *  - Take note of our issue regarding the Object.bind() since we are using getters and setters here.
+ * 20220901: FIXED: updates to calculated values were handled in the instantiation of the newTradeCalculator instaed in the onChange of the field.
+ * 
  * TODO:
  *  - clearFormFunction
- *  - impelement null instead of "" to fields that are not used in a fiel ( react throws a warning so i opted to "") - DONE 20220931 - adzz
+ *  - impelement null instead of "" to fields that are not used in a fiel ( react throws a warning so i opted to "") - DONE 20220831 - adzz
  *  - add api call for dropdowns
- *  - Trade Object values are from the Previous Inputs ( when using FakeFiller, also applicalbe in manual inputting )
+ *  - Trade Object values are from the Previous Inputs ( when using FakeFiller, also applicalbe in manual inputting ) - FIXED 20220901 - adzz
  *    - Possible workaround can be changing the Trade State in the submission event
+ * 
  */
