@@ -46,8 +46,9 @@ function Application() {
           <AuthProvider>
             <BrowserRouter>
               <Routes>
-                <Route exact path="/" element={<Navigate to={"landing"} />} />
+                <Route exact path="/" element={<LandingIndex/>} />
                 <Route exact path="/landing" element={<LandingIndex/>} />
+                <Route exact path="/home" element={<LandingIndex/>} />
                 <Route exact path="/register" element={<RegisterIndex/>} />
                 <Route exact path="/login" element={<LoginIndex/>} />
                 <Route exact path="/forgot-password" element={<ForgotPassword/>} />
