@@ -1,5 +1,5 @@
 import { Firestore } from "firebase/firestore";
-import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where } from "firebase/firestore"
+import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where, deleteDoc } from "firebase/firestore"
 
 /**
  * @template T
@@ -112,5 +112,15 @@ export default class FirestoreRepository{
         const ref = doc(collection(this._firestore, this.collection),docID).withConverter(this._converter);
         const result = await setDoc(ref, docData);
         return result;
+    }
+
+    /**
+     * 
+     * @param {String} docID 
+     */
+    async delete(docID){
+        const docRef = doc(this._firestore, this.collection, docID).withConverter(this._converter);
+        const docSnap = await deleteDoc(docRef);
+        console.log(docSnap);
     }
 }

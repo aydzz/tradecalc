@@ -19,10 +19,13 @@ export default class TradeCalculator{
     get stoplossPrice(){
         let price = 0;
         if(this.trade.stoplossType==="risk"){
-            if(this.trade.direction === "long"){
-                price = this.trade.entryPrice - ((this.tradeSetting.tradePortCapital * this.tradeSetting.capPortRiskPercent)/this.trade.calculatedQuantity)
-            }else if(this.trade.direction === "short"){
-                price = this.trade.entryPrice + ((this.tradeSetting.tradePortCapital * this.tradeSetting.capPortRiskPercent)/this.trade.calculatedQuantity)
+            //check if not zero
+            if(this.trade.calculatedQuantity !== 0){
+                if(this.trade.direction === "long"){
+                    price = this.trade.entryPrice - ((this.tradeSetting.tradePortCapital * this.tradeSetting.capPortRiskPercent)/this.trade.calculatedQuantity)
+                }else if(this.trade.direction === "short"){
+                    price = this.trade.entryPrice + ((this.tradeSetting.tradePortCapital * this.tradeSetting.capPortRiskPercent)/this.trade.calculatedQuantity)
+                }
             }
         }else if(this.trade.stoplossType === "spread"){
             if(this.trade.direction === "long"){
@@ -31,12 +34,14 @@ export default class TradeCalculator{
                 price = this.trade.entryPrice + (this.tradeSetting.range * this.tradeSetting.rangeMultiplier)
             }
         }else if(this.trade.stoplossType === "loss"){
-            if(this.trade.direction === "long"){
-                price = this.trade.entryPrice - (this.trade.allowableCapitalLoss/Math.floor(this.trade.calculatedQuantity));
-            }else if(this.trade.direction === "short"){
-                price = this.trade.entryPrice + (this.trade.allowableCapitalLoss/Math.floor(this.trade.calculatedQuantity));
+            //check if not zero
+            if(this.trade.calculatedQuantity !== 0){
+                if(this.trade.direction === "long"){
+                    price = this.trade.entryPrice - (this.trade.allowableCapitalLoss/Math.floor(this.trade.calculatedQuantity));
+                }else if(this.trade.direction === "short"){
+                    price = this.trade.entryPrice + (this.trade.allowableCapitalLoss/Math.floor(this.trade.calculatedQuantity));
+                }
             }
-        
         }else if(this.trade.stoplossType === "target"){
             //not implemented yet for this can be done manually.
         }else{
@@ -57,10 +62,12 @@ export default class TradeCalculator{
     get takeProfitPrice(){
         let price = 0
         if(this.trade.takeProfitType==="riskreward"){
-            if(this.trade.direction === "long"){
-                price = this.trade.entryPrice + ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
-            }else if(this.trade.direction === "short"){
-                price = this.trade.entryPrice - ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
+            if(this.trade.calculatedQuantity !== 0){
+                if(this.trade.direction === "long"){
+                    price = this.trade.entryPrice + ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
+                }else if(this.trade.direction === "short"){
+                    price = this.trade.entryPrice - ((this.riskValue * this.tradeSetting.riskRewardMultiplier)/this.trade.calculatedQuantity)
+                }
             }
         }else if(this.trade.takeProfitType==="target"){
             //not implemented yet for this can be done manually.
@@ -124,6 +131,7 @@ export default class TradeCalculator{
     get capitalConsumptionPercent(){
         return this.riskValue / this.capitalRiskTolerance
     }
+    
 }
 
 export class NullTradeCalculator extends TradeCalculator{

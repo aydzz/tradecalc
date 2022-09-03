@@ -5,7 +5,7 @@ import userService from "../../../server/service/UserService";
 import User, {NullUser} from '../../../server/models/User';
 import OverlayLoader from '../../../components/Loaders/OverlayLoader';
 
-export default function AccountForm() {
+export default function AccountForm(props) {
     /**@type {{UserInfo}} */
     const {currentUser} = useAuth();
 
@@ -29,6 +29,7 @@ export default function AccountForm() {
             }
         }).catch(function(error){
             setError(error);
+            setLoading(false);
         });
     },[])
 

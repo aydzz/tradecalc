@@ -6,6 +6,7 @@ import {Toast} from "../../../assets/theme/utils/swal"
 import { useAuth } from '../../../contexts/AuthContext';
 import User from '../../../server/models/User';
 import OverlayLoader from '../../../components/Loaders/OverlayLoader';
+import appLogger from '../../../assets/js/AppLogger';
 
 export default function TradingForm(props) {
     /**@type {[TradeSetting, Function]} */
@@ -16,39 +17,41 @@ export default function TradingForm(props) {
 
     const [loading, setLoading] = useState(true);
     const {currentUser} = useAuth();
+    const [error, setError] = useState();
     /**EFFECT: Fetch User Setting and User Detail */
     useEffect(function(){
         userService.getBy("uid",currentUser.uid).then(function(res){
-            if(!res){
-                console.error("APP: User was not found.");
-            }else{
-                if(res.length > 1){
-                    console.error("APP: Multiple user was found.");   
+            const user = res[0];
+            setUser(user);
+            tradeSettingService.getBy("userID",user.id).then(function(res){
+                if(!res){
+                    appLogger.warn("APP: No settings for the current user yet");
                 }else{
-                    //all good
-                    const user = res[0];
-                    setUser(user);
-                    tradeSettingService.getBy("userID",user.id).then(function(res){
-                        if(!res){
-                            console.warn("APP: No settings for the current user yet");
-                        }else{
-                            if(res.length > 1){
-                                console.warn("APP Multiple settings found for current user.");
-                            }else{
-                                const setting = res[0];
-                                setting.userID = user.id;
-                                tradeSetting.id = setting.id;
-                                setTradeSetting(setting);
-                            }
-                        }
-                        
-                        setLoading(false);
-                    })
+                    if(res.length > 1){
+                        appLogger.warn("APP Multiple settings found for current user.");
+                    }else{
+                        const setting = res[0];
+                        setting.userID = user.id;
+                        tradeSetting.id = setting.id;
+                        setTradeSetting(setting);
+                    }
                 }
-            }
+                setLoading(false);
+            }).catch((error)=>{
+                setError(error);
+
+            })   
+        }).catch((error)=>{
+            setError(error);
+            setLoading(false);
+
         })
-        
-    },[])    
+    },[]);    
+    useEffect(function(){
+        if(error){
+            throw error;
+        }
+    },[error])
     const submitHandler = function(e){
         e.preventDefault();
         tradeSetting.userID = user.id;

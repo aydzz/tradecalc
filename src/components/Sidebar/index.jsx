@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import {PillGroup} from './components/PillGroup';
 import {useAuth} from "../../contexts/AuthContext"
 import { useTheme } from '../../contexts/ThemeContext';
+import ProtectedComponent from '../Special/ProtectedComponent';
 
 export default function Sidebar(props){
     const theme = useTheme();
@@ -79,6 +80,14 @@ export default function Sidebar(props){
                         <p>Others</p>
                     </NavLink>
                 </li>
+                <ProtectedComponent>
+                    <li className="nav-item">
+                        <NavLink to="/app/staging" className="nav-link">
+                            <i className="nav-icon bi bi-wrench-adjustable-circle"></i>
+                            <p>Staging</p>
+                        </NavLink>
+                    </li>
+                </ProtectedComponent>
                 </ul>
             </nav>
             </div>

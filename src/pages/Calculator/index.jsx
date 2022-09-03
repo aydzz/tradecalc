@@ -15,6 +15,7 @@ import TradeCalculator, { NullTradeCalculator } from '../../assets/js/TradeCalcu
 import OverlayLoader from '../../components/Loaders/OverlayLoader'
 import CardErrorBoundary from '../../components/ErrorBoundaries/CardErrorBoundary'
 import SettingsUnset from './components/SettingsUnset'
+import { useTradeSettings } from '../../contexts/TradeSettingsContext'
 
 export default function CalculatorIndex() {
     /**@type {[Trade, Function]} */
@@ -23,30 +24,20 @@ export default function CalculatorIndex() {
     const [tradeSettings, setTradeSettings] = useState(new NullTradeSetting());
     /**@type {[TradeCalculator, Function]} */
     const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
+    
+    const tradeSettingsCtx = useTradeSettings();
 
-    const [loading, setLoading] = useState(true);
-    const [settingsUnset, setSettingsUnset] = useState(true);
-    const [error, setError] = useState();
+    const [loading, setLoading] = useState(tradeSettingsCtx.loading);
+    const [settingsUnset, setSettingsUnset] = useState(tradeSettingsCtx.settingsUnset);
+    const [error, setError] = useState(tradeSettingsCtx.error);
     const {currentUser} = useAuth();
 
     //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
-    userService.getBy("uid", currentUser.uid).then(function(results){
-        const user = results !== null ? results[0] : null;
-        tradeSettingService.getBy("userID", user.id).then(function(results){
-            if(results && results.length > 0){
-                setTradeSettings(results[0]);
-                setTradeCalculator(new TradeCalculator(results[0],trade));
-                setSettingsUnset(false);
-            }else{
-                setSettingsUnset(true);
-            }
-            setLoading(false);//last request done
-        })
-    }).catch(function(error){
-        setError(error);
-    });
-    },[])
+        setLoading(tradeSettingsCtx.loading);
+        setError(tradeSettingsCtx.error)
+        setSettingsUnset(tradeSettingsCtx.settingsUnset);
+    },[tradeSettingsCtx.error])
 
     //EFFECT: throws component level ( this ) error to trigger ErrorBoundary fallback UI.
     useEffect(function(){
@@ -54,7 +45,7 @@ export default function CalculatorIndex() {
             throw error;
         }
     },[error])
-  return (
+  return(
     <div className='content-wrapper'>
       <div className='container-fluid'>
       <section className="content-header">
@@ -212,7 +203,7 @@ export default function CalculatorIndex() {
                 <div className='card-header'>
                     <i className='bi bi-clipboard2-data'></i> Logs
                 </div>
-                <div className='card-body p-0 m-0 mb-2'>
+                <div className='card-body p-0 m-0 mb-2 overflow-auto'>
                     <TradeLogs></TradeLogs>
                 </div>
                 <div className='card-footer'>

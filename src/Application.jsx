@@ -18,6 +18,9 @@ import AccountIndex from './pages/Account';
 import JournalIndex from './pages/Journal';
 import StagingIndex from './pages/Staging';
 import PageErrorBoundary from "./components/ErrorBoundaries/PageErrorBoundary";
+import ProtectedComponent from "./components/Special/ProtectedComponent"
+import {Error401Private} from './pages/Error/401';
+import TradeSettingsContextProvider from './contexts/TradeSettingsContext';
 
 function Application() {
   const theme = useTheme();
@@ -54,13 +57,15 @@ function Application() {
                 <Route exact path="/forgot-password" element={<ForgotPassword/>} />
                 <Route exact path = "/app" element={<PrivateRoute screenSize={screenSize} sidebarCollapsed={sidebarCollapsed} sidebarToggleHandler={handleSidebarToggle} cSidebarToggleHandler={cSidebarToggleHandler}></PrivateRoute>}>
                     <Route exact path="./" element={<Navigate to="dashboard" />}></Route>
-                    <Route path="staging" element={<StagingIndex></StagingIndex>} />
+                    <Route path="staging" element={<ProtectedComponent fallback={<Error401Private/>}><StagingIndex/></ProtectedComponent>} />
                     <Route path="home" element={<HomeIndex></HomeIndex>} />
                     <Route path="dashboard" element={<DashboardIndex></DashboardIndex>} />
                     <Route path="calculator" 
                       element={
                       <PageErrorBoundary>
-                        <CalculatorIndex></CalculatorIndex>
+                        <TradeSettingsContextProvider>
+                          <CalculatorIndex></CalculatorIndex>
+                        </TradeSettingsContextProvider>
                       </PageErrorBoundary>
                     } />
                     <Route path="account" element={

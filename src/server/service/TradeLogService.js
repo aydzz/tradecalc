@@ -20,6 +20,9 @@ class TradeService{
      async saveAll(docList){
         return this.repository.saveAll(docList)
     }
+    async delete(docID){
+        return this.repository.delete(docID);
+    }
 }
 
 

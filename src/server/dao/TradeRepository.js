@@ -98,6 +98,9 @@ export default class TradeRepository{
      async update(docID, docData){
         return await this._superRepository.update(docID, docData);
     }
+    async delete(docID){
+        return await this._superRepository.delete(docID);
+    }
 }
 
 const sample = new TradeRepository();

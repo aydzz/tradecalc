@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Callout from '../../components/Callouts';
-import OverlayLoader from '../../components/Loaders/OverlayLoader';
+import ContentWrapperLoader from "../../components/Loaders/ContentWrapperLoader";
 import {useAuth} from "../../contexts/AuthContext"
 import AccountForm from './components/AccountForm';
 import TradingForm from './components/TradingForm';
@@ -10,8 +10,8 @@ export default function AccountIndex() {
   const {currentUser} = useAuth();
   const [tab, setTab] = useState(2);
   const [settingsTab, setSettingsTab] = useState(0);
-  const [loading, setLoading] = useState(true);
-  return (
+  
+  return(
     <div className='content-wrapper'>
       <div className='container-fluid'>
       <section className="content-header">

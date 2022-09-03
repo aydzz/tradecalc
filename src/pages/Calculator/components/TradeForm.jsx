@@ -23,7 +23,6 @@ export default function TradeForm(props) {
     trade.riskValue = newTradeCalculator.riskValue;
 
     setTradeCalculator(newTradeCalculator);
-    console.log(trade);
   },[trade])
 
   // useEffect(function(e){
@@ -254,9 +253,9 @@ export default function TradeForm(props) {
                 <i className="bi bi-graph-up-arrow"></i>
               </span>
             </div>
-            <input type="number" className="form-control" placeholder="Sample here..." 
-            value={Number(trade.stoplossPrice).toFixed(5)} 
-             readOnly={true}/>
+            <input type="number" className="form-control" placeholder="Sample here..."
+              value={Number(trade.stoplossPrice).toFixed(5)} 
+              readOnly={true}/>
           </div>
         </div>
         <div className="form-group col-lg-6 col-12 mb-3">
