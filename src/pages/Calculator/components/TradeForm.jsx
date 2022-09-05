@@ -37,7 +37,10 @@ export default function TradeForm(props) {
     e.preventDefault();
     //do submission effect to our object here..
     const newTrade = trade
+    newTrade.status = "open" // this seems wrong.
+    newTrade.accountOpen = tradeSettings.portfolioValue //this seems wrong as well.
 
+    console.log(newTrade);
     tradeService.save(newTrade).then(function(res){
       Toast.fire({
         title: "Trade has been logged!",

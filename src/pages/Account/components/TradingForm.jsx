@@ -97,6 +97,22 @@ export default function TradingForm(props) {
             </div>
         </div>
         <div className="form-group row">
+          <label className="col-sm-2 col-form-label">Realized Profit/Loss</label>
+          <div className='col-sm-10'>
+            <div className="input-group input-group">
+                <div className="input-group-prepend">
+                <span className="input-group-text">
+                    <i className="bi bi-calculator"></i>
+                </span>
+                </div>
+                <input type="number" className="form-control" placeholder="Realized Profit/Loss" 
+                    value={Number(tradeSetting.realizedPnL).toFixed(2)} 
+                    readOnly={true}
+                />
+            </div>
+          </div>
+        </div>
+        <div className="form-group row">
             <label htmlFor="inputName" className="col-sm-2 col-form-label">Trade Capital</label>
             <div className="col-sm-10">
             <input type="number" className="form-control" placeholder="Enter current Trade Capital" 
@@ -118,7 +134,7 @@ export default function TradingForm(props) {
                     <i className="bi bi-calculator"></i>
                 </span>
                 </div>
-                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.tradePortCapital).toFixed(2)} disabled/>
+                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.tradePortCapital).toFixed(2)} readOnly/>
             </div>
           </div>
         </div>
@@ -259,7 +275,7 @@ export default function TradingForm(props) {
                     <i className="bi bi-calculator"></i>
                 </span>
                 </div>
-                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.capPortRiskPercent).toFixed(2)*100} disabled/>
+                <input type="number" className="form-control" placeholder="Unable to calculate value." value={Number(tradeSetting.capPortRiskPercent).toFixed(2)*100} readOnly/>
             </div>
           </div>
         </div>

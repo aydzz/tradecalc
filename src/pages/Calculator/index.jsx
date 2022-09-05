@@ -32,6 +32,10 @@ export default function CalculatorIndex() {
     const [error, setError] = useState(tradeSettingsCtx.error);
     const {currentUser} = useAuth();
 
+    useEffect(function(){
+        setTradeSettings(tradeSettingsCtx.tradeSettings);
+        setTradeCalculator(new TradeCalculator(tradeSettingsCtx.tradeSettings, trade));
+    },[tradeSettingsCtx])
     //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
         setLoading(tradeSettingsCtx.loading);
@@ -141,10 +145,10 @@ export default function CalculatorIndex() {
             </div>
             </div>
         </div>
-        <div className="col-lg-5 col-12">
+        <div className="col-lg-4 col-12">
             <div className='card'>
                 <div className='card-header'>
-                    <i className='bi bi-calculator'></i> Trade
+                    <i className='bi bi-calculator'></i> Trade Calculator
                 </div>
                 <div className='card-body'>
                     {loading ?
@@ -168,7 +172,7 @@ export default function CalculatorIndex() {
         <div className="col-lg-4 col-12">
             <div className='card'>
                 <div className='card-header'>
-                    <i className='bi bi-person-lines-fill'></i> Overview
+                    <i className='bi bi-person-lines-fill'></i> Trade Overview
                 </div>
                 <div className='card-body table-responsive p-0'>
                     {loading ?
@@ -190,7 +194,7 @@ export default function CalculatorIndex() {
                 <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
             </div>
         </div>
-        <div className='col-lg-3 col-12'>
+        <div className='col-lg-4 col-12'>
           <div className='card'>
             <div className='card-header border-0'>Market Overview</div>
             <div className='card-body p-0 m-0'>

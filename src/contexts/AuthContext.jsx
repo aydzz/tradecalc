@@ -3,6 +3,7 @@ import firebase from "../server/firebase"
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import { UserInfo } from "firebase/auth";
+import userService from "../server/service/UserService";
 
 const AuthContext = React.createContext();
 
@@ -17,6 +18,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [userDetails, setUserDetails] = useState();
   const [loading, setLoading] = useState(true)
   async function signup(email, password) {
     return true;
@@ -24,8 +26,11 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        setCurrentUser(user);
+        const user = userCredential.user
+        userService.getBy("uid", user.userID).then(function(res){
+          setCurrentUser(user);
+          setUserDetails(res[0]);
+        })
       })
       .catch((error) => {
         console.log(error.code);
@@ -64,12 +69,12 @@ export function AuthProvider({ children }) {
     },function(completed){
       console.warn("FIREBASE: Auth State Changed!");
     });
-
     return unsubscribe
   },[])
 
   const contextValue = {
     currentUser,
+    userDetails,
     login,
     signup,
     logout,

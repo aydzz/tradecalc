@@ -13,6 +13,7 @@ const tradeSettingConverter = {
     toFirestore: (tradeSetting) => {
         return {
             portfolioValue: tradeSetting.portfolioValue,
+            realizedPnL: tradeSetting.realizedPnL,
             tradeCapital: tradeSetting.tradeCapital,
             tradePortCapital: tradeSetting.tradePortCapital,
             leverage: tradeSetting.leverage,
@@ -35,6 +36,7 @@ const tradeSettingConverter = {
         return new TradeSetting(
             snapshot.id,
             data.portfolioValue,
+            data.realizedPnL,
             data.tradeCapital,
             data.tradePortCapital,
             data.leverage,

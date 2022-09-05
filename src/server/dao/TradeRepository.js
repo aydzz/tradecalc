@@ -33,6 +33,7 @@ const tradeConverter = {
             orderTPSpread: trade.orderTPSpread,
             exitPrice: trade.exitPrice,
             tradeValue: trade.tradeValue,
+            status: trade.status,
             createdBy: trade.createdBy,
             createdDate: trade.createdDate
         };
@@ -59,6 +60,7 @@ const tradeConverter = {
             data.takeProfitPrice,
             data.exitPrice,
             data.tradeValue,
+            data.status,
             data.createdBy,
             data.createdDate
         );

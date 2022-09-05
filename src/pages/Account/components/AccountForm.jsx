@@ -50,25 +50,25 @@ export default function AccountForm(props) {
         <div className="form-group row">
             <label htmlFor="inputName" className="col-sm-2 col-form-label">First Name</label>
             <div className="col-sm-10">
-            <input type="email" className="form-control" id="inputName" placeholder="Name" value={user.firstName} disabled/>
+            <input type="email" className="form-control" id="inputName" placeholder="Name" value={user.firstName} readOnly/>
             </div>
         </div>
         <div className="form-group row">
             <label htmlFor="inputName" className="col-sm-2 col-form-label">Last Name</label>
             <div className="col-sm-10">
-            <input type="email" className="form-control" id="inputName" placeholder="Name" value={user.lastName} disabled/>
+            <input type="email" className="form-control" id="inputName" placeholder="Name" value={user.lastName} readOnly/>
             </div>
         </div>
         <div className="form-group row">
             <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Email</label>
             <div className="col-sm-10">
-            <input type="email" className="form-control" placeholder="Email" value={currentUser.email} disabled/>
+            <input type="email" className="form-control" placeholder="Email" value={currentUser.email} readOnly/>
             </div>
         </div>
         <div className="form-group row">
             <label htmlFor="inputExperience" className="col-sm-2 col-form-label">Profile URL</label>
             <div className="col-sm-10">
-            <textarea className="form-control" placeholder="Photo URL" value={currentUser.photoURL} disabled></textarea>
+            <textarea className="form-control" placeholder="Photo URL" value={currentUser.photoURL} readOnly={true}></textarea>
             </div>
         </div>
 

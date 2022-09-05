@@ -29,12 +29,13 @@ export default class Trade {
      * @param {Number} takeProfitPrice 
      * @param {Number} exitPrice 
      * @param {Number} tradeValue 
+     * @param {String} status
      * @param {String} createdBy 
      * @param {Date | Timestamp} createdDate 
 
      */
     constructor(id, direction, orderType, riskType, asset, entryPrice, accountOpen, quantity, cash, cashQty, leverage,
-        allowableCapitalLoss, stoplossType, stoplossPrice, takeProfitType, takeProfitPrice, exitPrice, tradeValue, createdBy,
+        allowableCapitalLoss, stoplossType, stoplossPrice, takeProfitType, takeProfitPrice, exitPrice, tradeValue, status, createdBy,
         createdDate
     ) {
         this.id = id;
@@ -59,6 +60,7 @@ export default class Trade {
         this._orderTPSpread = 0;
         this.exitPrice = exitPrice;
         this.tradeValue = tradeValue;
+        this.status = status;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
     }
@@ -149,6 +151,7 @@ export class NullTrade extends Trade{
             0,
             0,
             0,
+            "open",
             "",
             new Date()
         )

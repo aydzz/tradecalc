@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components';
 import Modal from "@restart/ui/Modal"
 import ExitTradeForm from './ExitTradeForm';
+import CardErrorBoundary from "../../../../../components/ErrorBoundaries/CardErrorBoundary"
+import { useRef } from 'react';
 
 const Backdrop = styled("div")`
   position: fixed;
@@ -26,11 +28,12 @@ const CustomModal = styled(Modal)`
 export default function ExitModal(props) {
     const shown = props.shown;
     const setShown = props.setShown;
-    const tradeID = props.tradeID;
 
+    const tradeID = props.tradeID;
+    const formRef = useRef();
     const renderBackdrop = (props) => <Backdrop {...props} />;
   return (
-    <CustomModal
+  <CustomModal
         show={shown}
         onHide={() => setShown(false)}
         renderBackdrop={renderBackdrop}
@@ -46,14 +49,21 @@ export default function ExitModal(props) {
               </button>
             </div>
             <div className="modal-body">
-              <ExitTradeForm/>
+              <CardErrorBoundary>
+                <ExitTradeForm tradeID={tradeID} formRef={formRef} setModalShown={setShown}/>
+              </CardErrorBoundary>
             </div>
             <div className="modal-footer justify-content-between">
               <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>{setShown(false)}}>Close</button>
-              <button type="button" className="btn btn-primary">Confirm</button>
+              <button type="button" className="btn btn-primary"
+                onClick={(e)=>{
+                  e.preventDefault();
+                  formRef.current.dispatchEvent(
+                    new Event("submit", { bubbles: true, cancelable: true })
+                  );
+                }}
+              >Confirm</button>
             </div>
-     
-        
         </div>
       </CustomModal>
   )

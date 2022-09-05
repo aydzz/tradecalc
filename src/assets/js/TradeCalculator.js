@@ -139,3 +139,9 @@ export class NullTradeCalculator extends TradeCalculator{
         super(new NullTradeSetting(), new NullTrade());
     }
 }
+
+
+/**
+ * TODO:
+ *  1. Calculate tradeValue to be used in ExitTradeForm.jsx
+ */

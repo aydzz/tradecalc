@@ -9,6 +9,7 @@ export default class TradeSetting{
      * UPDATED: 20220829 - adzz
      * @param {String} id 
      * @param {Number} portfolioValue 
+     * @param {Number} realizedPnL
      * @param {Number} tradeCapital 
      * @param {Number} tradePortCapital 
      * @param {Number} leverage 
@@ -24,12 +25,13 @@ export default class TradeSetting{
      * @param {Number} riskRewardMultiplier 
      * @param {String} userID 
      */
-    constructor(id,portfolioValue, tradeCapital, tradePortCapital, leverage,range,rangeMultiplier,riskScope,
+    constructor(id,portfolioValue, realizedPnL, tradeCapital, tradePortCapital, leverage,range,rangeMultiplier,riskScope,
                 riskDeviationPercent, acceptableSpread, minSpread, portRiskTradingThreshold,capRiskTradingThreshold,
                 capPortRiskPercent, riskRewardMultiplier, userID
         ){
             this.id =  id
             this.portfolioValue = portfolioValue
+            this.realizedPnL = realizedPnL;
             this.tradeCapital = tradeCapital
             this._tradePortCapital = tradePortCapital
             this.leverage = leverage
@@ -91,6 +93,7 @@ export class NullTradeSetting{
      * 
      * @param {String} id 
      * @param {Number} portfolioValue 
+     * @param {Number} realizedPnL
      * @param {Number} tradeCapital 
      * @param {Number} tradePortCapital 
      * @param {Number} leverage 
@@ -109,6 +112,7 @@ export class NullTradeSetting{
      constructor(){
         this.id =  ""
         this.portfolioValue = 0
+        this.realizedPnL = 0
         this.tradeCapital = 0
         this.tradePortCapital = 0
         this.leverage = 0
