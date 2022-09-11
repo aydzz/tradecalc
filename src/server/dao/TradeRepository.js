@@ -1,4 +1,5 @@
-import { Firestore } from "firebase/firestore";
+import { Firestore, DocumentSnapshot, QuerySnapshot } from "firebase/firestore";
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";
 
 import Trade from "../models/Trade"
 import FirestoreRepository from "./FirestoreRepository";
@@ -81,6 +82,8 @@ export default class TradeRepository{
         
         this._converter = tradeConverter;
         this.collection = collection;
+
+        this.getNextPage = this.getNextPage.bind(this);
     }
     async get(docID){
         return await this._superRepository.get(docID);
@@ -102,6 +105,32 @@ export default class TradeRepository{
     }
     async delete(docID){
         return await this._superRepository.delete(docID);
+    }
+
+    async getAllOrderedBy(options){
+        return await this._superRepository.getAllOrderedBy(options)
+    }
+    /**
+     * 
+     * @param {Object} options
+     * @param {String} options.orderField
+     * @param {"desc" | "asc"} options.orderDirection
+     * @param {QuerySnapshot} options.lastSnapshot
+     * @param {Number} options.limit
+     */
+     async getNextPage(options){
+        const lastDoc = options.lastSnapshot ? options.lastSnapshot.docs[options.lastSnapshot.docs.length - 1] : null;
+
+        if(!lastDoc){
+            return await this._superRepository.getTopOrderedBy({orderField: options.orderField, orderDirection: options.orderDirection, limit: options.limit});
+        }
+        const nextQuery = 
+            query(collection(this._firestore, this.collection).withConverter(this._converter),
+            orderBy(options.orderField, options.orderDirection),
+            startAfter(lastDoc),
+            limit(options.limit));
+            
+        return await this._superRepository.getDocs(nextQuery);
     }
 }
 

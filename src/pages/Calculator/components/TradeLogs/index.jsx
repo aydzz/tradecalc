@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import tradeService from '../../../../server/service/TradeLogService'
 import Trade from '../../../../server/models/Trade';
-import { Timestamp } from 'firebase/firestore';
+import { limit, Timestamp } from 'firebase/firestore';
 import ExitModal from './components/ExitModal';
 import { swal, Toast } from '../../../../assets/theme/utils/swal';
 import { v4 as uuidv4 } from 'uuid';
+import appDataService from '../../../../server/service/AppDataService';
+import { useAppData } from '../../../../contexts/AppDataContext';
 
 export default function TradeLogs() {
   const [page, setPage] = useState();
   const [exitTradeID, setExitTradeID] = useState();
   const [exitModalShown, setExitModalShown] = useState(false);
+  const {appData, setAppData} = useAppData();
   
   const [UID, setUID] = useState(uuidv4());//for rerendering.
 
   const [logs, setLogs] = useState([]);
   useEffect(function(){
-    tradeService.getAll().then(function(logs){
+    tradeService.getNextPage({
+      orderField: "createdDate", 
+      orderDirection:"desc",
+      limit: 5,
+      lastSnapshot: null
+    }).then(function(logs){
+      console.log(logs);
       setLogs(logs);
     })
   },[page,UID]);
@@ -55,6 +64,7 @@ export default function TradeLogs() {
             >
               <i className="bi bi-box-arrow-left"></i>
             </button>
+            {/* Trade Log Deletion */}
             <button type="button" className="btn btn-xs btn-danger btn-flat" data-trade-id={log.id} onClick={(e)=>{
               const tradeID = e.currentTarget.getAttribute("data-trade-id");
               swal.fire({
@@ -68,11 +78,14 @@ export default function TradeLogs() {
               }).then((result) => {
                 if (result.isConfirmed) {
                   tradeService.delete(tradeID).then(function(res){
-                    setUID(uuidv4())
-                    swal.fire({
-                      title: "Success",
-                      icon: "success",
-                      text: `${tradeID} was successfully deleted.`
+                    const newAppData = appData.decrementTradeCount();
+                    appDataService.save(newAppData).then(function(res){
+                      setUID(uuidv4())
+                      swal.fire({
+                        title: "Success",
+                        icon: "success",
+                        text: `${tradeID} was successfully deleted.`
+                      });
                     })
                   })
                 }else if(result.isDenied){

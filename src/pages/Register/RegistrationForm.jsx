@@ -11,6 +11,9 @@ import {useNavigate} from "react-router-dom";
 
 import User from '../../server/models/User'
 import userService from '../../server/service/UserService';
+import AppData from '../../server/models/AppData';
+import ThemeSettings from "../../server/models/AppData/ThemeSettings"
+import appDataService from '../../server/service/AppDataService';
 
 const FormGroup = styled.div`
     margin-bottom: 1rem;
@@ -88,21 +91,43 @@ export default function RegistrationForm() {
                     null
                 )
                 
+                /**
+                 * Save a new user's Detail
+                 */
                 userService.save(user)
                 .then(function(result){
-                    navigate("/app/", { replace: true });
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Registered a new user.'
-                    });
+                    /**
+                     * Initialize new user's AppData
+                     */
+                     const newAppData = new AppData(
+                        "",
+                        user.uid,
+                        new ThemeSettings(
+                            false
+                        ),
+                        0
+                    );
+                    appDataService.save(newAppData).then(function(res){
+                        navigate("/app/", { replace: true });
+                        Toast.fire({
+                            icon: 'success',
+                            title: "Successfully registered a new Account."
+                        });
+                    }).catch(function(err){
+                        //do something here...
+                        console.log(err);
+                    })
+                    
                 })
                 .catch(function(err){
+                    console.log(err);
                     Toast.fire({
                         icon: 'error',
                         title: "There was a problem saving the new user's data."
                     });
                 });
             }).catch(function(error){
+                console.log(error)
                 Toast.fire({
                     icon: 'error',
                     title: 'Error encountered'

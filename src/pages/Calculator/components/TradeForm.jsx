@@ -5,6 +5,9 @@ import tradeService from "../../../server/service/TradeLogService";
 import {Toast} from "../../../assets/theme/utils/swal"
 import TradeCalculator from "../../../assets/js/TradeCalculator";
 import {swal} from "../../../assets/theme/utils/swal";
+import appDataService from "../../../server/service/AppDataService";
+import { useAppData } from "../../../contexts/AppDataContext";
+import AppData from "../../../server/models/AppData";
 
 export default function TradeForm(props) {
   /**@type {Trade} */
@@ -13,6 +16,10 @@ export default function TradeForm(props) {
   const setTradeCalculator = props.setTradeCalculator;
   const tradeCalculator = props.tradeCalculator;
   const tradeSettings = props.tradeSettings;
+
+  /**@type {AppData, Function} */
+  const {appData, setAppData} = useAppData();
+  
 
   useEffect(function(e){
     const newTradeCalculator = new TradeCalculator(tradeSettings, trade);
@@ -40,12 +47,19 @@ export default function TradeForm(props) {
     newTrade.status = "open" // this seems wrong.
     newTrade.accountOpen = tradeSettings.portfolioValue //this seems wrong as well.
 
-    console.log(newTrade);
     tradeService.save(newTrade).then(function(res){
-      Toast.fire({
-        title: "Trade has been logged!",
-        icon: "success"
+      const newAppData = appData.incrementTradeCount()
+      appDataService.save(newAppData).then(function(res){
+        setAppData(newAppData);
+        console.log(newAppData);
+        Toast.fire({
+          title: "Trade has been logged!",
+          icon: "success"
+        })
+      }).catch(function(err){
+        console.log(err);
       })
+      
     })
   }
   return (

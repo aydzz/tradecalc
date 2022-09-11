@@ -28,19 +28,25 @@ export default function CalculatorIndex() {
     const tradeSettingsCtx = useTradeSettings();
 
     const [loading, setLoading] = useState(tradeSettingsCtx.loading);
-    const [settingsUnset, setSettingsUnset] = useState(tradeSettingsCtx.settingsUnset);
+    const [settingsUnset, setSettingsUnset] = useState(true);
     const [error, setError] = useState(tradeSettingsCtx.error);
     const {currentUser} = useAuth();
-
+    
     useEffect(function(){
-        setTradeSettings(tradeSettingsCtx.tradeSettings);
-        setTradeCalculator(new TradeCalculator(tradeSettingsCtx.tradeSettings, trade));
+        if(tradeSettingsCtx.tradeSettings){
+            setTradeSettings(tradeSettingsCtx.tradeSettings);
+            setTradeCalculator(new TradeCalculator(tradeSettingsCtx.tradeSettings, trade));
+            setSettingsUnset(tradeSettingsCtx.tradeSettingsUnset);
+        }
+        
     },[tradeSettingsCtx])
     //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
-        setLoading(tradeSettingsCtx.loading);
-        setError(tradeSettingsCtx.error)
-        setSettingsUnset(tradeSettingsCtx.settingsUnset);
+        if(tradeSettingsCtx.error){
+            setLoading(tradeSettingsCtx.loading);
+            setError(tradeSettingsCtx.error)
+            setSettingsUnset(tradeSettingsCtx.tradeSettingsUnset);
+        }
     },[tradeSettingsCtx.error])
 
     //EFFECT: throws component level ( this ) error to trigger ErrorBoundary fallback UI.
@@ -77,7 +83,6 @@ export default function CalculatorIndex() {
                     </CardErrorBoundary>
                 </div>
             </div>
-            
         </div>
         <div className="col-lg-4 col-md-6 col-12">
             <div className='row'>
@@ -117,15 +122,7 @@ export default function CalculatorIndex() {
                         <div className="info-box-content">
                             <span className="info-box-text">Active Funds</span>
                             <span className="info-box-number">$5.00</span>
-
-                            {/* <div className="progress">
-                                <div className="progress-bar" style={{"width": "70%"}}></div>
-                            </div>
-                            <span className="progress-description">
-                                70% Increase in 30 Days
-                            </span> */}
                         </div>
-                        
                     </div>
                 </div>
                 <div className="col-xl-6 col-12">
@@ -179,7 +176,7 @@ export default function CalculatorIndex() {
                         (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
                         <OverlayLoader type="loading-6"></OverlayLoader>
                         </div>): 
-                        ( 
+                        (
                             settingsUnset ?
                             <SettingsUnset/> :
                             (

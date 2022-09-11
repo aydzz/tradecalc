@@ -2,7 +2,7 @@ import React from 'react'
 import { useTheme } from '../../contexts/ThemeContext';
 
 export default function ControlSidebar() {
-  const {setDarkMode} = useTheme();
+  const {setDarkMode, darkMode} = useTheme();
   return (
     //<!-- Control Sidebar -->
     <aside className="control-sidebar control-sidebar-dark transition-normal">
@@ -12,7 +12,10 @@ export default function ControlSidebar() {
           <p className='text-sm'>Kindly configure the app using the following controls</p>
           <hr className='mb-2'></hr>
           <div className="mb-4">
-            <input type="checkbox" className="mr-1" onChange={(e)=>{
+            <input type="checkbox" className="mr-1" 
+            value={darkMode}
+            checked={darkMode}
+            onChange={(e)=>{
               if(e.target.checked){
                 setDarkMode(true);
               }else{

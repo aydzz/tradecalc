@@ -1,5 +1,5 @@
 import React from "react";
-import Error500 from "../../pages/Error/500";
+import {Error500Private} from "../../pages/Error/500";
 
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class ErrorBoundary extends React.Component {
   render() {
     if (this.state.errorInfo) {
       return (
-        <Error500></Error500>
+        <Error500Private></Error500Private>
       );
     }
     // Normally, just render children

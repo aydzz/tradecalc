@@ -1,5 +1,5 @@
-import { Firestore } from "firebase/firestore";
-import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where, deleteDoc } from "firebase/firestore"
+import { Firestore, Query } from "firebase/firestore";
+import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where, deleteDoc, orderBy, DocumentSnapshot, limit} from "firebase/firestore"
 
 /**
  * @template T
@@ -22,6 +22,9 @@ export default class FirestoreRepository{
         this.getBy = this.getBy.bind(this);
         this.getAll = this.getAll.bind(this);
         this.update = this.update.bind(this);
+        this.getDocs = this.getDocs.bind(this);
+        this.getAllOrderedBy = this.getAllOrderedBy.bind(this);
+        this.getTopOrderedBy = this.getTopOrderedBy.bind(this);
     }
     /**
      * Gets a single document instance
@@ -64,7 +67,28 @@ export default class FirestoreRepository{
      * @returns {Promise<Array<T>>}
      */
      async getAll(){
+        
         const q = query(collection(this._firestore, this.collection).withConverter(this._converter));
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        querySnapshot.forEach((item) => {
+            const doc = (item.data());
+            doc.id = item.id;
+            list.push(doc);
+        });
+        return list;
+    }
+    /**
+     * Queries all of the documents.
+     * @param {Query} customQuery
+     * @returns {Promise<Array<T>>}
+     */
+     async getDocs(customQuery){
+        if(!customQuery){
+            return await this.getAll();
+        }
+        const q = customQuery;
 
         const querySnapshot = await getDocs(q);
         const list = [];
@@ -122,5 +146,27 @@ export default class FirestoreRepository{
         const docRef = doc(this._firestore, this.collection, docID).withConverter(this._converter);
         const docSnap = await deleteDoc(docRef);
         console.log(docSnap);
+    }
+
+    /**
+     * 
+     * @param {Object} options
+     * @param {String} options.orderField
+     * @param {"desc" | "asc"} options.orderDirection
+     * @param {Number} options.limit
+     */
+    async getTopOrderedBy(options){
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter),orderBy(options.orderField, options.orderDirection), limit(options.limit));
+        return await this.getDocs(q);
+    }
+    /**
+     * 
+     * @param {Object} options
+     * @param {String} options.field
+     * @param {"desc" | "asc"} options.direction
+     */
+    async getAllOrderedBy(options){
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter),orderBy(options.name, options.direction));
+        return await this.getDocs(q);
     }
 }

@@ -3,10 +3,12 @@ import styled from "styled-components";
 import breakpoints from "../../assets/theme/base/breakpoints";
 import LoginForm from "./LoginForm";
 import { Toast } from '../../assets/theme/utils/swal';
+import photo from "../../assets/img/photo1.png"
 
 
 const LoginImage = styled.div`
-  background: url(https://source.unsplash.com/Mv9hjnEUHR4/600x800);
+  /* background: url(https://source.unsplash.com/Mv9hjnEUHR4/600x800); */
+  background: url(${photo});
   background-position: center;
   background-size: cover;
 `;

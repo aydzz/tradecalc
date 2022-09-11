@@ -1,20 +1,22 @@
-# Trading Sessions
+# Features
+## Trading Sessions
  - Trading Sessions are not logged in the Journal Records
     - However, they can be logged if the user decided to do so. 
     - Note that the trades that are going to be logged will store only the values that are significant for the Trading Journal Feature.
     - This is a placehoder feature.
 
 
-# Trading Journal
+## Trading Journal
  - Users will be able to manually input trades in the application
  - Data will only track the significant values to generate trends and perfomance analytics
     - PnLs
     - Durations
     - etc.
 
+# Implementations
+- I think it would be better if all entities bound to the user will use the `currentUser.uid` instead of fetching data twice from the DB just to get the userID from the user details table.
 
 # Notes
-
 - 20220904 - added a TradingSession.js Model as a placeholder
    - For now, the implementation of PnL calculation will be on the TradeSetting.js
 

@@ -135,8 +135,8 @@ export default function ExitTradeForm(props) {
       const newTradeSettings = Object.assign(new TradeSetting(), tradeSettings);
 
       //Setting exit values, Note that I think this should be a transactional query in firebase ( execute batch at once ) - TODO 3
-      const newRealizedPnL = Number(newTrade.accountOpen) + Number(tradeSettings.realizedPnL) + Number(profitLoss);
-      const newTradeValue = (Number(newTrade.accountOpen) + Number(profitLoss)) - Number(newTrade.accountOpen); //no calculation for this yet, i think this should calculated in trade calculator. ()
+      const newRealizedPnL = Number(tradeSettings.realizedPnL) + Number(profitLoss);
+      const newTradeValue = Number(profitLoss); //no calculation for this yet, i think this should calculated in trade calculator. ()
       const newStatus = "closed";
 
       newTrade.status = newStatus;
