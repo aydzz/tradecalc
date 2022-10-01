@@ -63,6 +63,10 @@ class UserService{
      async saveAll(docList){
         return this.saveAll(docList)
     }
+
+    setCurrentUser(currentUser){
+        this.repository.setCurrentUser(currentUser)
+    }
 }
 
 

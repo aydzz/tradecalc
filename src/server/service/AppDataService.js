@@ -23,6 +23,9 @@ class AppDataService{
      async saveAll(docList){
         return this.saveAll(docList)
     }
+    setCurrentUser(currentUser){
+        this.repository.setCurrentUser(currentUser)
+    }
 }
 
 const appDataService = new AppDataService();

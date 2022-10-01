@@ -8,18 +8,25 @@ import {swal} from "../../../assets/theme/utils/swal";
 import appDataService from "../../../server/service/AppDataService";
 import { useAppData } from "../../../contexts/AppDataContext";
 import AppData from "../../../server/models/AppData";
+import { v4 as uuidv4 } from 'uuid';
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function TradeForm(props) {
+  console.log(props);
   /**@type {Trade} */
   const trade = props.trade;
   const setTrade = props.setTrade;
   const setTradeCalculator = props.setTradeCalculator;
   const tradeCalculator = props.tradeCalculator;
   const tradeSettings = props.tradeSettings;
+  const logsRerenderer = props.logsRerenderer;
 
+  /**
+   * Component Level Assignments
+   */
   /**@type {AppData, Function} */
   const {appData, setAppData} = useAppData();
-  
+  const {currentUser} = useAuth()
 
   useEffect(function(e){
     const newTradeCalculator = new TradeCalculator(tradeSettings, trade);
@@ -46,6 +53,7 @@ export default function TradeForm(props) {
     const newTrade = trade
     newTrade.status = "open" // this seems wrong.
     newTrade.accountOpen = tradeSettings.portfolioValue //this seems wrong as well.
+    newTrade.createdBy = currentUser.uid;
 
     tradeService.save(newTrade).then(function(res){
       const newAppData = appData.incrementTradeCount()
@@ -56,10 +64,10 @@ export default function TradeForm(props) {
           title: "Trade has been logged!",
           icon: "success"
         })
+        logsRerenderer(uuidv4());
       }).catch(function(err){
         console.log(err);
       })
-      
     })
   }
   return (

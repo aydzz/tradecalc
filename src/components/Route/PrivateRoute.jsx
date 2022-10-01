@@ -58,7 +58,7 @@ export function PrivateRouteC(props){
  * <Route element={<PrivateWrapper />}><Route path="/dashboard" element={<Dashboard />} /></Route>
 */
 const PrivateWrapper = (props) => {
-  const { currentUser } = useAuth();  
+  const { currentUser } = useAuth();
   const path = useLocation().pathname;
   
   if(path==="/app" || path==="/app/"){
@@ -68,5 +68,4 @@ const PrivateWrapper = (props) => {
       currentUser ?  
       <PrivateLayout {...props}></PrivateLayout> : <Navigate to="/login" />);  
   }
-      
 };

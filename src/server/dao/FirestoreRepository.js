@@ -1,4 +1,4 @@
-import { Firestore, Query } from "firebase/firestore";
+import { Firestore, Query, QuerySnapshot } from "firebase/firestore";
 import { doc, setDoc, collection, writeBatch, getDoc, query, getDocs, where, deleteDoc, orderBy, DocumentSnapshot, limit} from "firebase/firestore"
 
 /**
@@ -22,7 +22,7 @@ export default class FirestoreRepository{
         this.getBy = this.getBy.bind(this);
         this.getAll = this.getAll.bind(this);
         this.update = this.update.bind(this);
-        this.getDocs = this.getDocs.bind(this);
+        this.getDocuments = this.getDocuments.bind(this);
         this.getAllOrderedBy = this.getAllOrderedBy.bind(this);
         this.getTopOrderedBy = this.getTopOrderedBy.bind(this);
     }
@@ -46,8 +46,8 @@ export default class FirestoreRepository{
      * @param {String} value 
      * @returns {Promise<Array<T> | null>}
      */
-     async getBy(field, value){
-        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where(field, "==", value));
+     async getBy(field, value, operator="=="){
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where(field, operator, value));
 
         const querySnapshot = await getDocs(q);
         const list = [];
@@ -82,9 +82,9 @@ export default class FirestoreRepository{
     /**
      * Queries all of the documents.
      * @param {Query} customQuery
-     * @returns {Promise<Array<T>>}
+     * @returns {Promise<{list:Array<T>, querySnapshot: QuerySnapshot}>}
      */
-     async getDocs(customQuery){
+     async getDocuments(customQuery){
         if(!customQuery){
             return await this.getAll();
         }
@@ -97,7 +97,10 @@ export default class FirestoreRepository{
             doc.id = item.id;
             list.push(doc);
         });
-        return list;
+        return {
+            list: list,
+            querySnapshot: querySnapshot
+        };
     }
     /**
      * Saves a single document instance
@@ -159,6 +162,7 @@ export default class FirestoreRepository{
         const q = query(collection(this._firestore, this.collection).withConverter(this._converter),orderBy(options.orderField, options.orderDirection), limit(options.limit));
         return await this.getDocs(q);
     }
+    
     /**
      * 
      * @param {Object} options

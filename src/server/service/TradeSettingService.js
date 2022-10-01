@@ -11,7 +11,7 @@ class TradeSettingService{
         return this.repository.get(docID);
     }
      async getBy(field, value){
-        if(field === "userID"){
+        if(field === "uid"){
             return this.repository.getBy(field, value).then(function(results){
                 if(!results){
                     appLogger.warn("APP: (TradeSettingService): Trading Settings is unset")
@@ -34,6 +34,9 @@ class TradeSettingService{
     }
      async saveAll(docList){
         return this.repository.saveAll(docList)
+    }
+    setCurrentUser(currentUser){
+        this.repository.setCurrentUser(currentUser);
     }
 }
 

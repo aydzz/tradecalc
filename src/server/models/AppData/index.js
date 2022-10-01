@@ -1,4 +1,5 @@
 /**
+ * Firestore Collection: tra_appdata
  * AppData stores data related to Application User that is  significant to some part of the application is not generally shown to the users.
  * 
  * 
@@ -12,7 +13,7 @@ export default class AppData{
     /**
      * 
      * @param {String} id 
-     * @param {String} uid 
+     * @param {String} uid firestore auth.uid
      * @param {ThemeSettings} themeSettings 
      * @param {Number} totalTradeCount 
      */

@@ -45,6 +45,20 @@ class TradeService{
      async getNextPage(options){
         return this.repository.getNextPage(options);
      }
+     /**
+     * 
+     * @param {Object} options
+     * @param {String} options.orderField
+     * @param {"desc" | "asc"} options.orderDirection
+     * @param {QuerySnapshot} options.lastSnapshot
+     * @param {Number} options.limit
+     */
+      async getPrevPage(options){
+        return this.repository.getPrevPage(options);
+     }
+     setCurrentUser(currentUser){
+        this.repository.setCurrentUser(currentUser);
+     }
 }
 
 

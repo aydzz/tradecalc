@@ -23,7 +23,7 @@ export default function TradingForm(props) {
         userService.getBy("uid",currentUser.uid).then(function(res){
             const user = res[0];
             setUser(user);
-            tradeSettingService.getBy("userID",user.id).then(function(res){
+            tradeSettingService.getBy("uid",user.uid).then(function(res){
                 if(!res){
                     appLogger.warn("APP: No settings for the current user yet");
                 }else{
@@ -44,7 +44,6 @@ export default function TradingForm(props) {
         }).catch((error)=>{
             setError(error);
             setLoading(false);
-
         })
     },[]);    
     useEffect(function(){
@@ -55,6 +54,7 @@ export default function TradingForm(props) {
     const submitHandler = function(e){
         e.preventDefault();
         tradeSetting.userID = user.id;
+        tradeSetting.uid = currentUser.uid;
         tradeSettingService.save(tradeSetting).then(function(res){
             Toast.fire({
                 title: "Settings Updated",

@@ -1,11 +1,19 @@
+/**
+ * Firestore Collection: tra_user
+ * User  is a an entity DataModel that where we store data details per authenticated user.
+ * 
+ * UPDATED: 20220829 - adzz
+ * CREATED: 202208xx - adzz
+ */
+
 export default class User{
     /**
-     * User  is a an entity DataModel that where we store data details per authenticated user. 
+     *  
      * 
-     * CREATED: 202208xx - adzz
-     * UPDATED: 20220829 - adzz
+     * 
+     * 
      * @param {String} id 
-     * @param {String} uid 
+     * @param {String} uid firestore auth.uid
      * @param {String} firstName 
      * @param {String} lastName 
      * @param {String} email 

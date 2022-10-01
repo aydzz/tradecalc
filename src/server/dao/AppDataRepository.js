@@ -1,7 +1,8 @@
-import { Firestore } from "firebase/firestore";
+import { Firestore, query, collection, where, getDocs } from "firebase/firestore";
 import AppData, { NullAppData } from "../models/AppData";
 import FirestoreRepository from "./FirestoreRepository";
 import { OneToOneRelationshipError } from "../errors/RelationshipError";
+import { MissingUserError } from "../errors/RuleQueryCompatError";
 
 // Firestore data converter
 const appDataConverter = {
@@ -40,32 +41,58 @@ export default class AppDataRepository{
     constructor(firestore, collection){
         /**@type {FirestoreRepository<AppData>} */
         this._superRepository = new FirestoreRepository(firestore,collection,appDataConverter);
-
+        this.collection = collection;
         this._firestore = firestore;
         this._converter = appDataConverter;
+        this._currentUser = null;
     }
 
     async get(docID){
        return await this._superRepository.get(docID);
     }
-    async getBy(field, value){
-        if(field === "uid"){
-            return this._superRepository.getBy(field,value).then(function(results){
-                if(!results){
-                    throw new OneToOneRelationshipError("No AppData was found.");
-                }else{
-                    if(results.length !== 1){
-                        throw new OneToOneRelationshipError("Multiple AppData was found for Authenticated user.")
-                    }else{
-                        return results;
-                    }
-                }
-            })
+    /**
+     * Queries document based on a specific field
+     * @param {String} field 
+     * @param {String} value 
+     * @returns {Promise<Array<T> | null>}
+     */
+     async getBy(field, value, operator="=="){
+        if(this._currentUser == null){
+            throw new MissingUserError();
         }
-        return this._superRepository.getBy(field,value);
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid), where(field, operator, value));
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        if(querySnapshot.size > 0){
+            querySnapshot.forEach((item) => {
+                const doc = (item.data());
+                doc.id = item.id;
+                list.push(doc);
+            });
+        }else{
+            return null;
+        }
+        return list;
     }
+    /**
+     * Queries all of the documents.
+     * @returns {Promise<Array<T>>}
+     */
      async getAll(){
-        return await this._superRepository.getAll();
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid));
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        querySnapshot.forEach((item) => {
+            const doc = (item.data());
+            doc.id = item.id;
+            list.push(doc);
+        });
+        return list;
     }
     async save(docData){
         return await this._superRepository.save(docData);
@@ -75,5 +102,8 @@ export default class AppDataRepository{
     }
      async update(docID, docData){
         return await this._superRepository.update(docID, docData);
+    }
+    setCurrentUser(currentUser){
+        this._currentUser = currentUser;
     }
 }

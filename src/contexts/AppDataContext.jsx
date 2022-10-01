@@ -6,6 +6,14 @@ import FullPageLoader from "../components/Loaders/FullPageLoader"
 import AppData, { NullAppData } from "../server/models/AppData";
 import appDataService from "../server/service/AppDataService"
 
+/**
+ * Services
+ */
+
+import tradeService from "../server/service/TradeLogService";
+import tradeSettingService from "../server/service/TradeSettingService";
+import userService from "../server/service/UserService";
+
 const AppDataContext = React.createContext();
 /**
  * 
@@ -28,6 +36,14 @@ export default function AppDataProvider(props){
     //Fetches current User's AppData
     useEffect(function(){
         if(currentUser){
+            //settings Authenticated User for RLS.
+            tradeSettingService.setCurrentUser(currentUser);
+            tradeService.setCurrentUser(currentUser);
+            userService.setCurrentUser(currentUser);
+            appDataService.setCurrentUser(currentUser);
+            
+           
+
             appDataService.getBy("uid", currentUser.uid).then(function(res){
                 setAppData(res[0])
                 setLoading(false);
@@ -36,7 +52,7 @@ export default function AppDataProvider(props){
                 setError(err);
             });
         }
-    },[])
+    },[currentUser])
 
     //Handles Loaded AppData
     useEffect(function(){

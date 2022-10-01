@@ -1,40 +1,96 @@
 import React, { useEffect, useState } from 'react'
 import tradeService from '../../../../server/service/TradeLogService'
 import Trade from '../../../../server/models/Trade';
-import { limit, Timestamp } from 'firebase/firestore';
 import ExitModal from './components/ExitModal';
-import { swal, Toast } from '../../../../assets/theme/utils/swal';
-import { v4 as uuidv4 } from 'uuid';
+import { swal } from '../../../../assets/theme/utils/swal';
 import appDataService from '../../../../server/service/AppDataService';
 import { useAppData } from '../../../../contexts/AppDataContext';
+import appLogger from '../../../../assets/js/AppLogger';
+import useForceUpdate from '../../../../hooks/useForceUpdate';
+import { connectStorageEmulator } from 'firebase/storage';
+import { useAuth } from '../../../../contexts/AuthContext';
 
-export default function TradeLogs() {
-  const [page, setPage] = useState();
+export default function TradeLogs(props) {
+  /**
+   * Assignments from Props.
+   */
+  const maxRecordsPerPage = props.maxRecordsPerPage;
+  const parentStates = props.parentStates;
+  const [page,setPage] = [parentStates.page, parentStates.setPage];
+
+  /**
+   * Component Level Assignments
+   */
   const [exitTradeID, setExitTradeID] = useState();
   const [exitModalShown, setExitModalShown] = useState(false);
   const {appData, setAppData} = useAppData();
+  const {currentUser} = useAuth();
   
-  const [UID, setUID] = useState(uuidv4());//for rerendering.
+  const forceUpdate = useForceUpdate();
 
   const [logs, setLogs] = useState([]);
+  
+  const [currentSnapshot, setCurrentSnapshot] = useState(null);
+  const [prevSnapshot, setPrevSnapShot] = useState(null);
+
+  //on render effects
   useEffect(function(){
+    parentStates.setLogsRerenderer(
+      function(){
+        return forceUpdate.exec
+      }
+    );
+  },[]);
+
+  useEffect(function(){
+    setPrevSnapShot(currentSnapshot);
     tradeService.getNextPage({
       orderField: "createdDate", 
+      createdBy: currentUser.uid,
       orderDirection:"desc",
-      limit: 5,
-      lastSnapshot: null
-    }).then(function(logs){
-      console.log(logs);
-      setLogs(logs);
+      limit: maxRecordsPerPage,
+      lastSnapshot: currentSnapshot
+    }).then(function(res){
+      console.log(res);
+      setCurrentSnapshot(res.querySnapshot);
+      setLogs(res.list);
+      parentStates.setTradeLogs(res.list)// passing the list to parent ( Calculator )
+      console.log("----Current Page----");
+      console.log(res);
+
+      // //testing
+      // tradeService.getPrevPage({
+      //   orderField: "createdDate", 
+      //   orderDirection:"desc",
+      //   limit: 10,
+      //   lastSnapshot: res.querySnapshot
+      // }).then(function(prevRes){
+      //   console.log("---Using Previous---")
+      //   console.log(prevRes);
+      // })
+      })
+  },[page]);
+
+  useEffect(function(){
+    appLogger.log("rerender trade logs...");
+    tradeService.getNextPage({
+      orderField: "createdDate", 
+      createdBy: currentUser.uid,
+      orderDirection:"desc",
+      limit: 10,
+      lastSnapshot: prevSnapshot
+    }).then(function(res){
+      setCurrentSnapshot(res.querySnapshot);
+      setLogs(res.list);
     })
-  },[page,UID]);
-  
+  },[forceUpdate.renderID])
+
   const logsEl = logs.map(
     /**@param {Trade} log */
     function(log,i){
       return (
       <tr key={log.id} className="text-sm">
-          <td className="text-xs">{i + 1}</td>
+          <td className="text-xs">{i + 1 +((page * maxRecordsPerPage) - maxRecordsPerPage)}</td>
           <td className="text-xs">{log.asset}</td>
           <td className="text-xs">
               <span 
@@ -43,7 +99,7 @@ export default function TradeLogs() {
           <td className="text-xs">{Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(log.notionalValue).toFixed(2))}</td>
           <td className="text-xs">{Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(log.entryPrice).toFixed(2))}</td>
           <td className="text-xs">{Number(log.leverage).toFixed(2)}</td>
-          <td className="text-xs">{new Date(log.createdDate.toDate()).toLocaleDateString()}</td>
+          <td className="text-xs">{String(log.createdDate)}</td>
           <td className="text-xs">
             <span className={`text-uppercase badge ${log.status === "open" ? "bg-warning" : "bg-success" }`}>
               {log.status}
@@ -80,7 +136,7 @@ export default function TradeLogs() {
                   tradeService.delete(tradeID).then(function(res){
                     const newAppData = appData.decrementTradeCount();
                     appDataService.save(newAppData).then(function(res){
-                      setUID(uuidv4())
+                      forceUpdate.exec();
                       swal.fire({
                         title: "Success",
                         icon: "success",
@@ -103,8 +159,6 @@ export default function TradeLogs() {
       );
     }
   )
-  // console.log(exitTradeID);
-  logsEl.push(<tr className="p-2"><td colSpan="10" className='text-center text-xs py-2'><a href="javascript:void(0)" onClick={()=>{console.log("Show here was clicked..")}}>Show More...</a></td></tr>)
   return (
     <>
       <ExitModal shown={exitModalShown} setShown={setExitModalShown} tradeID={exitTradeID}/>
@@ -129,4 +183,10 @@ export default function TradeLogs() {
       </table>
     </>
   )
+}
+
+
+
+TradeLogs.defaultProps = {
+  maxRecordsPerPage: 10
 }

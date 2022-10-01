@@ -1,8 +1,12 @@
-import { Firestore, DocumentSnapshot, QuerySnapshot } from "firebase/firestore";
+import { AuthCredential } from "firebase/auth";
+import { Firestore, DocumentSnapshot, QuerySnapshot, endBefore, where } from "firebase/firestore";
 import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";
 
 import Trade from "../models/Trade"
 import FirestoreRepository from "./FirestoreRepository";
+
+import { UserInfo } from "firebase/auth";
+import { MissingUserError } from "../errors/RuleQueryCompatError";
 
 // Firestore data converter
 const tradeConverter = {
@@ -63,7 +67,7 @@ const tradeConverter = {
             data.tradeValue,
             data.status,
             data.createdBy,
-            data.createdDate
+            new Date(data.createdDate.toDate())
         );
     }
 };
@@ -77,10 +81,11 @@ export default class TradeRepository{
     constructor(firestore, collection){
         /**@type {FirestoreRepository<Trade>} */
         this._superRepository = new FirestoreRepository(firestore,collection,tradeConverter);
-
         this._firestore = firestore;
-        
         this._converter = tradeConverter;
+        /**@type {UserInfo} */
+        this._currentUser = null;
+
         this.collection = collection;
 
         this.getNextPage = this.getNextPage.bind(this);
@@ -88,11 +93,68 @@ export default class TradeRepository{
     async get(docID){
         return await this._superRepository.get(docID);
     }
-     async getBy(field, value){
-       return await this._superRepository.getBy(field, value);
+     async getBy(field, value, operator="=="){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+           
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where(field, operator, value), where("createdBy", "==", this._currentUser.uid));
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        if(querySnapshot.size > 0){
+            querySnapshot.forEach((item) => {
+                const doc = (item.data());
+                doc.id = item.id;
+                list.push(doc);
+            });
+        }else{
+            return null;
+        }
+        return list;
     }
+    /**
+     * Queries all of the documents.
+     * @returns {Promise<Array<Trade>>}
+     */
      async getAll(){
-       return await this._superRepository.getAll();
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("createdBy","==", this._currentUser.uid));
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        querySnapshot.forEach((item) => {
+            const doc = (item.data());
+            doc.id = item.id;
+            list.push(doc);
+        });
+        return list;
+    }
+    /**
+     * Queries all of the documents.
+     * @param {Query} customQuery
+     * @returns {Promise<{list:Array<Trade>, querySnapshot: QuerySnapshot}>}
+     */
+     async getDocuments(customQuery){
+        if(!customQuery){
+            return await this.getAll();
+        }
+        const q = customQuery;
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        querySnapshot.forEach((item) => {
+            const doc = (item.data());
+            doc.id = item.id;
+            list.push(doc);
+        });
+        return {
+            list: list,
+            querySnapshot: querySnapshot
+        };
     }
     async save(docData){
         return await this._superRepository.save(docData);
@@ -107,31 +169,98 @@ export default class TradeRepository{
         return await this._superRepository.delete(docID);
     }
 
-    async getAllOrderedBy(options){
-        return await this._superRepository.getAllOrderedBy(options)
-    }
     /**
      * 
      * @param {Object} options
+     * @param {String} options.field
+     * @param {"desc" | "asc"} options.direction
+     */
+     async getAllOrderedBy(options){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter),orderBy(options.name, options.direction), where("createdBy","==", this._currentUser.uid));
+        return await this.getDocuments(q);
+    }
+
+    /**
+     * 
+     * @param {Object} options
+     * @param {String} options.orderField
+     * @param {"desc" | "asc"} options.orderDirection
+     * @param {Number} options.limit
+     */
+     async getTopOrderedBy(options){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter),orderBy(options.orderField, options.orderDirection), limit(options.limit), where("createdBy","==", this._currentUser.uid));
+        return await this.getDocuments(q);
+    }
+
+    /**
+     * 
+     * @param {Object} option
      * @param {String} options.orderField
      * @param {"desc" | "asc"} options.orderDirection
      * @param {QuerySnapshot} options.lastSnapshot
      * @param {Number} options.limit
      */
      async getNextPage(options){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+
         const lastDoc = options.lastSnapshot ? options.lastSnapshot.docs[options.lastSnapshot.docs.length - 1] : null;
 
         if(!lastDoc){
-            return await this._superRepository.getTopOrderedBy({orderField: options.orderField, orderDirection: options.orderDirection, limit: options.limit});
+            return await this.getTopOrderedBy({orderField: options.orderField, orderDirection: options.orderDirection, limit: options.limit});
         }
         const nextQuery = 
             query(collection(this._firestore, this.collection).withConverter(this._converter),
             orderBy(options.orderField, options.orderDirection),
             startAfter(lastDoc),
-            limit(options.limit));
+            limit(options.limit),
+            where("createdBy","==", this._currentUser.uid));
             
-        return await this._superRepository.getDocs(nextQuery);
+        return await this.getDocuments(nextQuery);
     }
+    /**
+     * 
+     * @param {Object} option
+     * @param {String} options.orderField
+     * @param {"desc" | "asc"} options.orderDirection
+     * @param {QuerySnapshot} options.lastSnapshot
+     * @param {Number} options.limit
+     */
+    async getPrevPage(options){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+
+        const firstDoc = options.lastSnapshot ? options.lastSnapshot.docs[0] : null;
+
+        if(!firstDoc){
+            return await this.getTopOrderedBy({orderField: options.orderField, orderDirection: options.orderDirection, limit: options.limit});
+        }
+        const prevQuery = 
+            query(collection(this._firestore, this.collection).withConverter(this._converter),
+            orderBy(options.orderField, options.orderDirection),
+            endBefore(firstDoc),
+            limit(options.limit),
+            where("createdBy","==", this._currentUser.uid));
+            
+        return await this.getDocuments(prevQuery);
+    }
+    /**
+      * Sets the user instance to adhere to the firestore rule that requires the Auth instance.
+      * @param {UserInfo} currentUser 
+      */
+     setCurrentUser(currentUser){
+        this._currentUser = currentUser;
+     }
 }
 
 const sample = new TradeRepository();

@@ -1,12 +1,15 @@
+/**
+ * Firestore Collection: tra_trade_setting
+ * TradeSetting  is a an entity DataModel that where we store data inputs from the user. 
+ *  - records are unique per User Entity ( 1 User = 0 | 1 TradeSetting)
+ *  - take note to only use members for calculation. any calculation that uses Trade should be handled in the TradeCalculator.
+ *   
+ *  CREATED: 202208xx - adzz
+ *  UPDATED: 20220829 - adzz
+ */
 export default class TradeSetting{
 
     /**
-     * TradeSetting  is a an entity DataModel that where we store data inputs from the user. 
-     *  - records are unique per User Entity ( 1 User = 0 | 1 TradeSetting)
-     *  - take note to only use members for calculation. any calculation that uses Trade should be handled in the TradeCalculator.
-     * 
-     * CREATED: 202208xx - adzz
-     * UPDATED: 20220829 - adzz
      * @param {String} id 
      * @param {Number} portfolioValue 
      * @param {Number} realizedPnL
@@ -24,10 +27,11 @@ export default class TradeSetting{
      * @param {Number} capPortRiskPercent 
      * @param {Number} riskRewardMultiplier 
      * @param {String} userID 
+     * @param {String} uid firestore auth.uid
      */
     constructor(id,portfolioValue, realizedPnL, tradeCapital, tradePortCapital, leverage,range,rangeMultiplier,riskScope,
                 riskDeviationPercent, acceptableSpread, minSpread, portRiskTradingThreshold,capRiskTradingThreshold,
-                capPortRiskPercent, riskRewardMultiplier, userID
+                capPortRiskPercent, riskRewardMultiplier, userID, uid
         ){
             this.id =  id
             this.portfolioValue = portfolioValue
@@ -46,6 +50,7 @@ export default class TradeSetting{
             this._capPortRiskPercent = capPortRiskPercent
             this.riskRewardMultiplier = riskRewardMultiplier
             this.userID = userID
+            this.uid = uid
     }
     /**
      * @param {String} val
@@ -108,6 +113,7 @@ export class NullTradeSetting{
      * @param {Number} capPortRiskPercent 
      * @param {Number} riskRewardMultiplier 
      * @param {String} userID 
+     * @param {String} uid
      */
      constructor(){
         this.id =  ""
@@ -127,5 +133,6 @@ export class NullTradeSetting{
         this.capPortRiskPercent = 0
         this.riskRewardMultiplier = 0
         this.userID = ""
+        this.uid = ""
     }
 }

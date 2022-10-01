@@ -23,14 +23,33 @@ service cloud.firestore {
 		//-------------END OF MAIN MODULE RULES-------------//
 
 		//-------------START OF TRC MODULE RULES-------------//
-		match /trc_user/{userID}{
-			allow read, write: 
-				if request.auth != null &&
-				   true;
+		match /tra_user/{userID}{
+			allow read, update, delete: if 
+				request.auth != null && resource.data["uid"] == request.auth.uid;
+			allow create: if request.auth != null
 		}
+		match /tra_appdata/{appDataID}{
+			allow read, update, delete: if 
+				request.auth != null &&
+				resource.data["uid"] == request.auth.uid;
+			allow create: if request.auth != null
+		}
+		match /tra_trade_setting/{settingsID}{
+			allow read, update, delete: if request.auth != null && request.auth.uid == resource.data["uid"];
+			allow create: if request.auth != null
+		}
+		match /tra_trade/{tradeID}{
+			allow read, update, delete: if 
+				request.auth != null && resource.data["createdBy"] == request.auth.uid;
+				
+			allow create: if 
+				request.auth != null &&
+				request.time != request.resource.data.createdDate;	
+		}
+
 		//-------------END OF TRC MODULE RULES-------------//
-		match /{document=**} {
-		allow read, write: if request.auth != null; 
-		}
+		// match /{document=**} {
+		// 	allow read, write: if request.auth != null; 
+		// }
 	}
 }

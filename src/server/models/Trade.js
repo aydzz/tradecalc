@@ -1,15 +1,16 @@
-import { Timestamp } from "firebase/firestore";
 /**
+* Firestore Collection: tra_trade
+* Trade is a an entity DataModel that where we store data inputs from the user. 
+*  - This is mainly for transactional data which is essentially the trade that the user make ( in session, not journal log)
+*  - take note to only use members for calculation. any calculation that uses TradeSetting should be handled in the TradeCalculator.
+* 
+* CREATED: 202208xx - adzz
+* UPDATED: 20220829 - adzz
+*/
+import { Timestamp } from "firebase/firestore";
 
- */
 export default class Trade {
     /**
-     * Trade is a an entity DataModel that where we store data inputs from the user. 
-     *  - This is mainly for transactional data which is essentially the trade that the user make ( in session, not journal log)
-     *  - take note to only use members for calculation. any calculation that uses TradeSetting should be handled in the TradeCalculator.
-     * 
-     * CREATED: 202208xx - adzz
-     * UPDATED: 20220829 - adzz
      * 
      * @param {String} id 
      * @param {String} direction 
@@ -30,7 +31,7 @@ export default class Trade {
      * @param {Number} exitPrice 
      * @param {Number} tradeValue 
      * @param {String} status
-     * @param {String} createdBy 
+     * @param {String} createdBy firestore auth.uid
      * @param {Date | Timestamp} createdDate 
 
      */

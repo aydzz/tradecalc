@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TradeForm from './components/TradeForm'
-import TradingOverview, { TradingOverviewTable } from './components/TradingOverview'
+import { TradingOverviewTable } from './components/TradingOverview'
 import MarketOverviewWidget from '../../components/Widget/TradingView/MarketOverviewWidget'
 import TradeLogs from './components/TradeLogs'
 import Paginator from '../../components/Paginator'
 import AdvancedRealTimeChart from '../../components/Widget/TradingView/AdvancedRealTimeChart'
-import tradeSettingService from "../../server/service/TradeSettingService";
-import userService from "../../server/service/UserService"
 import {useAuth} from "../../contexts/AuthContext";
 import TradeSetting, { NullTradeSetting } from '../../server/models/TradeSetting'
 import Trade, { NullTrade } from '../../server/models/Trade'
@@ -16,6 +14,13 @@ import OverlayLoader from '../../components/Loaders/OverlayLoader'
 import CardErrorBoundary from '../../components/ErrorBoundaries/CardErrorBoundary'
 import SettingsUnset from './components/SettingsUnset'
 import { useTradeSettings } from '../../contexts/TradeSettingsContext'
+import { useAppData } from '../../contexts/AppDataContext'
+/**
+ * Typing for JSDoc
+ */
+import AppData from '../../server/models/AppData';
+import TradingOverview from './components/TradingOverview'
+import tradeService from '../../server/service/TradeLogService'
 
 export default function CalculatorIndex() {
     /**@type {[Trade, Function]} */
@@ -24,13 +29,23 @@ export default function CalculatorIndex() {
     const [tradeSettings, setTradeSettings] = useState(new NullTradeSetting());
     /**@type {[TradeCalculator, Function]} */
     const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
+
+    console.log(tradeService);
     
     const tradeSettingsCtx = useTradeSettings();
 
     const [loading, setLoading] = useState(tradeSettingsCtx.loading);
     const [settingsUnset, setSettingsUnset] = useState(true);
     const [error, setError] = useState(tradeSettingsCtx.error);
-    const {currentUser} = useAuth();
+    const {appData}  = useAppData();
+
+    //For TradeLogs.jsx
+    const MAX_RECORDS_PER_PAGE = 10;
+    const [page, setPage] = useState(1);
+    const [logsRerenderer, setLogsRerenderer] = useState();
+    const [tradeLogs, setTradeLogs] = useState([]);
+    const [nextPageHandler, setNextPageHandler] = useState();
+    const [prevPageHandler, setPrevPageHandler] = useState();
     
     useEffect(function(){
         if(tradeSettingsCtx.tradeSettings){
@@ -40,7 +55,7 @@ export default function CalculatorIndex() {
         }
         
     },[tradeSettingsCtx])
-    //EFFECT: Fetches current User's TradeSettingInstance to use by Calculator Components
+    //Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
         if(tradeSettingsCtx.error){
             setLoading(tradeSettingsCtx.loading);
@@ -49,12 +64,14 @@ export default function CalculatorIndex() {
         }
     },[tradeSettingsCtx.error])
 
-    //EFFECT: throws component level ( this ) error to trigger ErrorBoundary fallback UI.
+    //Throws component level ( this ) error to trigger ErrorBoundary fallback UI.
     useEffect(function(){
         if(error){
             throw error;
         }
-    },[error])
+    },[error]);
+
+    console.log(logsRerenderer)
   return(
     <div className='content-wrapper'>
       <div className='container-fluid'>
@@ -158,6 +175,7 @@ export default function CalculatorIndex() {
                                 trade={trade} setTrade={setTrade} 
                                 tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
                                 tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
+                                logsRerenderer={logsRerenderer}
                                 ></TradeForm>
                             </CardErrorBoundary>
                         )
@@ -199,16 +217,45 @@ export default function CalculatorIndex() {
             </div>
           </div>
         </div>
-        <div className="col-lg-12 col-12">
+        <div className="col-lg-12 col-12" id="#trade-logs">
             <div className='card'>
                 <div className='card-header'>
                     <i className='bi bi-clipboard2-data'></i> Logs
                 </div>
                 <div className='card-body p-0 m-0 mb-2 overflow-auto'>
-                    <TradeLogs></TradeLogs>
+                    <TradeLogs 
+                        maxRecordsPerPage={MAX_RECORDS_PER_PAGE}
+                        parentStates = {
+                            {
+                                setLogsRerenderer: setLogsRerenderer,
+                                setTradeLogs: setTradeLogs,
+                                setNextPageHandler: setNextPageHandler,
+                                setPrevPageHandler: setPrevPageHandler,
+                                page: page,
+                                setPage:setPage
+                            }
+                        }
+                        ></TradeLogs>
                 </div>
                 <div className='card-footer'>
-                     <Paginator></Paginator>
+                    <div className='d-flex  justify-content-between'>
+                        <div>
+                            <p className='p-0 m-0 text-sm'>Showing {(page * MAX_RECORDS_PER_PAGE) - MAX_RECORDS_PER_PAGE} to {((page - 1)*MAX_RECORDS_PER_PAGE ) + tradeLogs.length} of {appData.totalTradeCount} trades</p>
+                        </div>
+                        <div>
+                        <Paginator 
+                            maxRecordsPerPage={MAX_RECORDS_PER_PAGE}
+                            total={appData.totalTradeCount}
+                            parentStates = {{
+                                setNextPageHandler: setNextPageHandler,
+                                setPrevPageHandler: setPrevPageHandler,
+                                page: page,
+                                setPage:setPage,
+                                tradeLogs: tradeLogs
+                            }}
+                            ></Paginator>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

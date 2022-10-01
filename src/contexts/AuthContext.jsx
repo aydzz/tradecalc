@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 import { UserInfo } from "firebase/auth";
 import userService from "../server/service/UserService";
+import tradeService from "../server/service/TradeLogService";
 
 const AuthContext = React.createContext();
 
@@ -27,6 +28,10 @@ export function AuthProvider({ children }) {
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
+      
+        //setting currentUser to all repository that needs the user UID.
+        tradeService.setCurrentUser(user);
+        
         userService.getBy("uid", user.userID).then(function(res){
           setCurrentUser(user);
           setUserDetails(res[0]);
@@ -69,7 +74,9 @@ export function AuthProvider({ children }) {
     },function(completed){
       console.warn("FIREBASE: Auth State Changed!");
     });
+    console.log(currentUser)
     return unsubscribe
+    
   },[])
 
   const contextValue = {
