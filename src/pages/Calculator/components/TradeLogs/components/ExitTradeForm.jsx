@@ -60,7 +60,6 @@ export default function ExitTradeForm(props) {
                 slHit.current.disabled = true;
     
                 exitOrderText.current.disabled = true;
-                console.log(tradeCalculator.takeProfitPrice);
                 setExitOrderVal(Number(tradeCalculator.takeProfitPrice).toFixed(2));
             }else{
                 exitSelectionInitState();
@@ -129,8 +128,6 @@ export default function ExitTradeForm(props) {
   return (
     loading ? loader :
     <form onSubmit={(e)=>{
-      e.preventDefault();
-      console.log(trade);
       const newTrade = Object.assign(new Trade(), trade);
       const newTradeSettings = Object.assign(new TradeSetting(), tradeSettings);
 
@@ -150,7 +147,11 @@ export default function ExitTradeForm(props) {
               "icon": "success",
               "title": "Trade Closed",
               "text": `${newTrade.id} was successfully closed.`
-            })
+            });
+            console.log("ACTUALLLLL")
+            console.log(props);
+            // props.pageForceUpdate.exec();
+            props.tradeLogsForceUpdate.exec();
         })
       })
 

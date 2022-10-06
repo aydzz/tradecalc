@@ -28,44 +28,46 @@ const CustomModal = styled(Modal)`
 export default function ExitModal(props) {
     const shown = props.shown;
     const setShown = props.setShown;
+    const pageForceUpdate = props.pageForceUpdate;
+    const tradeLogsForceUpdate = props.tradeLogsForceUpdate;
 
     const tradeID = props.tradeID;
     const formRef = useRef();
     const renderBackdrop = (props) => <Backdrop {...props} />;
+    console.log(props.pageForceUpdate);
   return (
-  <CustomModal
+    <CustomModal
         show={shown}
         onHide={() => setShown(false)}
         renderBackdrop={renderBackdrop}
         aria-labelledby="modal-label"
         className="modal-dialog mx-0 mt-4"
-      >
-       
-          <div className="modal-content">
-            <div className="modal-header">
-              <p className={`modal-title `.concat((props.tradeID ? "text-primary" : ""))}>{props.tradeID ?? props.title}</p>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" onClick={()=>{setShown(false)}}>×</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <CardErrorBoundary>
-                <ExitTradeForm tradeID={tradeID} formRef={formRef} setModalShown={setShown}/>
-              </CardErrorBoundary>
-            </div>
-            <div className="modal-footer justify-content-between">
-              <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>{setShown(false)}}>Close</button>
-              <button type="button" className="btn btn-primary"
-                onClick={(e)=>{
-                  e.preventDefault();
-                  formRef.current.dispatchEvent(
-                    new Event("submit", { bubbles: true, cancelable: true })
-                  );
-                }}
-              >Confirm</button>
-            </div>
-        </div>
-      </CustomModal>
+    >
+      <div className="modal-content">
+          <div className="modal-header">
+            <p className={`modal-title `.concat((props.tradeID ? "text-primary" : ""))}>{props.tradeID ?? props.title}</p>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" onClick={()=>{setShown(false)}}>×</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <CardErrorBoundary>
+              <ExitTradeForm tradeID={tradeID} formRef={formRef} setModalShown={setShown} pageForceUpdate={pageForceUpdate} tradeLogsForceUpdate={tradeLogsForceUpdate}/>
+            </CardErrorBoundary>
+          </div>
+          <div className="modal-footer justify-content-between">
+            <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>{setShown(false)}}>Close</button>
+            <button type="button" className="btn btn-primary"
+              onClick={(e)=>{
+                e.preventDefault();
+                formRef.current.dispatchEvent(
+                  new Event("submit", { bubbles: true, cancelable: true })
+                );
+              }}
+            >Confirm</button>
+          </div>
+      </div>
+    </CustomModal>
   )
 }
 

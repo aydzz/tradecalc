@@ -21,6 +21,8 @@ import { useAppData } from '../../contexts/AppDataContext'
 import AppData from '../../server/models/AppData';
 import TradingOverview from './components/TradingOverview'
 import tradeService from '../../server/service/TradeLogService'
+import useForceUpdate from '../../hooks/useForceUpdate'
+import { ShownTradesDesc } from './components'
 
 export default function CalculatorIndex() {
     /**@type {[Trade, Function]} */
@@ -29,8 +31,6 @@ export default function CalculatorIndex() {
     const [tradeSettings, setTradeSettings] = useState(new NullTradeSetting());
     /**@type {[TradeCalculator, Function]} */
     const [tradeCalculator, setTradeCalculator] = useState(new NullTradeCalculator());
-
-    console.log(tradeService);
     
     const tradeSettingsCtx = useTradeSettings();
 
@@ -38,11 +38,15 @@ export default function CalculatorIndex() {
     const [settingsUnset, setSettingsUnset] = useState(true);
     const [error, setError] = useState(tradeSettingsCtx.error);
     const {appData}  = useAppData();
-
+    const forceUpdate = useForceUpdate();
     //For TradeLogs.jsx
-    const MAX_RECORDS_PER_PAGE = 10;
+    const MAX_RECORDS_PER_PAGE = 5;
     const [page, setPage] = useState(1);
+
     const [logsRerenderer, setLogsRerenderer] = useState();
+    const [shownTradesDescRerenderer, setShownTradesDescRerenderer] = useState();
+    const [paginatorRerenderer, setPaginatorRerenderer] = useState();
+
     const [tradeLogs, setTradeLogs] = useState([]);
     const [nextPageHandler, setNextPageHandler] = useState();
     const [prevPageHandler, setPrevPageHandler] = useState();
@@ -53,8 +57,8 @@ export default function CalculatorIndex() {
             setTradeCalculator(new TradeCalculator(tradeSettingsCtx.tradeSettings, trade));
             setSettingsUnset(tradeSettingsCtx.tradeSettingsUnset);
         }
-        
-    },[tradeSettingsCtx])
+    },[tradeSettingsCtx]);
+
     //Fetches current User's TradeSettingInstance to use by Calculator Components
     useEffect(function(){
         if(tradeSettingsCtx.error){
@@ -62,7 +66,7 @@ export default function CalculatorIndex() {
             setError(tradeSettingsCtx.error)
             setSettingsUnset(tradeSettingsCtx.tradeSettingsUnset);
         }
-    },[tradeSettingsCtx.error])
+    },[tradeSettingsCtx.error]);
 
     //Throws component level ( this ) error to trigger ErrorBoundary fallback UI.
     useEffect(function(){
@@ -71,7 +75,10 @@ export default function CalculatorIndex() {
         }
     },[error]);
 
-    console.log(logsRerenderer)
+    useEffect(function(){
+        
+    },[shownTradesDescRerenderer, paginatorRerenderer])
+    
   return(
     <div className='content-wrapper'>
       <div className='container-fluid'>
@@ -204,7 +211,6 @@ export default function CalculatorIndex() {
                             )
                         )
                     }
-                    
                 </div>
                 <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
             </div>
@@ -231,16 +237,33 @@ export default function CalculatorIndex() {
                                 setTradeLogs: setTradeLogs,
                                 setNextPageHandler: setNextPageHandler,
                                 setPrevPageHandler: setPrevPageHandler,
+                                setShownTradesDescRerenderer: setShownTradesDescRerenderer,
+                                setPaginatorRerenderer: setPaginatorRerenderer,
+                                setPage:setPage,
+                                forceUpdate: forceUpdate,
                                 page: page,
-                                setPage:setPage
+                                shownTradesDescRerenderer: shownTradesDescRerenderer,
+                                paginatorRerenderer: paginatorRerenderer
                             }
                         }
-                        ></TradeLogs>
+                    >
+                    </TradeLogs>
                 </div>
                 <div className='card-footer'>
                     <div className='d-flex  justify-content-between'>
                         <div>
-                            <p className='p-0 m-0 text-sm'>Showing {(page * MAX_RECORDS_PER_PAGE) - MAX_RECORDS_PER_PAGE} to {((page - 1)*MAX_RECORDS_PER_PAGE ) + tradeLogs.length} of {appData.totalTradeCount} trades</p>
+                           {/* Insert ShownTradeDesc.jsx here.. */}
+                           <ShownTradesDesc
+                            parentStates={
+                                {
+                                    setShownTradesDescRerenderer: setShownTradesDescRerenderer
+                                }
+                            }
+                            page={page}
+                            maxRecordsPerPage= {MAX_RECORDS_PER_PAGE}
+                            tradeLogsLength={tradeLogs.length}
+                            totalTradeCount={appData.totalTradeCount}
+                           ></ShownTradesDesc>
                         </div>
                         <div>
                         <Paginator 
@@ -249,6 +272,8 @@ export default function CalculatorIndex() {
                             parentStates = {{
                                 setNextPageHandler: setNextPageHandler,
                                 setPrevPageHandler: setPrevPageHandler,
+                                setPaginatorRerenderer: setPaginatorRerenderer,
+                                paginatorRerenderer: paginatorRerenderer,
                                 page: page,
                                 setPage:setPage,
                                 tradeLogs: tradeLogs

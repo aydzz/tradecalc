@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useAppData } from "../../contexts/AppDataContext";
+import useForceUpdate from "../../hooks/useForceUpdate";
 
 export default function Paginator(props) {
   const MAX_PAGE_BUTTONS = props.maxPerPage;
@@ -18,6 +20,11 @@ export default function Paginator(props) {
   const [pageNumberOffset, setPageNumberOffset] = useState(0);
   const pageButtonsEl = [];
   const {appData} = useAppData()
+  const forceUpdate = useForceUpdate();
+  
+  useEffect(function(){
+    parentStates.setPaginatorRerenderer(forceUpdate);
+  },[]);
 
   const pageCount = Math.ceil(appData.totalTradeCount/maxRecordsPerPage) < MAX_PAGE_BUTTONS ? Math.ceil(appData.totalTradeCount/maxRecordsPerPage) : MAX_PAGE_BUTTONS
   for (let i = 0; i < pageCount; i++) {
@@ -32,14 +39,12 @@ export default function Paginator(props) {
   }
 
   const nextClickHandler = function (e) {
-    
     if(currentPage <= pageCount){
       if (MAX_PAGE_BUTTONS + pageNumberOffset - currentPage === 0) {
         setPageNumberOffset(pageNumberOffset + 1);
       }
       setCurrentPage(currentPage + 1);
     }
-    
   };
   const prevClickHandler = function (e) {
     if (currentPage !== 1) {
@@ -47,10 +52,9 @@ export default function Paginator(props) {
         if (currentPage - (pageNumberOffset + 1) === 0) {
           setPageNumberOffset(pageNumberOffset - 1);
         }
-      }
-      // debugger;
+      }   
       setCurrentPage(currentPage - 1);
-    } else {
+    }else{
       //disable prev here..
     }
   };

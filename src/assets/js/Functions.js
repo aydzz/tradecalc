@@ -25,3 +25,22 @@ export function getUnsplashURL(imageID, width, height){
     
     return moduleClassNames.join(" ");
 }
+
+/**
+ * Paginate an array.
+ * @param {Array} list
+ * @param {Number} recPerPage
+ */
+export function paginateList(list, perPageCount){
+    const newList = list;
+    const temp = [];
+    const recCount = list.length;
+    const pageCount = Math.ceil(recCount/perPageCount);
+
+    for(let i=0; i<pageCount;i++){
+        const records = newList.splice(0,perPageCount);
+        temp.push([...records]);
+    }
+
+    return temp;
+}

@@ -6,9 +6,9 @@ import { swal } from '../../../../assets/theme/utils/swal';
 import appDataService from '../../../../server/service/AppDataService';
 import { useAppData } from '../../../../contexts/AppDataContext';
 import appLogger from '../../../../assets/js/AppLogger';
-import useForceUpdate from '../../../../hooks/useForceUpdate'
+import useForceUpdate from '../../../../hooks/useForceUpdate';
+import { connectStorageEmulator } from 'firebase/storage';
 import { useAuth } from '../../../../contexts/AuthContext';
-import { paginateList } from '../../../../assets/js/Functions';
 
 export default function TradeLogs(props) {
   /**
@@ -29,9 +29,9 @@ export default function TradeLogs(props) {
   const forceUpdate = useForceUpdate();
 
   const [logs, setLogs] = useState([]);
-  const [paginatedLogs, setPaginatedLogs] = useState([]);
-  const [displayedLogs, setDisplayedLogs] = useState([])
-
+  
+  const [currentSnapshot, setCurrentSnapshot] = useState(null);
+  const [prevSnapshot, setPrevSnapShot] = useState(null);
 
   //on render effects
   useEffect(function(){
@@ -41,34 +41,36 @@ export default function TradeLogs(props) {
       }
     );
   },[]);
-  useEffect(function(){
-
-  },[parentStates.shownTradesDescRerenderer, parentStates.paginatorRerenderer])
 
   useEffect(function(){
-    setPaginatedLogs(paginateList(logs,5));
-  },[logs])
+    setPrevSnapShot(currentSnapshot);
+    tradeService.getNextPage({
+      orderField: "createdDate", 
+      createdBy: currentUser.uid,
+      orderDirection:"desc",
+      limit: maxRecordsPerPage,
+      lastSnapshot: currentSnapshot
+    }).then(function(res){
+      setCurrentSnapshot(res.querySnapshot);
+      setLogs(res.list);
+      parentStates.setTradeLogs(res.list)// passing the list to parent ( Calculator )
+      })
+  },[page]);
 
   useEffect(function(){
-    console.log(paginatedLogs);
-    console.log(logs);
-    if(paginatedLogs.length){
-        setDisplayedLogs(paginatedLogs[page-1]);
-    }
-  },[paginatedLogs, page])
+    tradeService.getNextPage({
+      orderField: "createdDate", 
+      createdBy: currentUser.uid,
+      orderDirection:"desc",
+      limit: 10,
+      lastSnapshot: prevSnapshot
+    }).then(function(res){
+      setCurrentSnapshot(res.querySnapshot);
+      setLogs(res.list);
+    })
+  },[forceUpdate.renderID])
 
-  useEffect(function(){
-    tradeService.getAll().then(function(res){
-      setLogs(res);
-    });
-    // if(parentStates.shownTradesDescRerenderer && parentStates.paginatorRerenderer){
-    //   parentStates.shownTradesDescRerenderer.exec();
-    //   parentStates.paginatorRerenderer.exec();
-    // }
-    parentStates.forceUpdate.exec();
-  },[forceUpdate.renderID]);
-
-  const logsEl = displayedLogs.map(
+  const logsEl = logs.map(
     /**@param {Trade} log */
     function(log,i){
       return (
@@ -76,7 +78,8 @@ export default function TradeLogs(props) {
           <td className="text-xs">{i + 1 +((page * maxRecordsPerPage) - maxRecordsPerPage)}</td>
           <td className="text-xs">{log.asset}</td>
           <td className="text-xs">
-            <span className={`badge text-uppercase ${log.direction === "short" ? "bg-danger" : log.direction === "long" ? "bg-success": "bg-default"}`}>{log.direction}</span>
+              <span 
+                className={`badge text-uppercase ${log.direction === "short" ? "bg-danger" : log.direction === "long" ? "bg-success": "bg-default"}`}>{log.direction}</span>
           </td>
           <td className="text-xs">{Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(log.notionalValue).toFixed(2))}</td>
           <td className="text-xs">{Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(log.entryPrice).toFixed(2))}</td>
@@ -143,7 +146,7 @@ export default function TradeLogs(props) {
   )
   return (
     <>
-      <ExitModal shown={exitModalShown} setShown={setExitModalShown} tradeID={exitTradeID} pageForceUpdate={parentStates.forceUpdate} tradeLogsForceUpdate={forceUpdate}/>
+      <ExitModal shown={exitModalShown} setShown={setExitModalShown} tradeID={exitTradeID}/>
       <table className="table table-sm">
           <thead>
           <tr>
@@ -166,6 +169,8 @@ export default function TradeLogs(props) {
     </>
   )
 }
+
+
 
 TradeLogs.defaultProps = {
   maxRecordsPerPage: 10
