@@ -26,9 +26,9 @@ export function ShownTradesDesc(props){
     useEffect(function(){
         parentStates.setShownTradesDescRerenderer(forceUpdate)
     },[]);
-    return(
+    return props.totalTradeCount ? (
         <div>
-            <p className='p-0 m-0 text-sm'>Showing {(props.page * props.maxRecordsPerPage) - props.maxRecordsPerPage} to {((props.page - 1) * props.maxRecordsPerPage ) + props.tradeLogsLength} of {props.totalTradeCount} trades</p>
+            <p className='p-0 m-0 text-sm'>Showing {((props.page * props.maxRecordsPerPage) - props.maxRecordsPerPage) + 1} to {((props.page - 1) * props.maxRecordsPerPage ) + props.tradeLogsLength} of {props.totalTradeCount} trades</p>
         </div>
-    );
+    ) : null;
 }

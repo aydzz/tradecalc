@@ -148,8 +148,6 @@ export default function ExitTradeForm(props) {
               "title": "Trade Closed",
               "text": `${newTrade.id} was successfully closed.`
             });
-            console.log("ACTUALLLLL")
-            console.log(props);
             // props.pageForceUpdate.exec();
             props.tradeLogsForceUpdate.exec();
         })

@@ -5,7 +5,6 @@ import ExitModal from './components/ExitModal';
 import { swal } from '../../../../assets/theme/utils/swal';
 import appDataService from '../../../../server/service/AppDataService';
 import { useAppData } from '../../../../contexts/AppDataContext';
-import appLogger from '../../../../assets/js/AppLogger';
 import useForceUpdate from '../../../../hooks/useForceUpdate'
 import { useAuth } from '../../../../contexts/AuthContext';
 import { paginateList } from '../../../../assets/js/Functions';
@@ -41,19 +40,20 @@ export default function TradeLogs(props) {
       }
     );
   },[]);
-  useEffect(function(){
 
+  useEffect(function(){
+    //force rerender when the following changes
   },[parentStates.shownTradesDescRerenderer, parentStates.paginatorRerenderer])
 
   useEffect(function(){
     setPaginatedLogs(paginateList(logs,5));
+
   },[logs])
 
   useEffect(function(){
-    console.log(paginatedLogs);
-    console.log(logs);
     if(paginatedLogs.length){
         setDisplayedLogs(paginatedLogs[page-1]);
+        parentStates.setTradeLogs(paginatedLogs[page-1])
     }
   },[paginatedLogs, page])
 
@@ -61,14 +61,10 @@ export default function TradeLogs(props) {
     tradeService.getAll().then(function(res){
       setLogs(res);
     });
-    // if(parentStates.shownTradesDescRerenderer && parentStates.paginatorRerenderer){
-    //   parentStates.shownTradesDescRerenderer.exec();
-    //   parentStates.paginatorRerenderer.exec();
-    // }
     parentStates.forceUpdate.exec();
   },[forceUpdate.renderID]);
-
-  const logsEl = displayedLogs.map(
+  
+  const logsEl = displayedLogs.length ? displayedLogs.map(
     /**@param {Trade} log */
     function(log,i){
       return (
@@ -140,10 +136,10 @@ export default function TradeLogs(props) {
       </tr>
       );
     }
-  )
+  ) : <tr><td colSpan={10} className="text-center">No trades to show...</td></tr>
   return (
     <>
-      <ExitModal shown={exitModalShown} setShown={setExitModalShown} tradeID={exitTradeID} pageForceUpdate={parentStates.forceUpdate} tradeLogsForceUpdate={forceUpdate}/>
+      <ExitModal shown={exitModalShown} setShown={setExitModalShown} tradeID={exitTradeID} tradeLogsForceUpdate={forceUpdate}/>
       <table className="table table-sm">
           <thead>
           <tr>

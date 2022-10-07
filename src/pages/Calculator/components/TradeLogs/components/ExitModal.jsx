@@ -28,13 +28,12 @@ const CustomModal = styled(Modal)`
 export default function ExitModal(props) {
     const shown = props.shown;
     const setShown = props.setShown;
-    const pageForceUpdate = props.pageForceUpdate;
-    const tradeLogsForceUpdate = props.tradeLogsForceUpdate;
+    
+    const tradeLogsForceUpdate = props.tradeLogsForceUpdate; // use this instead of the pageForceUpdate as since it is being read as undefined ni the ExitForm.jsx
 
     const tradeID = props.tradeID;
     const formRef = useRef();
     const renderBackdrop = (props) => <Backdrop {...props} />;
-    console.log(props.pageForceUpdate);
   return (
     <CustomModal
         show={shown}
@@ -52,7 +51,7 @@ export default function ExitModal(props) {
           </div>
           <div className="modal-body">
             <CardErrorBoundary>
-              <ExitTradeForm tradeID={tradeID} formRef={formRef} setModalShown={setShown} pageForceUpdate={pageForceUpdate} tradeLogsForceUpdate={tradeLogsForceUpdate}/>
+              <ExitTradeForm tradeID={tradeID} formRef={formRef} setModalShown={setShown} tradeLogsForceUpdate={tradeLogsForceUpdate}/>
             </CardErrorBoundary>
           </div>
           <div className="modal-footer justify-content-between">

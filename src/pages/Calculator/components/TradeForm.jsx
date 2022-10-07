@@ -12,7 +12,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from "../../../contexts/AuthContext";
 
 export default function TradeForm(props) {
-  console.log(props);
   /**@type {Trade} */
   const trade = props.trade;
   const setTrade = props.setTrade;
@@ -40,7 +39,6 @@ export default function TradeForm(props) {
   },[trade])
 
   // useEffect(function(e){
-  //   console.log(trade);
   //   setTradeCalculator(new TradeCalculator(tradeSettings, trade));
   // },[tradeCalculator]);
   
@@ -59,14 +57,12 @@ export default function TradeForm(props) {
       const newAppData = appData.incrementTradeCount()
       appDataService.save(newAppData).then(function(res){
         setAppData(newAppData);
-        console.log(newAppData);
         Toast.fire({
           title: "Trade has been logged!",
           icon: "success"
         })
         logsRerenderer(uuidv4());
       }).catch(function(err){
-        console.log(err);
       })
     })
   }

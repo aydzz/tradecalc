@@ -26,12 +26,15 @@ export default function Paginator(props) {
     parentStates.setPaginatorRerenderer(forceUpdate);
   },[]);
 
-  const pageCount = Math.ceil(appData.totalTradeCount/maxRecordsPerPage) < MAX_PAGE_BUTTONS ? Math.ceil(appData.totalTradeCount/maxRecordsPerPage) : MAX_PAGE_BUTTONS
+  const pageCount = Math.ceil(appData.totalTradeCount/maxRecordsPerPage) <= MAX_PAGE_BUTTONS ? Math.ceil(appData.totalTradeCount/maxRecordsPerPage) : MAX_PAGE_BUTTONS
   for (let i = 0; i < pageCount; i++) {
     const num = i + 1 + pageNumberOffset;
     pageButtonsEl.push(
-      <li key={num} class={`page-item ${num === currentPage ? "active" : ""}`}>
-        <a class="page-link" href="#">
+      <li key={num} class={`page-item ${num === currentPage ? "active" : ""}`} onClick={()=>{
+        parentStates.setPage(num);
+        setActivePage(num);
+      }}>
+        <a class="page-link" href="#" onClick={(e)=>{e.preventDefault();}}>
           {num}
         </a>
       </li>
@@ -39,10 +42,13 @@ export default function Paginator(props) {
   }
 
   const nextClickHandler = function (e) {
-    if(currentPage <= pageCount){
+    if(currentPage < pageCount){
       if (MAX_PAGE_BUTTONS + pageNumberOffset - currentPage === 0) {
         setPageNumberOffset(pageNumberOffset + 1);
       }
+      setCurrentPage(currentPage + 1);
+    }else if((currentPage === pageCount || currentPage === pageCount + pageNumberOffset) && currentPage < Math.ceil(appData.totalTradeCount/maxRecordsPerPage)){
+      setPageNumberOffset(pageNumberOffset + 1);
       setCurrentPage(currentPage + 1);
     }
   };
@@ -58,7 +64,7 @@ export default function Paginator(props) {
       //disable prev here..
     }
   };
-  return (
+  return appData.totalTradeCount ? (
     <ul class="pagination pagination-sm m-0">
       <li class="page-item prev" onClick={prevClickHandler}>
         <a class="page-link" href="#trade-logs">
@@ -72,7 +78,7 @@ export default function Paginator(props) {
         </a>
       </li>
     </ul>
-  );
+  ) : null;
 }
 
 Paginator.defaultProps = {
