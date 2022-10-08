@@ -4,6 +4,7 @@ import { UserInfo } from "firebase/auth";
 import userService from "../../../server/service/UserService";
 import User, {NullUser} from '../../../server/models/User';
 import OverlayLoader from '../../../components/Loaders/OverlayLoader';
+import appLogger from '../../../assets/js/AppLogger';
 
 export default function AccountForm(props) {
     /**@type {{UserInfo}} */
@@ -18,10 +19,10 @@ export default function AccountForm(props) {
     useEffect(function(){
         userService.getBy("uid",currentUser.uid).then(function(res){
             if(!res){
-                console.error("APP: User was not found.")
+                appLogger.error("APP: User was not found.")
             }else{
                 if(res.length > 1){
-                    console.error("APP: Multiple instance of uid detected");
+                    appLogger.error("APP: Multiple instance of uid detected");
                 }else{
                     setUser(res[0]);
                 }

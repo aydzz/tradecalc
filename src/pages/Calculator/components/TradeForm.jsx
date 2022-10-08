@@ -37,10 +37,6 @@ export default function TradeForm(props) {
 
     setTradeCalculator(newTradeCalculator);
   },[trade])
-
-  // useEffect(function(e){
-  //   setTradeCalculator(new TradeCalculator(tradeSettings, trade));
-  // },[tradeCalculator]);
   
   const clearForm = function(){
     //do something here...

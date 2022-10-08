@@ -1,5 +1,5 @@
 import { AuthCredential } from "firebase/auth";
-import { Firestore, DocumentSnapshot, QuerySnapshot, endBefore, where } from "firebase/firestore";
+import { Firestore, DocumentSnapshot, QuerySnapshot, endBefore, where, serverTimestamp } from "firebase/firestore";
 import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";
 
 import Trade from "../models/Trade"
@@ -115,6 +115,7 @@ export default class TradeRepository{
     }
     /**
      * Queries all of the documents.
+     * @param {orderBy} orderBy
      * @returns {Promise<Array<Trade>>}
      */
      async getAll(){
@@ -122,7 +123,7 @@ export default class TradeRepository{
             throw new MissingUserError();
         }
 
-        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("createdBy","==", this._currentUser.uid));
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), orderBy("createdDate", "desc"), where("createdBy","==", this._currentUser.uid));
 
         const querySnapshot = await getDocs(q);
         const list = [];
@@ -156,13 +157,43 @@ export default class TradeRepository{
             querySnapshot: querySnapshot
         };
     }
+    /**
+     * 
+     * @param {Trade} docData 
+     * @returns 
+     */
     async save(docData){
+        if(docData.id){
+            docData.lastUpdatedDate = serverTimestamp()
+        }else{
+            docData.createdDate = serverTimestamp()
+        }
         return await this._superRepository.save(docData);
     }
+    /**
+     * 
+     * @param {Array<Trade>} docList 
+     * @returns 
+     */
     async saveAll(docList){
-       return await this._superRepository.saveAll(docList);
+        const newDocList = docList.map(function(doc){
+            if(doc.id){
+                doc.lastUpdatedDate = serverTimestamp();
+            }else{
+                doc.createdDate = serverTimestamp();
+            }
+            return doc;
+        })
+       return await this._superRepository.saveAll(newDocList);
     }
+    /**
+     * 
+     * @param {String} docID 
+     * @param {Trade} docData 
+     * @returns 
+     */
      async update(docID, docData){
+        docData.lastUpdatedDate = serverTimestamp();
         return await this._superRepository.update(docID, docData);
     }
     async delete(docID){

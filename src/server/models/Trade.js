@@ -33,11 +33,12 @@ export default class Trade {
      * @param {String} status
      * @param {String} createdBy firestore auth.uid
      * @param {Date | Timestamp} createdDate 
+     * @param {Date | Timestamp} lastUpdatedDate
 
      */
     constructor(id, direction, orderType, riskType, asset, entryPrice, accountOpen, quantity, cash, cashQty, leverage,
         allowableCapitalLoss, stoplossType, stoplossPrice, takeProfitType, takeProfitPrice, exitPrice, tradeValue, status, createdBy,
-        createdDate
+        createdDate, lastUpdatedDate
     ) {
         this.id = id;
         this.direction = direction;
@@ -64,6 +65,7 @@ export default class Trade {
         this.status = status;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
+        this.lastUpdatedDate = lastUpdatedDate;
     }
     /**
      * SETTERS AND GETTERS

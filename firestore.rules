@@ -41,10 +41,12 @@ service cloud.firestore {
 		match /tra_trade/{tradeID}{
 			allow read, update, delete: if 
 				request.auth != null && resource.data["createdBy"] == request.auth.uid;
-				
+			allow update: if
+				request.auth != null && resource.data["createdBy"] == request.auth.uid &&
+				request.time == request.resource.data.lastUpdatedDate;	
 			allow create: if 
 				request.auth != null &&
-				request.time != request.resource.data.createdDate;	
+				request.time == request.resource.data.createdDate;	
 		}
 
 		//-------------END OF TRC MODULE RULES-------------//
