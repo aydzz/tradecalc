@@ -44,3 +44,12 @@ export function paginateList(list, perPageCount){
 
     return temp;
 }
+/**
+ * 
+ * @param {*} formik formik props (from Formik)
+ * @param {String} fieldName 
+ * @returns 
+ */
+export function inputValidationString(formik,fieldName){
+    return `${(formik.touched[fieldName] && formik.errors[fieldName]) ? "is-invalid" : (formik.touched[fieldName] && !formik.errors[fieldName]) ? "is-valid" : ""}`
+}

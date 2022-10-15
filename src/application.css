@@ -43075,4 +43075,12 @@ a.text-muted:hover {
   transition: 0.1s ease-in-out !important;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
 /*# sourceMappingURL=application.css.map */
