@@ -54,21 +54,24 @@ export default function TradingForm(props) {
             throw error;
         }
     },[error])
-    const submitHandler = function(params){
-        console.log(params);
+    const submitHandler = function(values, {resetForm, ...rest}){
+        console.log(values);
+        console.log(rest);
         tradeSetting.userID = user.id;
         tradeSetting.uid = currentUser.uid;
         tradeSettingService.save(tradeSetting).then(function(res){
             Toast.fire({
                 title: "Settings Updated",
                 icon: "success"
-            })
+            });
+            resetForm();
         }).catch(function(e){
             Toast.fire({
                 title: "Error",
                 text: "There was an error updating your settings",
                 icon: "error"
             })
+            resetForm();
         })
     }
     
@@ -160,15 +163,14 @@ export default function TradingForm(props) {
         onSubmit={submitHandler}
     >
         {function(formik){
-            console.log(formik);
             return(
                 <Form className="form-horizontal">
                     <h5 className="lead mb-3">ACCOUNT/PLATFORM PARAMETERS <i className='float-right p-1 bi bi-gear'></i></h5>
                     <hr></hr>
                     
                     <div className="form-group row">
-                        <label htmlFor="portfolioValue" className="col-sm-2 col-form-label">Portfolio Value</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="portfolioValue" className="col-lg-3 col-12 col-form-label">Portfolio Value</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" className={`form-control ${inputValidationString(formik,"portfolioValue")}`} placeholder="Enter current Portfolio Value"
                             name="portfolioValue"
                             {...formik.getFieldProps("portfolioValue")}
@@ -185,8 +187,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Realized Profit/Loss</label>
-                    <div className='col-sm-10'>
+                    <label className="col-lg-3 col-12 col-form-label">Realized Profit/Loss</label>
+                    <div className='col-lg-9 col-12'>
                         <div className="input-group input-group">
                             <div className="input-group-prepend">
                             <span className="input-group-text">
@@ -206,8 +208,8 @@ export default function TradingForm(props) {
                     </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputName" className="col-sm-2 col-form-label">Trade Capital</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputName" className="col-lg-3 col-12 col-form-label">Trade Capital</label>
+                        <div className="col-lg-9 col-12">
                         <input 
                             type="number" 
                             className={`form-control ${inputValidationString(formik,"tradeCapital")}`} 
@@ -226,8 +228,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Trade-Portfolio Capital</label>
-                    <div className='col-sm-10'>
+                    <label className="col-lg-3 col-12 col-form-label">Trade-Portfolio Capital</label>
+                    <div className='col-lg-9 col-12'>
                         <div className="input-group input-group">
                             <div className="input-group-prepend">
                             <span className="input-group-text">
@@ -247,8 +249,8 @@ export default function TradingForm(props) {
                     </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Leverage</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Leverage</label>
+                        <div className="col-lg-9 col-12">
                         <input 
                             type="number" 
                             className={`form-control ${inputValidationString(formik,"leverage")}`}
@@ -267,8 +269,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Range</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Range</label>
+                        <div className="col-lg-9 col-12">
                         <input 
                             type="number" 
                             className={`form-control ${inputValidationString(formik,"range")}`}
@@ -287,8 +289,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Range Multiplier</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Range Multiplier</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" 
                             className={`form-control ${inputValidationString(formik,"rangeMultiplier")}`}
                             placeholder="Enter your Range Multiplier" 
@@ -310,8 +312,8 @@ export default function TradingForm(props) {
                     <hr></hr>
 
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Risk Scope</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Risk Scope</label>
+                        <div className="col-lg-9 col-12">
                         <select 
                             className={`form-control ${inputValidationString(formik,"riskScope")}`}
                             name="riskScope"
@@ -331,8 +333,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Risk Deviation %</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Risk Deviation %</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" 
                             className={`form-control ${inputValidationString(formik,"riskDeviationPercent")}`}
                             placeholder="Enter Risk Deviation %" 
@@ -350,8 +352,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Acceptable Spread</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Acceptable Spread</label>
+                        <div className="col-lg-9 col-12">
                         <input 
                             type="number" 
                             className={`form-control ${inputValidationString(formik,"acceptableSpread")}`}
@@ -370,8 +372,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Minimum Spread</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Minimum Spread</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" 
                             className={`form-control ${inputValidationString(formik,"minSpread")}`}
                             placeholder="Enter Minimum Spread" 
@@ -394,8 +396,8 @@ export default function TradingForm(props) {
                     <hr></hr>
 
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Portfolio Risk Trading Threshold</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Portfolio Risk Trading Threshold</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" 
                             className={`form-control ${inputValidationString(formik,"portRiskTradingThreshold")}`}
                             placeholder="Enter Portfolio Risk Trading Threshold" 
@@ -413,8 +415,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Capital Risk Trading Threshold</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Capital Risk Trading Threshold</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" className={`form-control ${inputValidationString(formik,"capRiskTradingThreshold")}`} placeholder="Enter Capital Risk Trading Threshold" 
                             name="capRiskTradingThreshold"
                             {...formik.getFieldProps("capRiskTradingThreshold")}
@@ -430,8 +432,8 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Capital-Portfolio Risk %</label>
-                    <div className='col-sm-10'>
+                    <label className="col-lg-3 col-12 col-form-label">Capital-Portfolio Risk %</label>
+                    <div className='col-lg-9 col-12'>
                         <div className="input-group input-group">
                             <div className="input-group-prepend">
                             <span className="input-group-text">
@@ -453,8 +455,8 @@ export default function TradingForm(props) {
                     <hr></hr>
 
                     <div className="form-group row">
-                        <label htmlFor="inputEmail" className="col-sm-2 col-form-label">Risk to Reward Multiplier</label>
-                        <div className="col-sm-10">
+                        <label htmlFor="inputEmail" className="col-lg-3 col-12 col-form-label">Risk to Reward Multiplier</label>
+                        <div className="col-lg-9 col-12">
                         <input type="number" className={`form-control ${inputValidationString(formik,"riskRewardMultiplier")}`} placeholder="Enter Risk to Reward Multiplier" 
                             name="riskRewardMultiplier"
                             {...formik.getFieldProps("riskRewardMultiplier")}
@@ -470,7 +472,7 @@ export default function TradingForm(props) {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <div className="offset-sm-2 col-sm-10">
+                        <div className="offset-sm-3 col-lg-9 col-12">
                         <button type="submit" className={`btn btn-danger ${!formik.isValid ? "disabled" : ""}`}>Update Settings</button>
                         </div>
                     </div>
