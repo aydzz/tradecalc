@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import InputGroupWithIcon from '../../components/InputGroup/InputGroupWithIcon'
 import OverlayLoader from '../../components/Loaders/OverlayLoader'
 import {Form01,Form02,Form03,Form04,Form05} from './components/Formik/Forms'
 import SampleModalDemo from './components/SampleModal'
@@ -28,6 +29,17 @@ export default function StagingIndex() {
       </section>
       <div className='container-fluid'>
         <div className='row'>
+
+        <div className='col-md-4'>
+            <div className='card'>
+              <div className='card-header'>
+              <i className="bi bi-app"></i> Formik Form 5
+              </div>
+              <div className='card-body'>
+                    <InputGroupWithIcon placeholder="sample input"></InputGroupWithIcon>
+              </div>
+            </div>
+          </div>
         <div className='col-md-4'>
             <div className='card'>
               <div className='card-header'>

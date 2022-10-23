@@ -53,3 +53,43 @@ export function paginateList(list, perPageCount){
 export function inputValidationString(formik,fieldName){
     return `${(formik.touched[fieldName] && formik.errors[fieldName]) ? "is-invalid" : (formik.touched[fieldName] && !formik.errors[fieldName]) ? "is-valid" : ""}`
 }
+
+
+/**
+ * 
+ * @param {Object} obj1
+ * @param {Object} obj2
+ * @returns {Boolean}
+ */
+export function isEqualTo(obj1, obj2){
+    const keys_1 = Object.keys(obj1);
+    const keys_2 = Object.keys(obj2);
+
+    //key tests
+    const isEqualKey = keys_1.every(function(val,i){
+        return  keys_2.includes(val);
+    });
+    
+    if(!isEqualKey && (keys_1.length !== keys_2.length)){
+        return false;   
+    }else{
+        //value checks
+        const hasEqualValues = keys_1.every(function(key,i,arr){
+            return obj1[key] === obj2[key]
+        });
+        if(!hasEqualValues){
+            return false
+        }
+    }
+    return true;
+}
+
+const Functions = {
+    getUnsplashURL: getUnsplashURL,
+    classNames: classNames,
+    paginateList: paginateList,
+    inputValidationString: inputValidationString,
+    inputValidationString: inputValidationString,
+    isEqualTo: isEqualTo
+}
+export default Functions
