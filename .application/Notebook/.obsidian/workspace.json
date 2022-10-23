@@ -1,0 +1,145 @@
+{
+  "main": {
+    "id": "42ec707f89cac2d5",
+    "type": "split",
+    "children": [
+      {
+        "id": "4a6372fd9a3b31a4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f65aa083cf6b9c3e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f33e426fbba3101b",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d419fc1b1209f74",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dcb89f8d37777feb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d5cd08139ec94754",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "bfa9a3b9ed1fae4c",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "1adf1ef49596b1c8",
+    "type": "split",
+    "children": [
+      {
+        "id": "74170a04a3b84da7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0780668be2903f0c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "30ceb4fadd828ac1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3eb659bf3daf7724",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "027f58a78cb29db5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "dcb89f8d37777feb",
+  "lastOpenFiles": [
+    "Todos.md",
+    "General.md",
+    "source/components/ReadMe.md",
+    "project/Trading Calculator MVP 0.md",
+    "source/modules/account/ReadMe.md",
+    "source/modules/calculator/ReadMe.md",
+    "source/modules/journal/ReadMe.md",
+    "Notebook.md"
+  ]
+}

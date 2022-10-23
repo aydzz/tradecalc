@@ -24,11 +24,11 @@ export default function ControlSidebar() {
             }}/>
             <span>Dark Mode</span>
           </div>
-          <h6>Calculator Options</h6>
+          {/* <h6>Calculator Options</h6>
           <div className="mb-4">
             <input type="checkbox" value="1" className="mr-1"/>
             <span>Show Main Chart</span>
-          </div>
+          </div> */}
         </div>
     </aside>
     //<!-- /.control-sidebar -->

@@ -137,8 +137,8 @@ export class NullTrade extends Trade{
     constructor() {
         super(
             "",
-            "long",
-            "cash",
+            "",
+            "",
             "",
             "",
             0,
@@ -148,15 +148,15 @@ export class NullTrade extends Trade{
             0,
             0,
             0,
-            "risk",
+            "",
             0,
-            "riskreward",
+            "",
             0,
             0,
             0,
             "open",
             "",
-            new Date()
+            null
         )
     }
 }

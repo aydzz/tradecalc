@@ -46,7 +46,7 @@ export default function TradeLogs(props) {
   },[parentStates.shownTradesDescRerenderer, parentStates.paginatorRerenderer])
 
   useEffect(function(){
-    setPaginatedLogs(paginateList(logs,5));
+    setPaginatedLogs(paginateList(logs,10));
 
   },[logs])
 

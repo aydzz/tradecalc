@@ -40,7 +40,7 @@ export default function CalculatorIndex() {
     const {appData}  = useAppData();
     const forceUpdate = useForceUpdate();
     //For TradeLogs.jsx
-    const MAX_RECORDS_PER_PAGE = 5;
+    const MAX_RECORDS_PER_PAGE = 10;
     const [page, setPage] = useState(1);
 
     const [logsRerenderer, setLogsRerenderer] = useState();
@@ -108,7 +108,7 @@ export default function CalculatorIndex() {
                 </div>
             </div>
         </div>
-        <div className="col-lg-4 col-md-6 col-12">
+        {/* <div className="col-lg-4 col-md-6 col-12">
             <div className='row'>
                 <div className="col-12">
                     <div className='card'>
@@ -155,18 +155,26 @@ export default function CalculatorIndex() {
                 <div className="info-box-content">
                     <span className="info-box-text">Profit/Loss</span>
                     <span className="info-box-number">$1.00</span>
-                    {/* <div className="progress">
+                    <div className="progress">
                         <div className="progress-bar" style={{"width": "70%"}}></div>
                     </div>
                     <span className="progress-description">
                         70% Increase in 30 Days
-                    </span> */}
+                    </span>
                 </div>
                 </div>
             </div>
             </div>
+        </div> */}
+        <div className='col-lg-4 col-12'>
+          <div className='card'>
+            <div className='card-header border-0'>Market Overview</div>
+            <div className='card-body p-0 m-0'>
+              <MarketOverviewWidget></MarketOverviewWidget>
+            </div>
+          </div>
         </div>
-        <div className="col-lg-4 col-12">
+        <div className="col-lg-6 col-12">
             <div className='card'>
                 <div className='card-header'>
                     <i className='bi bi-calculator'></i> Trade Calculator
@@ -191,7 +199,7 @@ export default function CalculatorIndex() {
                 </div>
             </div>
         </div>
-        <div className="col-lg-4 col-12">
+        <div className="col-lg-6 col-12">
             <div className='card'>
                 <div className='card-header'>
                     <i className='bi bi-person-lines-fill'></i> Trade Overview
@@ -214,14 +222,6 @@ export default function CalculatorIndex() {
                 </div>
                 <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
             </div>
-        </div>
-        <div className='col-lg-4 col-12'>
-          <div className='card'>
-            <div className='card-header border-0'>Market Overview</div>
-            <div className='card-body p-0 m-0'>
-              <MarketOverviewWidget></MarketOverviewWidget>
-            </div>
-          </div>
         </div>
         <div className="col-lg-12 col-12" id="#trade-logs">
             <div className='card'>
