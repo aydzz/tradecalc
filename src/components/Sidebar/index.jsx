@@ -61,18 +61,23 @@ export default function Sidebar(props){
                         <p>Account</p>
                     </NavLink>
                 </li>
+                {/* Temporarily Hidden from the normal users ( just hidden ) */}
+                <ProtectedComponent>
                 <li className="nav-item">
                     <NavLink to="/app/journal" className="nav-link">
                         <i className="nav-icon bi bi-journal"></i>
                         <p>Journal</p>
                     </NavLink>
                 </li>
+                
                 <li className="nav-item">
                     <NavLink to="/app/tradelogs" className="nav-link">
                         <i className="nav-icon bi bi-clock-history"></i>
                         <p>Logs</p>
                     </NavLink>
                 </li>
+                </ProtectedComponent>
+                <ProtectedComponent>
                 <li className="nav-header">MISCELLANEOUS</li>
                 <li className="nav-item">
                     <NavLink to="/app/integrations" className="nav-link">
@@ -80,13 +85,13 @@ export default function Sidebar(props){
                         <p>Others</p>
                     </NavLink>
                 </li>
-                <ProtectedComponent>
-                    <li className="nav-item">
-                        <NavLink to="/app/staging" className="nav-link">
-                            <i className="nav-icon bi bi-wrench-adjustable-circle"></i>
-                            <p>Staging</p>
-                        </NavLink>
-                    </li>
+       
+                <li className="nav-item">
+                    <NavLink to="/app/staging" className="nav-link">
+                        <i className="nav-icon bi bi-wrench-adjustable-circle"></i>
+                        <p>Staging</p>
+                    </NavLink>
+                </li>
                 </ProtectedComponent>
                 </ul>
             </nav>

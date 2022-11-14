@@ -45,8 +45,10 @@ export default function AppDataProvider(props){
            
 
             appDataService.getBy("uid", currentUser.uid).then(function(res){
-                setAppData(res[0])
-                setLoading(false);
+                if(res){
+                    setAppData(res[0])
+                    setLoading(false); 
+                }
             }).catch(function(err){
                 //do something here...
                 setError(err);
