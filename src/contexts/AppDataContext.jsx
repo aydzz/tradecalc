@@ -42,13 +42,13 @@ export default function AppDataProvider(props){
             userService.setCurrentUser(currentUser);
             appDataService.setCurrentUser(currentUser);
             
-           
-
-            appDataService.getBy("uid", currentUser.uid).then(function(res){
+            // appDataService.getBy("uid", currentUser.uid).then(function(res){
+            appDataService.getCurrentUserRecord().then(function(res){
                 if(res){
                     setAppData(res[0])
-                    setLoading(false); 
+                    setLoading(false);
                 }
+               
             }).catch(function(err){
                 //do something here...
                 setError(err);
@@ -72,10 +72,13 @@ export default function AppDataProvider(props){
 
     const contextValue = {
         appData: appData,
-        setAppData: setAppData
+        setAppData: setAppData,
+        loading: loading,
+        setLoading: setLoading,
+        error: error,
+        setError: setError
     }
 
-    console.log(loading)
     return (
         <AppDataContext.Provider value={contextValue}>
           {loading ? <FullPageLoader/> : props.children}

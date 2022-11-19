@@ -154,7 +154,7 @@ export default function TradingForm(props) {
             capPortRiskPercent: 
                 Yup.number()
                     .required("This field is required.")
-                    .positive("This field must be a positive number."),
+                    .min(0),
             riskRewardMultiplier: 
                 Yup.number()
                     .required("This field is required.")

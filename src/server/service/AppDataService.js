@@ -11,6 +11,9 @@ class AppDataService{
     async get(docID){
         return this.repository.get(docID);
     }
+    async getCurrentUserRecord(){
+        return this.repository.getCurrentUserRecord();
+    }
      async getBy(field, value){
         return this.repository.getBy(field,value);
     }
