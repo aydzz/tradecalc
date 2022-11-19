@@ -50,6 +50,7 @@ export default class AppDataRepository{
     async get(docID){
        return await this._superRepository.get(docID);
     }
+
     /**
      * Queries document based on a specific field
      * @param {String} field 
@@ -60,8 +61,39 @@ export default class AppDataRepository{
         if(this._currentUser == null){
             throw new MissingUserError();
         }
-        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid), where(field, operator, value));
+        let q = null;
 
+        if(field === "uid"){
+            q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid));
+        }else{
+            q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid), where(field, operator, value));
+        }
+
+        const querySnapshot = await getDocs(q);
+        const list = [];
+        if(querySnapshot.size > 0){
+            querySnapshot.forEach((item) => {
+                const doc = (item.data());
+                doc.id = item.id;
+                list.push(doc);
+            });
+        }else{
+            return null;
+        }
+        return list;
+    }
+
+    /**
+     * Queries document based on a uid of the currentUser
+     * @returns {Promise<Array<T> | null>}
+     */
+    async getCurrentUserRecord(){
+        if(this._currentUser == null){
+            throw new MissingUserError();
+        }
+        const q = query(collection(this._firestore, this.collection).withConverter(this._converter), where("uid", "==", this._currentUser.uid));
+
+        //copy from this.getBy();
         const querySnapshot = await getDocs(q);
         const list = [];
         if(querySnapshot.size > 0){

@@ -38,8 +38,8 @@ export function AuthProvider({ children }) {
         })
       })
       .catch((error) => {
-        console.log(error.code);
-        console.log(error.message);
+        // console.log(error.code);
+        // console.log(error.message);
         throw error;
       });
   }
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
     },function(completed){
       console.warn("FIREBASE: Auth State Changed!");
     });
-    console.log(currentUser)
+    // console.log(currentUser)
     return unsubscribe
     
   },[])

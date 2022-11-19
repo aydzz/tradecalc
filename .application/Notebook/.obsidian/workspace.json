@@ -11,8 +11,12 @@
             "id": "f65aa083cf6b9c3e",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "source/modules/calculator/CHANGELOG.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "source/modules/calculator/CHANGELOG.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "source/modules/calculator/CHANGELOG.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "source/modules/calculator/CHANGELOG.md"
+              }
             }
           }
         ]
@@ -131,8 +139,10 @@
   "ribbon": {
     "mostRecentAction": ""
   },
-  "active": "dcb89f8d37777feb",
+  "active": "f65aa083cf6b9c3e",
   "lastOpenFiles": [
+    "source/modules/calculator/README.md",
+    "source/modules/calculator/CHANGELOG.md",
     "Todos.md",
     "General.md",
     "source/components/ReadMe.md",

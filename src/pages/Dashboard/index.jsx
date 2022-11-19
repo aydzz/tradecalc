@@ -22,7 +22,7 @@ export default function DashboardIndex() {
         </div>
       </section>
       <div className='row'>
-        <div className='col-lg-6'>
+        <div className='col-lg-12'>
           <div className='card'>
             <div className='card-header border-0'>Market Overview</div>
             <div className='card-body p-0 m-0'>
@@ -30,7 +30,7 @@ export default function DashboardIndex() {
             </div>
           </div>
         </div>
-        <div className='col-lg-3'>
+        {/* <div className='col-lg-3'>
           <div className='card'>
             <div className='card-header'>Card Title</div>
             <div className='card-body'>
@@ -45,8 +45,7 @@ export default function DashboardIndex() {
               
             </div>
           </div>
-        </div>
-
+        </div> */}
       </div>
       </div>
     </div>

@@ -14,6 +14,8 @@ import userService from '../../server/service/UserService';
 import AppData from '../../server/models/AppData';
 import ThemeSettings from "../../server/models/AppData/ThemeSettings"
 import appDataService from '../../server/service/AppDataService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useAppData } from '../../contexts/AppDataContext';
 
 const FormGroup = styled.div`
     margin-bottom: 1rem;
@@ -59,11 +61,12 @@ const GoogleButton = styled(UserButton)`
     }
 `
 export default function RegistrationForm() {
+    const {currentUser} = useAuth();
+    const appDataCtx = useAppData();
     const regForm = useRef();
     const navigate = useNavigate();
     const onSubmitHandler = function(e){
         e.preventDefault();
-        console.log(e);
         Toast.fire({
             icon: 'info',
             title: 'Unable to register at the moment.'
@@ -94,8 +97,7 @@ export default function RegistrationForm() {
                 /**
                  * Save a new user's Detail
                  */
-                userService.save(user)
-                .then(function(result){
+                userService.save(user).then(function(result){
                     /**
                      * Initialize new user's AppData
                      */
@@ -107,27 +109,37 @@ export default function RegistrationForm() {
                         ),
                         0
                     );
+
+                    //Save new Default App data for the new User
                     appDataService.save(newAppData).then(function(res){
-                        navigate("/app/", { replace: true });
-                        Toast.fire({
-                            icon: 'success',
-                            title: "Successfully registered a new Account."
+                        appDataCtx.setLoading(true);
+                        appDataService.getCurrentUserRecord().then(function(res){
+                            if(res){
+                                appDataCtx.setAppData(res[0])
+                                appDataCtx.setLoading(false);
+                                
+                                navigate("/app/", { replace: true });
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: "Successfully registered a new Account."
+                                });
+                            }
+                        }).catch(function(err){
+                            appDataCtx.setError(err);
                         });
                     }).catch(function(err){
-                        //do something here...
-                        console.log(err);
+                        //error handling here for [Save new Default App data for the new User]..
                     })
                     
-                })
-                .catch(function(err){
-                    console.log(err);
+                }).catch(function(err){
+                    //error handling for [Save a new user's Detail]
                     Toast.fire({
                         icon: 'error',
                         title: "There was a problem saving the new user's data."
                     });
                 });
             }).catch(function(error){
-                console.log(error)
+                //error handling for [createUserWithEmailAndPassword]
                 Toast.fire({
                     icon: 'error',
                     title: 'Error encountered'
@@ -180,3 +192,5 @@ export default function RegistrationForm() {
     </form>
   )
 }
+
+
