@@ -15,7 +15,7 @@ export default function Sidebar(props){
         <aside className={`main-sidebar elevation-4 ${theme.darkMode ? "sidebar-dark-primary" : "sidebar-light-primary"} transition-normal`}>
             <a href="/home" className="brand-link bg-light align-align-items-center justify-content-center">
                 <img src={logo} alt="site-logo" className="brand-image img-circle bg-light elevation-1 p-1"/>
-                <span className="brand-text font-weight-light">trading<strong>assistant</strong></span>
+                <span className="brand-text font-weight-light">trade<strong>calc</strong></span>
             </a>
             <div className="sidebar">
             <div className="user-panel mt-3 pb-3 mb-3 d-flex">

@@ -9,7 +9,7 @@ const Footer = React.forwardRef((props, ref)=>{
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. 
             </div>
             {/* <!-- Default to the left --> */}
-            <strong>Copyright &copy; 2022 - Present <a href="/">tradingassistant</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; 2022 - Present <a href="/">tradecalc</a>.</strong> All rights reserved.
         </footer>
     )
 });

@@ -12,7 +12,7 @@ classNames.prototype.cssModule = s
     <>
         <nav className={classNames("navbar navbar-light bg-light static-top")}>
             <div className={classNames("container")}>
-                <a className={classNames("navbar-brand")} href="#!">Trading Assistant</a>
+                <a className={classNames("navbar-brand")} href="#!">tradecalc</a>
                 <a className={classNames("btn btn-primary")} href="register">Sign Up</a>
             </div>
         </nav>
@@ -23,7 +23,7 @@ classNames.prototype.cssModule = s
                     <div className={classNames("col-xl-6")}>
                         <div className={classNames("text-center text-white")}>
                           
-                            <h1 className={classNames("mb-5") + " text-light"}>Trade Smarter with Trading assistant.</h1>
+                            <h1 className={classNames("mb-5") + " text-light"}>Trade Smarter with tradecalc.</h1>
                             
                             <form className={classNames("form-subscribe")} id="contactForm" data-sb-form-api-token="API_TOKEN">
                                
@@ -40,7 +40,7 @@ classNames.prototype.cssModule = s
                                     <div className={classNames("text-center mb-3")}>
                                         <div className={classNames("fw-bolder")}>Form submission successful!</div>
                                         <p>To activate this form, sign up at</p>
-                                        <a className={classNames("text-white")} href="/">Trading Assistant</a>
+                                        <a className={classNames("text-white")} href="/">tradecalc</a>
                                     </div>
                                 </div>
                                
@@ -157,7 +157,7 @@ classNames.prototype.cssModule = s
                             <li className={classNames("list-inline-item")}>⋅</li>
                             <li className={classNames("list-inline-item")}><a href="#!">Privacy Policy</a></li>
                         </ul>
-                        <p className={classNames("text-muted small mb-4 mb-lg-0")}>&copy; Trading Assitant {new Date().getUTCFullYear()}. All Rights Reserved.</p>
+                        <p className={classNames("text-muted small mb-4 mb-lg-0")}>&copy;tradecalc {new Date().getUTCFullYear()}. All Rights Reserved.</p>
                     </div>
                     <div className={classNames("col-lg-6 h-100 text-center text-lg-end my-auto")}>
                         <ul className={classNames("list-inline mb-0")}>

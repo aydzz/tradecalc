@@ -231,8 +231,11 @@ export default function TradeForm(props) {
                     // }}
                   >
                     <option value="">-- SELECT --</option>
-                    <option value="BTC/USDT">BTC/USDT</option>
-                    <option value="ETH/USDT">ETH/USDT</option>
+                    <option value="ASSET_1">ASSET 1</option>
+                    <option value="ASSET_2">ASSET 2</option>
+                    <option value="ASSET_3">ASSET 3</option>
+                    <option value="ASSET_4">ASSET 4</option>
+                    <option value="ASSET_5">ASSET 5</option>
                   </select>
                 </div>
               </div>

@@ -4,8 +4,12 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "site": "tradingassistant",
-    "public": "public",
+    "public": "build",
+    "site": "tradecalc-stg",
+    "rewrites": [ {
+      "source": "**",
+      "destination": "/index.html"
+    } ],
     "ignore": [
       "firebase.json",
       "**/.*",
