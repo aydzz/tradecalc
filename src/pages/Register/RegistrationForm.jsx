@@ -86,12 +86,12 @@ export default function RegistrationForm() {
             passwordConfirm:""
         }}
         validationSchema={Yup.object({
-            firstName: Yup.string().required("First Name is required.").max(25),
-            lastName: Yup.string().required("Last Name is required.").max(25),
-            email: Yup.string().email("Must be a valid email address").required("Email is required.").max(50),
-            username: Yup.string().required("Username is required.").max(25),
-            password: Yup.string().required("Password is required.").max(25),
-            passwordConfirm: Yup.string().required("Password confirmation is required.").max(25).oneOf([Yup.ref("password")], 'Passwords does not match')
+            firstName: Yup.string().required("First Name is required.").max(25, "Maximum character length has been reached"),
+            lastName: Yup.string().required("Last Name is required.").max(25, "Maximum character length has been reached"),
+            email: Yup.string().email("Must be a valid email address").required("Email is required.").max(50, "Maximum character length has been reached"),
+            username: Yup.string().required("Username is required.").max(25, "Maximum character length has been reached"),
+            password: Yup.string().required("Password is required.").max(25, "Maximum character length has been reached"),
+            passwordConfirm: Yup.string().required("Password confirmation is required.").max(25, "Maximum character length has been reached").oneOf([Yup.ref("password")], 'Passwords does not match')
         })}
         onSubmit={function(values, {resetForm, ...rest}){
             const firstName = values.firstName;

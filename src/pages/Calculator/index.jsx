@@ -168,7 +168,7 @@ export default function CalculatorIndex() {
         </div> */}
         <div className='col-lg-4 col-12'>
           <div className='card'>
-            <div className='card-header border-0'>Market Overview</div>
+            <div className='card-header border-0'>Market</div>
             <div className='card-body p-0 m-0'>
               <MarketOverviewWidget></MarketOverviewWidget>
             </div>
@@ -177,22 +177,25 @@ export default function CalculatorIndex() {
         <div className="col-lg-6 col-12">
             <div className='card'>
                 <div className='card-header'>
-                    <i className='bi bi-calculator'></i> Trade Calculator
+                    <i className='bi bi-calculator'></i> Calculator
                 </div>
                 <div className='card-body'>
                     {loading ?
                         (<div className='w-100 d-flex justify-content-center align-items-center' style={{minHeight: "100px"}}>
                             <OverlayLoader type="loading-6"></OverlayLoader>
                         </div>):
-                        (
-                            <CardErrorBoundary>
-                                <TradeForm 
-                                trade={trade} setTrade={setTrade} 
-                                tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
-                                tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
-                                logsRerenderer={logsRerenderer}
-                                ></TradeForm>
-                            </CardErrorBoundary>
+                        ( 
+                            settingsUnset ?  <SettingsUnset/> :
+                            (
+                                <CardErrorBoundary>
+                                    <TradeForm 
+                                    trade={trade} setTrade={setTrade} 
+                                    tradeSettings={tradeSettings} setTradeSettings={setTradeSettings}
+                                    tradeCalculator={tradeCalculator} setTradeCalculator={setTradeCalculator}
+                                    logsRerenderer={logsRerenderer}
+                                    ></TradeForm>
+                                </CardErrorBoundary>
+                            )
                         )
                     }
                     
@@ -202,7 +205,7 @@ export default function CalculatorIndex() {
         <div className="col-lg-6 col-12">
             <div className='card'>
                 <div className='card-header'>
-                    <i className='bi bi-person-lines-fill'></i> Trade Overview
+                    <i className='bi bi-person-lines-fill'></i> Overview
                 </div>
                 <div className='card-body table-responsive p-0'>
                     {loading ?
@@ -220,7 +223,7 @@ export default function CalculatorIndex() {
                         )
                     }
                 </div>
-                <div className='card-footer'><span className='text-xs float-right text-secondary'>{new Date().toLocaleDateString()}</span></div>
+                <div className='card-footer'><span className='text-xs float-right text-secondary'>{/**new Date().toLocaleDateString()*/}</span></div>
             </div>
         </div>
         <div className="col-lg-12 col-12" id="#trade-logs">

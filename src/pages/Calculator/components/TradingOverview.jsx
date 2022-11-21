@@ -153,79 +153,79 @@ export function TradingOverviewTable(props){
                 <td>1.</td>
                 <td>Profit Loss</td>
                 <td><span>{Number(tradeCalculator.profitLoss).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>2.</td>
                 <td>Spread</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.spread).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>3.</td>
                 <td>Order-SL Spread</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.orderSLSpread).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>4.</td>
                 <td>Capital Committed</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.capitalCommited).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>5.</td>
                 <td>Notional Value</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.trade.notionalValue).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>6.</td>
                 <td>Order-Spread Compliance</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.orderSpreadCompliance).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>7.</td>
                 <td>Order-Risk Compliance</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.orderRiskCompliance).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>8.</td>
                 <td>Quantity</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.trade.calculatedQuantity).toFixed(5)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>9.</td>
                 <td>Risk Scope</td>
                 <td style={{width: "40px"}}><span class="badge bg-success text-capitalize">{String(tradeCalculator.tradeSetting.riskScope)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>10.</td>
                 <td>Portfolio Risk Tolerance</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.portfolioRiskTolerance).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>11.</td>
                 <td>Portfolio Consumption %</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.portfolioConsumptionPercent).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>12.</td>
                 <td>Capital Risk Tolerance</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.capitalRiskTolerance).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             <tr class="text-xs">
                 <td>13.</td>
                 <td>Capital Consumption %</td>
                 <td style={{width: "40px"}}><span >{Number(tradeCalculator.capitalConsumptionPercent).toFixed(2)}</span></td>
-                <td><i class="bi bi-cone-striped text-danger"></i></td>
+                <td><i class="bi bi-cone-striped text-secondary"></i></td>
             </tr>
             </tbody>
         </table>

@@ -34,8 +34,9 @@
     "sass:w": "sass ./src/assets/scss/application.scss ./src/application.css --watch",
     "firebase-serve": "firebase serve --only hosting",
     "firebase-deploy": "firebase deploy --only hosting:tradecalc-stg",
+    
     "firebase:emu": "firebase emulators:start",
-    "fiirebase:emu_data": "firebase emulators:start --import=./emulator-data --export-on-exit"
+    "firebase:emu_data": "firebase emulators:start --import=./emulator-data --export-on-exit"
   },
   "eslintConfig": {
     "extends": [
